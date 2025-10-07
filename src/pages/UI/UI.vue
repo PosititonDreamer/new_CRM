@@ -1,12 +1,17 @@
 <script>
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
+import UInput from "@/components/_UIComponents/UInput/UInput.vue";
+import {ref} from "vue";
 
 export default {
-  components: {UButton},
+  components: {UInput, UButton},
   setup() {
+    const text = ref("");
+    const area = ref("");
 
-
-    return {}
+    return {
+      text, area
+    }
   }
 }
 </script>
@@ -48,6 +53,12 @@ export default {
     </div>
     <div class="UI__item">
       <u-button size="big" modifier="red" disabled>Красная большая заблокированная кнопка</u-button>
+    </div>
+    <div class="UI__item">
+      <u-input title="Текстовое поле" v-model="text" :start-value="text"/>
+    </div>
+    <div class="UI__item">
+      <u-input type="textarea" title="Текстовое поле" v-model="area" error="Ошибка" :start-value="area"/>
     </div>
   </div>
 </template>

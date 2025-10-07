@@ -1,0 +1,41 @@
+.u-input {
+  color: var(--primary);
+
+  &__input, &__title, &__error {
+    color: var(--primary);
+  }
+
+  &__title, &__error {
+    font-size: 14px;
+  }
+
+  &__input {
+    width: 100%;
+    font-size: 18px;
+    border: 1px solid var(--primary);
+    background: var(--white);
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  &--error {
+    * {
+      --primary: var(--red);
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .u-input {
+
+    &__input {
+      font-size: 14px;
+    }
+    &__title, &__error {
+      font-size: 12px;
+    }
+  }
+}
