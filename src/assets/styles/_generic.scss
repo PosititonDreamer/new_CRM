@@ -1,0 +1,28 @@
+*, ::after, ::before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    background: none;
+    font-family: "Arial";
+}
+
+input, textarea, select {
+    outline: none;
+    border: none;
+    border-radius: unset;
+    resize: none;
+}
+
+textarea {
+    row-gap: 4;
+}
+
+button {
+    outline: none;
+    border: none;
+    border-radius: unset;
+}
+
+ul, ol {
+    list-style: none;
+}
