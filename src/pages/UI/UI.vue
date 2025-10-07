@@ -2,15 +2,25 @@
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import {ref} from "vue";
+import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 
 export default {
-  components: {UInput, UButton},
+  components: {UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
+    const checkBoxes = ref([1, 3])
+
+    const changeCheckbox = (e) => {
+      if(e.checked) {
+        checkBoxes.value.push(e.value)
+      } else {
+        checkBoxes.value = checkBoxes.value.filter(check => check !== e.value)
+      }
+    }
 
     return {
-      text, area
+      text, area, checkBoxes, changeCheckbox
     }
   }
 }
@@ -60,6 +70,16 @@ export default {
     <div class="UI__item">
       <u-input type="textarea" title="Текстовое поле" v-model="area" error="Ошибка" :start-value="area"/>
     </div>
+    <div class="UI__item">
+      <u-checkbox title="Чекбокс 1" name="ui" value="1" :checked="checkBoxes.find(check => check === 1)" @change="changeCheckbox"/>
+    </div>
+    <div class="UI__item">
+      <u-checkbox title="Чекбокс 2" name="ui" value="2" :checked="checkBoxes.find(check => check === 2)" @change="changeCheckbox"/>
+    </div>
+    <div class="UI__item">
+      <u-checkbox title="Чекбокс 3" name="ui" value="3" :checked="checkBoxes.find(check => check === 3)" @change="changeCheckbox"/>
+    </div>
+
   </div>
 </template>
 
