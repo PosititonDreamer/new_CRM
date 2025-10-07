@@ -17,6 +17,12 @@ export default {
       emit("close");
     }
 
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") {
+        close();
+      }
+    });
+
     return {
       close
     }
@@ -26,8 +32,8 @@ export default {
 
 <template>
   <Teleport to="body">
-    <div class="u-popup">
-      <div class="u-popup__wrapper">
+    <div class="u-popup" @click="close">
+      <div class="u-popup__wrapper" @click.stop>
         <div class="u-popup__header">
           <button class="u-popup__close" @click="close"></button>
           <p class="u-popup__title">{{ title }}</p>
