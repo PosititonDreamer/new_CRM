@@ -21,7 +21,6 @@
     border: 1px solid var(--primary);
     position: relative;
     background: var(--white);
-    transition: background .3s ease-in-out;
 
     &::before {
       content: '';

@@ -7,7 +7,6 @@
   padding: 5px 10px;
   color: var(--primary);
   cursor: pointer;
-  transition: color .3s ease-in-out, background .3s ease-in-out;
 
   &:disabled {
     pointer-events: none;
@@ -22,8 +21,6 @@
   }
 
   @media (hover: none) {
-    transition: unset;
-
     &:active {
       background: var(--primary);
       color: var(--white);
