@@ -1,0 +1,41 @@
+.u-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: var(--window-height);
+  background: var(--back);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__content {
+    padding: 20px;
+    background: var(--white);
+    border-radius: 5px;
+    max-width: 300px;
+    width: 100%;
+    display: grid;
+    grid-gap: 20px;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 20px;
+  }
+
+  &__actions {
+    width: max-content;
+    display: flex;
+    grid-gap: 20px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .u-alert {
+    &__title {
+      font-size: 16px;
+    }
+  }
+}

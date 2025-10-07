@@ -4,14 +4,17 @@ import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import {ref} from "vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
+import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
 
 export default {
-  components: {UPopup, UCheckbox, UInput, UButton},
+  components: {UAlert, UPopup, UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
     const checkBoxes = ref([1, 3])
     const popup = ref(false)
+    const alert = ref(false)
+    const confirm = ref(false)
 
     const changeCheckbox = (e) => {
       if(e.checked) {
@@ -22,7 +25,7 @@ export default {
     }
 
     return {
-      text, area, checkBoxes, changeCheckbox, popup
+      text, area, checkBoxes, changeCheckbox, popup, alert, confirm
     }
   }
 }
@@ -85,55 +88,17 @@ export default {
       <u-button @click="popup = true">Открыть попап</u-button>
       <u-popup v-if="popup" title="ui попап" @close="popup = false">
         <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
-        <p>Тут будут тестовые данные</p>
         <u-button modifier="red">Красная кнопка</u-button>
         <u-input title="Текстовое поле" v-model="text" :start-value="text"/>
       </u-popup>
+    </div>
+    <div class="UI__item">
+      <u-button @click="alert = true">Показать алерт</u-button>
+      <u-alert v-if="alert" title="Открыт алерт" @close="alert = false"/>
+    </div>
+    <div class="UI__item">
+      <u-button @click="confirm = true">Открыть конфирм</u-button>
+      <u-alert v-if="confirm" type="confirm" title="Открыт конфирм" @close="confirm = false" @accept="() => {confirm = false; console.log('accept')}"/>
     </div>
   </div>
 </template>
