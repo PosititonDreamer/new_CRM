@@ -1,12 +1,16 @@
 @import url("./_generic.scss");
 @import url("./_vars.scss");
 
-html, body {
+html {
     overflow: hidden;
+}
+
+body {
+    height: var(--window-height);
+    overflow: hidden auto;
 }
 
 #app {
     height: var(--window-height);
-    overflow: hidden auto;
 }
 
