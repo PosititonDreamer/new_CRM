@@ -60,6 +60,10 @@
       color: var(--primary);
       cursor: pointer;
 
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--primary);
+      }
+
       @media (hover: hover) {
         &:hover {
           background: var(--back);
