@@ -1,0 +1,15 @@
+.sidebar-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 20px;
+
+  &__content {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .sidebar-layout {
+    display: block;
+  }
+}
