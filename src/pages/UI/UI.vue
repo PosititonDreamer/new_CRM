@@ -10,9 +10,10 @@ import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
+import ULoader from "@/components/_UIComponents/ULoader/ULoader.vue";
 
 export default {
-  components: {UAccordion, UCard, USelect, UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
+  components: {ULoader, UAccordion, UCard, USelect, UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
@@ -23,6 +24,12 @@ export default {
     const form = ref("")
     const select = ref(2)
     const openAccordion = ref(false)
+
+    const showLoader = ref(true)
+
+    setTimeout(() => {
+      showLoader.value = false;
+    }, 1000)
 
     const changeCheckbox = (e) => {
       if (e.checked) {
@@ -77,7 +84,23 @@ export default {
     }
 
     return {
-      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction, form, submitForm,selectValues, select, openAccordion
+      text,
+      area,
+      checkBoxes,
+      changeCheckbox,
+      popup,
+      alert,
+      confirm,
+      actions,
+      deleteFunction,
+      updateFunction,
+      addWorkerFunction,
+      form,
+      submitForm,
+      selectValues,
+      select,
+      openAccordion,
+      showLoader
     }
   }
 }
@@ -140,14 +163,14 @@ export default {
                   :checked="!!checkBoxes.find(check => check === 3)" @change="changeCheckbox"/>
     </div>
     <div class="UI__item">
-      <u-actions :actions="actions" @delete="deleteFunction" @update="updateFunction" @addWorker="addWorkerFunction" />
+      <u-actions :actions="actions" @delete="deleteFunction" @update="updateFunction" @addWorker="addWorkerFunction"/>
     </div>
     <div class="UI__item">
       <u-button @click="popup = true">Открыть попап</u-button>
       <u-popup v-if="popup" title="ui попап" @close="popup = false">
         <u-form title="UI форма" text="Добавить" @submit.prevent="submitForm">
-          <u-select title="Выбор из списка" :values="selectValues" :start-value="select" @change="e => select = e" />
-          <u-input title="форма" v-model="form" />
+          <u-select title="Выбор из списка" :values="selectValues" :start-value="select" @change="e => select = e"/>
+          <u-input title="форма" v-model="form"/>
           <u-input title="Текстовое поле" v-model="text" :start-value="text"/>
         </u-form>
       </u-popup>
@@ -173,6 +196,7 @@ export default {
         </u-accordion>
       </u-card>
     </div>
+    <u-loader v-if="showLoader"/>
   </div>
 </template>
 
