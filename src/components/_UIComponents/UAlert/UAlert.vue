@@ -31,6 +31,12 @@ export default {
       emit("accept");
     }
 
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") {
+        close();
+      }
+    });
+
     return {
       close, accept
     }
@@ -40,8 +46,8 @@ export default {
 
 <template>
   <Teleport to="body">
-    <div class="u-alert">
-      <div class="u-alert__content">
+    <div class="u-alert" @click="close">
+      <div class="u-alert__content" @click.stop>
         <p class="u-alert__title">{{ title }}</p>
         <div v-if="type === 'alert'" class="u-alert__actions">
           <u-button @click="close">Принять</u-button>
