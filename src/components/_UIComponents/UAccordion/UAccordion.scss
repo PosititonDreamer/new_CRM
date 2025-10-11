@@ -1,0 +1,41 @@
+.u-accordion {
+  width: 100%;
+  color: var(--primary);
+
+  &--open {
+    .u-accordion {
+      &__header {
+        svg {
+          transform: translateY(-50%) rotate(-90deg);
+        }
+      }
+    }
+  }
+
+  &__header {
+    position: relative;
+    display: flex;
+    font-size: 20px;
+
+    svg {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      width: 8px;
+      height: auto;
+    }
+  }
+
+  &__content {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .u-accordion {
+    &__header {
+      font-size: 14px;
+    }
+  }
+}

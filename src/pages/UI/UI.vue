@@ -9,9 +9,10 @@ import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
+import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 
 export default {
-  components: {UCard, USelect, UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
+  components: {UAccordion, UCard, USelect, UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
@@ -21,6 +22,7 @@ export default {
     const confirm = ref(false)
     const form = ref("")
     const select = ref(2)
+    const openAccordion = ref(false)
 
     const changeCheckbox = (e) => {
       if (e.checked) {
@@ -75,7 +77,7 @@ export default {
     }
 
     return {
-      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction, form, submitForm,selectValues, select
+      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction, form, submitForm,selectValues, select, openAccordion
     }
   }
 }
@@ -161,7 +163,14 @@ export default {
     </div>
     <div class="UI__item">
       <u-card>
-        <p>Карточка</p>
+        <u-accordion title="Карточка" :open="openAccordion" @open="openAccordion = !openAccordion">
+          <p>Какой-то текст</p>
+          <u-button>Кнопка</u-button>
+          <u-button>Кнопка</u-button>
+          <u-button>Кнопка</u-button>
+          <u-button>Кнопка</u-button>
+          <u-button>Кнопка</u-button>
+        </u-accordion>
       </u-card>
     </div>
   </div>
