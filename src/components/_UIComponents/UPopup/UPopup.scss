@@ -12,6 +12,10 @@
   &__header {
     padding: 20px 20px 20px;
     box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 20px;
+    align-items: center;
   }
 
   &__wrapper {
@@ -31,11 +35,9 @@
   }
 
   &__close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 20px;
-    height: 20px;
+    position: relative;
+    width: 30px;
+    height: 30px;
     border: 1px solid var(--red);
     border-radius: 5px;
     cursor: pointer;
@@ -83,8 +85,8 @@
     }
 
     &__close {
-      width: 16px;
-      height: 16px;
+      width: 30px;
+      height: 30px;
 
       &::before, &::after {
         height: 1px;

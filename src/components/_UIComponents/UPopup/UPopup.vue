@@ -35,8 +35,8 @@ export default {
     <div class="u-popup" @click="close">
       <div class="u-popup__wrapper" @click.stop>
         <div class="u-popup__header">
-          <button class="u-popup__close" @click="close"></button>
           <p class="u-popup__title">{{ title }}</p>
+          <button class="u-popup__close" @click="close"></button>
         </div>
         <div class="u-popup__content">
           <slot></slot>
