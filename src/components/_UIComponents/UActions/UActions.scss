@@ -1,0 +1,88 @@
+.u-actions {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+
+  &__button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 1px;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+
+    span {
+      display: block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--primary);
+
+        span {
+          background: var(--white);
+        }
+      }
+    }
+
+    @media (hover: none) {
+      &:active {
+        background: var(--primary);
+
+        span {
+          background: var(--white);
+        }
+      }
+    }
+  }
+
+  &__list {
+    width: max-content;
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    border: 1px solid var(--primary);
+
+    button {
+      padding: 5px 10px;
+      width: 100%;
+      display: block;
+      text-align: right;
+      font-size: 18px;
+      color: var(--primary);
+      cursor: pointer;
+
+      @media (hover: hover) {
+        &:hover {
+          background: var(--back);
+          color: var(--white);
+        }
+      }
+
+      @media (hover: none) {
+        &:active {
+          background: var(--back);
+          color: var(--white);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .u-actions {
+    &__list {
+      button {
+        font-size: 14px;
+      }
+    }
+  }
+}

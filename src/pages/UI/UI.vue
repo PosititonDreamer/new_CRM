@@ -5,9 +5,10 @@ import {ref} from "vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
+import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 
 export default {
-  components: {UAlert, UPopup, UCheckbox, UInput, UButton},
+  components: {UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
@@ -17,15 +18,40 @@ export default {
     const confirm = ref(false)
 
     const changeCheckbox = (e) => {
-      if(e.checked) {
+      if (e.checked) {
         checkBoxes.value.push(e.value)
       } else {
         checkBoxes.value = checkBoxes.value.filter(check => check !== e.value)
       }
     }
 
+    const actions = ref([
+      {
+        text: "Удалить",
+        name: "delete"
+      },
+      {
+        text: "Редактировать",
+        name: "update"
+      },
+      {
+        text: "Привязать работника",
+        name: "addWorker"
+      }
+    ])
+
+    const deleteFunction = () => {
+      console.log('delete')
+    }
+    const updateFunction = () => {
+      console.log('update')
+    }
+    const addWorkerFunction = () => {
+      console.log('addWorker')
+    }
+
     return {
-      text, area, checkBoxes, changeCheckbox, popup, alert, confirm
+      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction
     }
   }
 }
@@ -76,13 +102,19 @@ export default {
       <u-input type="textarea" title="Текстовое поле" v-model="area" error="Ошибка" :start-value="area"/>
     </div>
     <div class="UI__item">
-      <u-checkbox title="Чекбокс 1" key="ui-check-1" name="ui" value="1" :checked="!!checkBoxes.find(check => check === 1)" @change="changeCheckbox"/>
+      <u-checkbox title="Чекбокс 1" key="ui-check-1" name="ui" value="1"
+                  :checked="!!checkBoxes.find(check => check === 1)" @change="changeCheckbox"/>
     </div>
     <div class="UI__item">
-      <u-checkbox title="Чекбокс 2" key="ui-check-2" name="ui" value="2" :checked="!!checkBoxes.find(check => check === 2)" @change="changeCheckbox"/>
+      <u-checkbox title="Чекбокс 2" key="ui-check-2" name="ui" value="2"
+                  :checked="!!checkBoxes.find(check => check === 2)" @change="changeCheckbox"/>
     </div>
     <div class="UI__item">
-      <u-checkbox title="Чекбокс 3" key="ui-check-3" name="ui" value="3" :checked="!!checkBoxes.find(check => check === 3)" @change="changeCheckbox"/>
+      <u-checkbox title="Чекбокс 3" key="ui-check-3" name="ui" value="3"
+                  :checked="!!checkBoxes.find(check => check === 3)" @change="changeCheckbox"/>
+    </div>
+    <div class="UI__item">
+      <u-actions :actions="actions" @delete="deleteFunction" @update="updateFunction" @addWorker="addWorkerFunction" />
     </div>
     <div class="UI__item">
       <u-button @click="popup = true">Открыть попап</u-button>
@@ -98,9 +130,10 @@ export default {
     </div>
     <div class="UI__item">
       <u-button @click="confirm = true">Открыть конфирм</u-button>
-      <u-alert v-if="confirm" type="confirm" title="Открыт конфирм" @close="confirm = false" @accept="() => {confirm = false; console.log('accept')}"/>
+      <u-alert v-if="confirm" type="confirm" title="Открыт конфирм" @close="confirm = false"
+               @accept="() => {confirm = false; console.log('accept')}"/>
     </div>
   </div>
 </template>
 
-<style lang="scss" src="./UI.scss" scoped />
+<style lang="scss" src="./UI.scss" scoped/>
