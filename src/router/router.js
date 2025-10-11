@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
+import UI from "@/pages/UI/UI.vue";
 const routes = [
   {
     name: 'UI',
     path: '/',
-    component: () => import('../pages/UI/UI.vue'),
+    component: UI,
+    meta: {
+      layout: 'Sidebar',
+    }
   },
 ];
 
