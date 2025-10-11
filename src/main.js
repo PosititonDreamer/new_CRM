@@ -3,10 +3,9 @@ import "./assets/styles/index.scss"
 import App from './App.vue'
 import router from './router/router'
 import { createPinia } from 'pinia';
-// window.requst = "https://ural-muhomor.ru/";
-// window.requst = "http://crm-system"
+import axios from 'axios'
 const pinia = createPinia();
-
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://crm.system/api/' : '/api/';
 createApp(App)
     .use(router)
     .use(pinia)
