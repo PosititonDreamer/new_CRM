@@ -7,7 +7,7 @@ import router from "@/router/router.js";
 import {Loader} from "@/store/Loader.js";
 
 export const Auth = defineStore('Auth', () => {
-    const worker = ref([])
+    const worker = ref({})
     const getWorker = computed(() => worker)
 
     const route = useRoute();
@@ -21,7 +21,7 @@ export const Auth = defineStore('Auth', () => {
             .then(res => {
                 worker.value = res.data.worker;
                 localStorage.setItem('token', token);
-                console.log(res.data)
+                axios.defaults.headers.common['Authorization'] = `${token}`;
                 if(route.name === 'Auth') {
                     if(worker.value.rule === 'Админ') {
                         router.push('/admin');
@@ -39,7 +39,23 @@ export const Auth = defineStore('Auth', () => {
         updateLoader({method: 'auth', status: true})
     }
 
+    const checkAuth = async (token) => {
+        updateLoader({method: 'checkAuth', status: false})
+        const formData = new FormData();
+        formData.append('token', token);
+        await axios.post('/workers/authorization.php', formData)
+            .then(res => {
+                worker.value = res.data.worker;
+                axios.defaults.headers.common['Authorization'] = `${token}`;
+            })
+            .catch(err => {
+                const {addErrors} = Errors();
+                addErrors(err.response.data.messages)
+            })
+        updateLoader({method: 'checkAuth', status: true})
+    }
+
     return {
-        getWorker, auth
+        getWorker, auth, checkAuth
     }
 });
