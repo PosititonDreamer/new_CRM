@@ -6,6 +6,7 @@ import {useRoute} from "vue-router";
 import Errors from "@/components/Errors/Errors.vue";
 import ULoader from "@/components/_UIComponents/ULoader/ULoader.vue";
 import {Auth} from "@/store/workers/Auth.js";
+import router from "@/router/router.js";
 
 export default {
   components: {
@@ -26,6 +27,8 @@ export default {
 
     if(localStorage.getItem('token')) {
       auth(localStorage.getItem('token'))
+    } else {
+      router.push('/')
     }
   },
   setup() {
