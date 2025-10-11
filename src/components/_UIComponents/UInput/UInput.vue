@@ -26,7 +26,7 @@ export default {
   setup({startValue, error}, {emit}) {
     const model = ref(startValue);
 
-    const changeModel = (value) => {
+    const changeModel = () => {
       emit('update:modelValue', model.value.trim())
     }
 
