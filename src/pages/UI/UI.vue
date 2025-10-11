@@ -8,9 +8,10 @@ import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
+import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 
 export default {
-  components: {USelect, UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
+  components: {UCard, USelect, UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
@@ -157,6 +158,11 @@ export default {
       <u-button @click="confirm = true">Открыть конфирм</u-button>
       <u-alert v-if="confirm" type="confirm" title="Открыт конфирм" @close="confirm = false"
                @accept="() => {confirm = false; console.log('accept')}"/>
+    </div>
+    <div class="UI__item">
+      <u-card>
+        <p>Карточка</p>
+      </u-card>
     </div>
   </div>
 </template>
