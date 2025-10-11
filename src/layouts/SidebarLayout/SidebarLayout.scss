@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: 20px;
+  min-height: var(--window-height);
 
   &__content {
     padding: 20px;
