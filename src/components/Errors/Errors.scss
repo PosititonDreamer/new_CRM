@@ -1,0 +1,30 @@
+.errors {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 10px;
+  padding: 10px;
+  z-index: 100000;
+
+  &__item {
+    background: var(--red);
+    color: var(--white);
+    padding: 5px 10px;
+    pointer-events: all;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .errors {
+    max-width: 100vw;
+
+    &__item {
+      font-size: 14px;
+    }
+  }
+}

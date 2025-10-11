@@ -3,9 +3,11 @@ import DefaultLayout from "@/layouts/DefaultLayout/DefaultLayout.vue";
 import SidebarLayout from "@/layouts/SidebarLayout/SidebarLayout.vue";
 import {computed} from "vue";
 import {useRoute} from "vue-router";
+import Errors from "@/components/Errors/Errors.vue";
 
 export default {
   components: {
+    Errors,
     DefaultLayout,
     SidebarLayout,
   },
@@ -34,6 +36,7 @@ export default {
 </script>
 
 <template>
+  <Errors />
   <component :is="layout">
     <router-view></router-view>
   </component>
