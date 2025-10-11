@@ -49,6 +49,30 @@
       transform: rotate(-45deg) translate(-50%, -50%);
     }
   }
+
+  &__link {
+    display: flex;
+    text-decoration: none;
+    color: var(--primary);
+    font-size: 18px;
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+
+    @media (hover: none) {
+      &:active {
+        opacity: 0.85;
+      }
+    }
+
+    &--active {
+      pointer-events: none;
+      opacity: 0.85;
+    }
+  }
 }
 
 .sidebar-open {

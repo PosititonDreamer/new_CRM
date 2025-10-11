@@ -35,7 +35,7 @@ export default {
   <div :class="['sidebar', {'sidebar--open': open}]">
     <div class="sidebar__content">
       <button class="sidebar__close" @click="closeSidebar"></button>
-      Тут будут ссылки
+      <router-link class="sidebar__link" active-class="sidebar__link--active" to="/admin/products">Продукты</router-link>
     </div>
   </div>
 </template>

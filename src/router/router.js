@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import UI from "@/pages/UI/UI.vue";
 import Auth from "@/pages/Auth/Auth.vue";
 import Admin from "@/pages/Admin/Admin.vue";
+import Products from "@/pages/Admin/Products/Products.vue";
 const routes = [
   {
     name: 'UI',
@@ -25,7 +26,15 @@ const routes = [
     component: Admin,
     meta: {
       layout: 'Sidebar',
-    }
+    },
+  },
+  {
+    name: "Products",
+    path: '/admin/products',
+    component: Products,
+    meta: {
+      layout: 'Sidebar',
+    },
   }
 ];
 
