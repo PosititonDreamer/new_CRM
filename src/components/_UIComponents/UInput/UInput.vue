@@ -30,31 +30,23 @@ export default {
       emit('update:modelValue', model.value.trim())
     }
 
-    const classes = computed(() => {
-      const array = ['u-input']
-
-      if(error.trim().length > 0){
-        array.push('u-input--error');
-      }
-
-      return array.join(' ');
-    })
-
     return {
-      model, changeModel, classes
+      model, changeModel
     }
   }
 }
 </script>
 
 <template>
-  <label :class="classes">
+  <label :class="['u-input', {'u-input--error': error.trim().length > 0}]">
     <span class="u-input__title">{{ title }}</span>
     <textarea
         v-if="type === 'textarea'" rows="4"
         class="u-input__input"
         v-model="model"
         @input="changeModel"
+        @change="$emit('change')"
+        @blur="$emit('blur')"
     >
     </textarea>
     <input
@@ -63,6 +55,8 @@ export default {
         :type="type"
         v-model="model"
         @input="changeModel"
+        @change="$emit('change')"
+        @blur="$emit('blur')"
     />
     <span class="u-input__error">{{ error }}</span>
   </label>
