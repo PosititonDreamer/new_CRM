@@ -7,9 +7,10 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
+import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 
 export default {
-  components: {UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
+  components: {USelect, UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
@@ -18,6 +19,7 @@ export default {
     const alert = ref(false)
     const confirm = ref(false)
     const form = ref("")
+    const select = ref(2)
 
     const changeCheckbox = (e) => {
       if (e.checked) {
@@ -42,6 +44,21 @@ export default {
       }
     ])
 
+    const selectValues = ref([
+      {
+        name: "Товарный склад",
+        value: 1
+      },
+      {
+        name: "Сырьевой склад",
+        value: 2
+      },
+      {
+        name: "Промежуточный склад",
+        value: 3
+      },
+    ])
+
     const deleteFunction = () => {
       console.log('delete')
     }
@@ -57,7 +74,7 @@ export default {
     }
 
     return {
-      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction, form, submitForm
+      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction, form, submitForm,selectValues, select
     }
   }
 }
@@ -126,6 +143,7 @@ export default {
       <u-button @click="popup = true">Открыть попап</u-button>
       <u-popup v-if="popup" title="ui попап" @close="popup = false">
         <u-form title="UI форма" text="Добавить" @submit.prevent="submitForm">
+          <u-select title="Выбор из списка" :values="selectValues" :start-value="select" @change="e => select = e" />
           <u-input title="форма" v-model="form" />
           <u-input title="Текстовое поле" v-model="text" :start-value="text"/>
         </u-form>

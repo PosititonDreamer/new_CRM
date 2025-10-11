@@ -1,0 +1,127 @@
+.u-select {
+  color: var(--primary);
+  position: relative;
+
+  &__value, &__title, &__error {
+    color: var(--primary);
+  }
+
+  &__title, &__error {
+    font-size: 14px;
+  }
+
+  &--error {
+    * {
+      --primary: var(--red);
+    }
+  }
+
+  &--open {
+    .u-select {
+      &__list {
+        height: max-content;
+        max-height: 300px;
+        overflow: hidden auto;
+      }
+
+      &__value {
+        border-radius: 5px 5px 0 0;
+
+        svg {
+          transform: translateY(-50%) rotate(-90deg);
+        }
+      }
+    }
+  }
+
+  &__value {
+    height: 33px;
+    width: 100%;
+    font-size: 18px;
+    border: 1px solid var(--primary);
+    background: var(--white);
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+
+    svg {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%) rotate(90deg);
+      width: 8px;
+      height: auto;
+    }
+  }
+
+  &__list {
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    background: var(--white);
+    width: 100%;
+    top: calc(100% - 1px);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--primary);
+    border-radius: 0 0 5px 5px;
+  }
+
+  &__item {
+    height: 31px;
+    padding: 5px 10px;
+    width: 100%;
+    display: block;
+    text-align: left;
+    font-size: 18px;
+    color: var(--primary);
+    cursor: pointer;
+
+    &--active {
+      background: var(--back);
+      color: var(--white);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--primary);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--back);
+        color: var(--white);
+      }
+    }
+
+    @media (hover: none) {
+      &:active {
+        background: var(--back);
+        color: var(--white);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .u-select {
+    &__value {
+      font-size: 14px;
+      height: 28px;
+    }
+
+    &__item {
+      height: 26px;
+      font-size: 14px;
+    }
+
+    &__title, &__error {
+      font-size: 12px;
+    }
+  }
+}
