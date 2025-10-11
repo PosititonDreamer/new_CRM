@@ -6,9 +6,10 @@ import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
+import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 
 export default {
-  components: {UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
+  components: {UForm, UActions, UAlert, UPopup, UCheckbox, UInput, UButton},
   setup() {
     const text = ref("");
     const area = ref("");
@@ -16,6 +17,7 @@ export default {
     const popup = ref(false)
     const alert = ref(false)
     const confirm = ref(false)
+    const form = ref("")
 
     const changeCheckbox = (e) => {
       if (e.checked) {
@@ -50,8 +52,12 @@ export default {
       console.log('addWorker')
     }
 
+    const submitForm = (e) => {
+      console.log(e)
+    }
+
     return {
-      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction
+      text, area, checkBoxes, changeCheckbox, popup, alert, confirm, actions, deleteFunction, updateFunction, addWorkerFunction, form, submitForm
     }
   }
 }
@@ -119,9 +125,10 @@ export default {
     <div class="UI__item">
       <u-button @click="popup = true">Открыть попап</u-button>
       <u-popup v-if="popup" title="ui попап" @close="popup = false">
-        <p>Тут будут тестовые данные</p>
-        <u-button modifier="red">Красная кнопка</u-button>
-        <u-input title="Текстовое поле" v-model="text" :start-value="text"/>
+        <u-form title="UI форма" text="Добавить" @submit.prevent="submitForm">
+          <u-input title="форма" v-model="form" />
+          <u-input title="Текстовое поле" v-model="text" :start-value="text"/>
+        </u-form>
       </u-popup>
     </div>
     <div class="UI__item">
