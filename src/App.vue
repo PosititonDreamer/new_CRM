@@ -37,6 +37,7 @@ export default {
 
 <template>
   <Errors />
+  <ULoader />
   <component :is="layout">
     <router-view></router-view>
   </component>

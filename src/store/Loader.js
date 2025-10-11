@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import {ref, computed, reactive} from 'vue';
-export const loader = defineStore('loader', () => {
+export const Loader = defineStore('Loader', () => {
     const loader = ref([])
 
     const getLoader = computed(() => {
-        return loader
+        return loader.value
     })
 
     const updateLoader = ({method, status}) => {
