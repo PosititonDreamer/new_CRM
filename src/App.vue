@@ -21,6 +21,12 @@ export default {
     resize()
 
     window.addEventListener('resize', resize)
+
+    const {auth} = Auth()
+
+    if(localStorage.getItem('token')) {
+      auth(localStorage.getItem('token'))
+    }
   },
   setup() {
     const route = useRoute()
