@@ -4,9 +4,12 @@ import SidebarLayout from "@/layouts/SidebarLayout/SidebarLayout.vue";
 import {computed} from "vue";
 import {useRoute} from "vue-router";
 import Errors from "@/components/Errors/Errors.vue";
+import ULoader from "@/components/_UIComponents/ULoader/ULoader.vue";
+import {Auth} from "@/store/workers/Auth.js";
 
 export default {
   components: {
+    ULoader,
     Errors,
     DefaultLayout,
     SidebarLayout,
