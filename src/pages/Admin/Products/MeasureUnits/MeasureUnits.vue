@@ -8,7 +8,7 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
-import {HookMeasureUnits} from "@/hooks/pages/Products/MeasureUnits/index.js";
+import {HookMeasureUnits} from "@/hooks/pages/Products/MeasureUnits.js";
 
 export default {
   name: "MeasureUnits",
