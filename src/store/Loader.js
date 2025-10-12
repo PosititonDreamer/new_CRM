@@ -3,9 +3,7 @@ import {ref, computed, reactive} from 'vue';
 export const Loader = defineStore('Loader', () => {
     const loader = ref([])
 
-    const getLoader = computed(() => {
-        return loader.value
-    })
+    const getLoader = computed(() => loader)
 
     const updateLoader = ({method, status}) => {
         if(loader.value.find(load => load.method === method)) {
