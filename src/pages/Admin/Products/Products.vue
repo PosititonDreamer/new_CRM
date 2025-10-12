@@ -53,7 +53,7 @@ export default {
       getMeasureUnits.value.forEach((measureUnit) => {
         array.push({
           name: measureUnit.title,
-          value: +measureUnit.id
+          value: measureUnit.id
         });
       })
 
@@ -83,7 +83,7 @@ export default {
           return
         }
         const findProduct = getProducts.value.find((item) => item.id === to.params.id)
-        product.measureUnit.value.value = +findProduct.measure_unit
+        product.measureUnit.value.value = findProduct.measure_unit
         product.sort.value.value = +findProduct.sort
         product.title.value.value = findProduct.title
         product.showTitle.value.value = findProduct.show_title
@@ -146,7 +146,8 @@ export default {
             :actions="actions"
             @remove="deleteProductId = product.id"
             @update="router.push({name: 'ProductsUpdate', params:{id: product.id}})"
-            :key="`products-actions-${product.id}`"/>
+            :key="`products-actions-${product.id}`"
+        />
       </u-card>
     </div>
 
@@ -159,7 +160,7 @@ export default {
     />
 
     <u-popup
-        v-if="route.name === 'ProductsCreate'"
+        v-if="route.name === 'ProductsCreate' && getMeasureUnits.length"
         title="Добавление продукта"
         @close="router.push({name: 'Products'})"
     >
@@ -226,6 +227,7 @@ export default {
             :error="product.measureUnit.value.error"
         />
         <u-input
+            type="number"
             title="Сортировка"
             v-model="product.sort.value.value"
             :start-value="product.sort.value.value"
