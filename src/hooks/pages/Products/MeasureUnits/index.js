@@ -9,6 +9,7 @@ export const HookMeasureUnits = () => {
     const deleteMeasureUnitsId = ref(null)
 
     const submitCreateMeasureUnit = async () => {
+        title.value.tacked = true
         if (title.value.valid) {
             await createMeasureUnits({title: title.value.value})
             title.value.tacked = false
@@ -17,6 +18,7 @@ export const HookMeasureUnits = () => {
     }
 
     const submitUpdateMeasureUnit = async () => {
+        title.value.tacked = true
         if (title.value.valid) {
             await updateMeasureUnits({title: title.value.value, id: route.params.id})
             title.value.tacked = false
