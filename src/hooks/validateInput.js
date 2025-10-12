@@ -10,7 +10,7 @@ export const validateInput = (type, startValue, min = null) => {
                     return ""
                 }
 
-                if(data.value.tacked && data.value.value < min) {
+                if(data.value.tacked && data.value.value <= min) {
                     return "Обязательное поле для заполнения"
                 }
 
