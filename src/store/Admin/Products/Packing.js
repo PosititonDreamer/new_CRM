@@ -12,6 +12,7 @@ export const Packing = defineStore('Packing', () => {
     const getPacking = computed(() => packing)
 
     const {updateLoader} = Loader()
+    const {addErrors} = Errors();
 
     const findPacking = async () => {
         updateLoader({method: 'findPacking', status: false})
@@ -20,7 +21,6 @@ export const Packing = defineStore('Packing', () => {
                 packing.value = res.data.packing
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'findPacking', status: true})
@@ -38,7 +38,6 @@ export const Packing = defineStore('Packing', () => {
                 router.push({name: "Packing"})
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'createPacking', status: true})
@@ -62,7 +61,6 @@ export const Packing = defineStore('Packing', () => {
                 router.push({name: "Packing"})
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
 
@@ -78,7 +76,6 @@ export const Packing = defineStore('Packing', () => {
                 packing.value = packing.value.filter(pack => pack.id !== id)
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'removePacking', status: true})

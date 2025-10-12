@@ -11,6 +11,7 @@ export const Products = defineStore('Products', () => {
     const getProducts = computed(() => products)
 
     const {updateLoader} = Loader()
+    const {addErrors} = Errors();
 
     const findProducts = async () => {
         updateLoader({method: 'findProducts', status: false})
@@ -19,7 +20,6 @@ export const Products = defineStore('Products', () => {
             products.value = res.data.products
         })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'findProducts', status: true})
@@ -37,7 +37,6 @@ export const Products = defineStore('Products', () => {
                 router.push({name: "Products"})
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'createProduct', status: true})
@@ -63,7 +62,6 @@ export const Products = defineStore('Products', () => {
                 router.push({name: "Products"})
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'updateProduct', status: true})
@@ -78,7 +76,6 @@ export const Products = defineStore('Products', () => {
                 products.value = products.value.filter(product => product.id !== id)
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'removeProduct', status: true})

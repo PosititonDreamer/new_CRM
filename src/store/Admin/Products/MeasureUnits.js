@@ -11,6 +11,7 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
     const getMeasureUnits = computed(() => measureUnits)
 
     const {updateLoader} = Loader()
+    const {addErrors} = Errors();
 
     const router = useRouter();
 
@@ -21,7 +22,6 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
                 measureUnits.value = res.data.measure_units
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'findMeasureUnits', status: true})
@@ -37,7 +37,6 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
             router.push({name: 'MeasureUnits'})
         })
         .catch(err => {
-            const {addErrors} = Errors();
             addErrors(err.response.data.messages)
         })
         updateLoader({method: 'createMeasureUnits', status: true})
@@ -60,7 +59,6 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
                 router.push({name: 'MeasureUnits'})
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'updateMeasureUnits', status: true})
@@ -75,7 +73,6 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
                 measureUnits.value = measureUnits.value.filter(measureUnit => measureUnit.id !== id)
             })
             .catch(err => {
-                const {addErrors} = Errors();
                 addErrors(err.response.data.messages)
             })
         updateLoader({method: 'removeMeasureUnits', status: true})
