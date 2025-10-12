@@ -3,7 +3,7 @@ import {ref} from "vue";
 import {MeasureUnits} from "@/store/Admin/Products/MeasureUnits.js";
 
 export const HookMeasureUnits = () => {
-    const { createMeasureUnits, removeMeasureUnits, updateMeasureUnits} = MeasureUnits()
+    const {getMeasureUnits, createMeasureUnits, removeMeasureUnits, updateMeasureUnits} = MeasureUnits()
 
     const {data: title} = validateInput("String", "", 3)
     const deleteMeasureUnitsId = ref(null)
@@ -32,6 +32,7 @@ export const HookMeasureUnits = () => {
 
     return {
         title,
+        getMeasureUnits,
         deleteMeasureUnitsId,
         submitCreateMeasureUnit,
         submitUpdateMeasureUnit,

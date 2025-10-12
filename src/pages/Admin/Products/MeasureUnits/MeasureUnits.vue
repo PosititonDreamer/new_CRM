@@ -20,8 +20,7 @@ export default {
     await findMeasureUnits()
   },
   setup() {
-    const {getMeasureUnits} = MeasureUnits()
-    const {title, deleteMeasureUnitsId, submitCreateMeasureUnit, submitUpdateMeasureUnit, deleteMeasureUnits} = HookMeasureUnits()
+    const {title, getMeasureUnits, deleteMeasureUnitsId, submitCreateMeasureUnit, submitUpdateMeasureUnit, deleteMeasureUnits} = HookMeasureUnits()
 
     const router = useRouter()
     const route = useRoute()
