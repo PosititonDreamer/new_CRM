@@ -28,7 +28,8 @@ export default {
     const changeValue = (value) => {
       model.value = value
       openSelect.value = false
-      emit("change", value)
+      emit("change")
+      emit("update:modelValue", value)
     }
 
     const getModel = computed(() => {
@@ -62,11 +63,11 @@ export default {
       </svg>
     </p>
     <div class="u-select__list" v-show="openSelect">
-      <button class="u-select__item" @click.stop="changeValue('')"></button>
+      <button class="u-select__item" type="button" @click.stop="changeValue('')"></button>
       <button
           v-for="item in values"
           :class="['u-select__item', {'u-select__item--active': model === item.value}]"
-          @click.stop="changeValue(item.value)"
+          @click.stop="changeValue(item.value)" type="button"
       >
         {{item.name}}
       </button>
