@@ -52,12 +52,10 @@ const routes = [
             {
                 name: "ProductsCreate",
                 path: 'create',
-                component: ProductsPage
             },
             {
                 name: "ProductsUpdate",
                 path: 'update/:id',
-                component: ProductsPage
             }
         ]
     },
@@ -76,12 +74,10 @@ const routes = [
             {
                 name: "MeasureUnitsCreate",
                 path: 'create',
-                component: MeasureUnitsPage
             },
             {
                 name: "MeasureUnitsUpdate",
                 path: 'update/:id',
-                component: MeasureUnitsPage
             }
         ]
     },
@@ -112,12 +108,10 @@ const routes = [
             {
                 name: "PackingCreate",
                 path: 'create',
-                component: PackingPage
             },
             {
                 name: "PackingUpdate",
                 path: 'update/:id',
-                component: PackingPage
             }
         ]
     }
