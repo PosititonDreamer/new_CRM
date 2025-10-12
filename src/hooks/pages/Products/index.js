@@ -9,7 +9,7 @@ export const HookProducts = () => {
     const {data: title} = validateInput("String", "", 3)
     const {data: showTitle} = validateInput("String", "", 0)
     const {data: sort} = validateInput("Number", 0, 0)
-    const {data: measureUnit} = validateInput("Number", 0, 1)
+    const {data: measureUnit} = validateInput("String", "", 0)
     const deleteProductId = ref(null)
     const router = useRouter()
     const route = useRoute()
