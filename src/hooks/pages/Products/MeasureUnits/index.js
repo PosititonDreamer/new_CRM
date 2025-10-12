@@ -1,12 +1,15 @@
 import {validateInput} from "@/hooks/validateInput.js";
 import {ref} from "vue";
 import {MeasureUnits} from "@/store/Admin/Products/MeasureUnits.js";
+import {useRouter, useRoute} from "vue-router";
 
 export const HookMeasureUnits = () => {
     const {getMeasureUnits, createMeasureUnits, removeMeasureUnits, updateMeasureUnits} = MeasureUnits()
 
     const {data: title} = validateInput("String", "", 3)
     const deleteMeasureUnitsId = ref(null)
+    const router = useRouter()
+    const route = useRoute()
 
     const submitCreateMeasureUnit = async () => {
         title.value.tacked = true
@@ -25,7 +28,7 @@ export const HookMeasureUnits = () => {
             title.value.value = ""
         }
     }
-    const deleteMeasureUnits = async () => {
+    const submitDeleteMeasureUnits = async () => {
         await removeMeasureUnits(deleteMeasureUnitsId.value)
         deleteMeasureUnitsId.value = null
     }
@@ -36,6 +39,8 @@ export const HookMeasureUnits = () => {
         deleteMeasureUnitsId,
         submitCreateMeasureUnit,
         submitUpdateMeasureUnit,
-        deleteMeasureUnits,
+        submitDeleteMeasureUnits,
+        router,
+        route
     }
 }

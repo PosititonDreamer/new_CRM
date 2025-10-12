@@ -4,7 +4,6 @@ import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 import {ref, watch} from "vue";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
-import {useRoute, useRouter} from "vue-router";
 import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
@@ -18,12 +17,11 @@ export default {
     const {findMeasureUnits} = MeasureUnits()
 
     await findMeasureUnits()
+
+    document.body.removeAttribute("style");
   },
   setup() {
-    const {title, getMeasureUnits, deleteMeasureUnitsId, submitCreateMeasureUnit, submitUpdateMeasureUnit, deleteMeasureUnits} = HookMeasureUnits()
-
-    const router = useRouter()
-    const route = useRoute()
+    const {title, router, route, getMeasureUnits, deleteMeasureUnitsId, submitCreateMeasureUnit, submitUpdateMeasureUnit, submitDeleteMeasureUnits} = HookMeasureUnits()
 
     const actions = ref([
       {
@@ -37,6 +35,14 @@ export default {
     ])
 
     const changeRoute = (to) => {
+      if(to.name === "MeasureUnits") {
+        title.value.value = ""
+        title.value.tacked = false
+
+        document.body.removeAttribute("style");
+        return;
+      }
+
       if(to.name === 'MeasureUnitsUpdate' && to.params.id){
         if(!getMeasureUnits.value.length) {
           setTimeout(() => {
@@ -65,7 +71,7 @@ export default {
       submitCreateMeasureUnit,
       submitUpdateMeasureUnit,
       deleteMeasureUnitsId,
-      deleteMeasureUnits,
+      submitDeleteMeasureUnits,
     }
   }
 
@@ -97,22 +103,26 @@ export default {
       </u-card>
     </div>
   </div>
+
   <!-- todo: Подтверждение удаления -->
   <u-alert
       v-if="deleteMeasureUnitsId"
       title="Удалить единицу измеренеия?"
       type="confirm"
       @close="deleteMeasureUnitsId = null"
-      @accept="deleteMeasureUnits()"/>
+      @accept="submitDeleteMeasureUnits()"
+  />
+
   <!-- todo: Добавление -->
   <u-popup
       v-if="route.name === 'MeasureUnitsCreate'"
       title="Добавление единицы измеренеия"
-      @close="router.push({name: 'MeasureUnits'})">
+      @close="router.push({name: 'MeasureUnits'})"
+  >
     <u-form
-        class="measure-units__form"
         @submit.prevent="submitCreateMeasureUnit"
-        text="Добавить единицу измеренеия">
+        text="Добавить единицу измеренеия"
+    >
       <u-input
           title="Название"
           v-model="title.value"
@@ -123,6 +133,7 @@ export default {
       />
     </u-form>
   </u-popup>
+
   <!-- todo: Редактирование -->
   <u-popup
       v-if="route.name === 'MeasureUnitsUpdate' && getMeasureUnits.find(measure => measure.id === route.params.id) && title.value"
