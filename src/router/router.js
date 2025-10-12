@@ -52,12 +52,12 @@ const routes = [
             {
                 name: "ProductsCreate",
                 path: 'create',
-                component: MeasureUnitsPage
+                component: ProductsPage
             },
             {
                 name: "ProductsUpdate",
                 path: 'update/:id',
-                component: MeasureUnitsPage
+                component: ProductsPage
             }
         ]
     },
