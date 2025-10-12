@@ -1,16 +1,26 @@
 .sidebar-layout {
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-gap: 20px;
   min-height: var(--window-height);
 
   &__content {
     padding: 20px;
+  }
+
+  &__title {
+    font-size: 22px;
+    color: var(--primary);
+    margin-bottom: 20px;
   }
 }
 
 @media screen and (max-width: 1000px) {
   .sidebar-layout {
     display: block;
+
+    &__title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
   }
 }
