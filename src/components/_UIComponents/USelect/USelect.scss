@@ -65,8 +65,7 @@
     background: var(--white);
     width: 100%;
     top: calc(100% - 1px);
-    display: flex;
-    flex-direction: column;
+    display: grid;
     border: 1px solid var(--primary);
     border-radius: 0 0 5px 5px;
   }
