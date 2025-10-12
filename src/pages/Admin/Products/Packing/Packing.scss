@@ -1,0 +1,33 @@
+.packing {
+  &__create {
+    margin-bottom: 20px;
+  }
+
+  &__list {
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+
+  &__item {
+    position: relative;
+    background: var(--white);
+    z-index: var(--z-index);
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__actions {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+
+  &__title {
+    font-size: 18px;
+  }
+}

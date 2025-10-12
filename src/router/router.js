@@ -108,6 +108,18 @@ const routes = [
             page: 'products',
             title: "Упаковки"
         },
+        children: [
+            {
+                name: "PackingCreate",
+                path: 'create',
+                component: PackingPage
+            },
+            {
+                name: "PackingUpdate",
+                path: 'update/:id',
+                component: PackingPage
+            }
+        ]
     }
 ];
 
