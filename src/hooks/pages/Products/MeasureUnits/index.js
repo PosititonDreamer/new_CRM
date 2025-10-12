@@ -7,6 +7,7 @@ export const HookMeasureUnits = () => {
 
     const {data: title} = validateInput("String", "", 3)
     const deleteMeasureUnitsId = ref(null)
+
     const submitCreateMeasureUnit = async () => {
         if (title.value.valid) {
             await createMeasureUnits({title: title.value.value})
