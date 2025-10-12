@@ -48,6 +48,18 @@ const routes = [
             page: 'products',
             title: "Продукты"
         },
+        children: [
+            {
+                name: "ProductsCreate",
+                path: 'create',
+                component: MeasureUnitsPage
+            },
+            {
+                name: "ProductsUpdate",
+                path: 'update/:id',
+                component: MeasureUnitsPage
+            }
+        ]
     },
     {
         name: "MeasureUnits",
