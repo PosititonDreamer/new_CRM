@@ -14,6 +14,7 @@
     grid-gap: 1px;
     border: 1px solid var(--primary);
     border-radius: 5px;
+    background: var(--white);
 
     span {
       display: block;
@@ -50,6 +51,7 @@
     top: calc(100% + 5px);
     right: 0;
     border: 1px solid var(--primary);
+    background: var(--white);
 
     button {
       padding: 5px 10px;
