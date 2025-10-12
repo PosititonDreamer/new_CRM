@@ -2,7 +2,7 @@
   width: 400px;
   padding: 20px;
   border-right: 1px solid var(--primary);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sidebar);
   height: var(--window-height);
   overflow: hidden auto;
   position: sticky;
@@ -58,19 +58,37 @@
 
     @media (hover: hover) {
       &:hover {
-        opacity: 0.85;
+        opacity: 0.65;
       }
     }
 
     @media (hover: none) {
       &:active {
-        opacity: 0.85;
+        opacity: 0.65;
       }
     }
 
     &--active {
       pointer-events: none;
-      opacity: 0.85;
+      opacity: 0.65;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+  }
+
+  &__accordion {
+    &::v-deep {
+      .u-accordion__content {
+        padding-left: 10px;
+      }
     }
   }
 }
