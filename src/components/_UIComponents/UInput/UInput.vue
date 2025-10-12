@@ -23,11 +23,16 @@ export default {
       default: '',
     }
   },
-  setup({startValue, error}, {emit}) {
+  setup({startValue, type}, {emit}) {
     const model = ref(startValue);
 
     const changeModel = () => {
-      emit('update:modelValue', model.value.trim())
+      if (type === 'text') {
+        emit('update:modelValue', model.value.trim())
+      }
+      if (type === 'number') {
+        emit('update:modelValue', model.value)
+      }
     }
 
     return {
