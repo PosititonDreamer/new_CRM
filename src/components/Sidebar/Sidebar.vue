@@ -50,7 +50,7 @@ export default {
       <div class="sidebar__list">
         <u-accordion class="sidebar__accordion" title="Продукты" :open="openAccordion === 'products'" @open="openAccordion = openAccordion === 'products' ? '' : 'products'">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Products'}">Продукты</router-link>
-          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Others'}">Кривые продукты</router-link>
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Other'}">Кривые продукты</router-link>
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'MeasureUnits'}">Единицы измерения</router-link>
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Packing'}">Упаковки</router-link>
         </u-accordion>
