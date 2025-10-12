@@ -1,9 +1,13 @@
 import {createRouter, createWebHistory} from 'vue-router';
+import {Auth} from "@/store/workers/Auth.js";
+
 import UIPage from "@/pages/UI/UI.vue";
 import AuthPage from "@/pages/Auth/Auth.vue";
 import AdminPage from "@/pages/Admin/Admin.vue";
 import ProductsPage from "@/pages/Admin/Products/Products.vue";
-import {Auth} from "@/store/workers/Auth.js";
+import MeasureUnitsPage from "@/pages/Admin/Products/MeasureUnits/MeasureUnits.vue";
+import OtherPage from "@/pages/Admin/Products/Other/Other.vue";
+import PackingPage from "@/pages/Admin/Products/Packing/Packing.vue";
 
 const routes = [
     {
@@ -30,6 +34,7 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
+            title: "Админка"
         },
     },
     {
@@ -40,6 +45,56 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
+            page: 'products',
+            title: "Продукты"
+        },
+    },
+    {
+        name: "MeasureUnits",
+        path: '/admin/products/measure-units',
+        component: MeasureUnitsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            page: 'products',
+            title: "Единицы измерения"
+        },
+        children: [
+            {
+                name: "MeasureUnitsCreate",
+                path: 'create',
+                component: MeasureUnitsPage
+            },
+            {
+                name: "MeasureUnitsUpdate",
+                path: 'update/:id',
+                component: MeasureUnitsPage
+            }
+        ]
+    },
+    {
+        name: "Other",
+        path: '/admin/products/other',
+        component: OtherPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            page: 'products',
+            title: "Кривые продукты"
+        },
+    },
+    {
+        name: "Packing",
+        path: '/admin/products/packing',
+        component: PackingPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            page: 'products',
+            title: "Упаковки"
         },
     }
 ];
