@@ -83,7 +83,7 @@ export default {
           return
         }
         const findProduct = getProducts.value.find((item) => item.id === to.params.id)
-        product.measureUnit.value.value = findProduct.measure_unit
+        product.measureUnit.value.value = findProduct.measure_unit === "0" ? "" : findProduct.measure_unit
         product.sort.value.value = +findProduct.sort
         product.title.value.value = findProduct.title
         product.showTitle.value.value = findProduct.show_title
