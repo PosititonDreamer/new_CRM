@@ -125,6 +125,14 @@
   .sidebar {
     display: none;
 
+    &__list {
+      max-width: calc(100% - 50px);
+    }
+
+    &__link {
+      font-size: 18px;
+    }
+
     &--open {
       display: block;
       z-index: 105;
