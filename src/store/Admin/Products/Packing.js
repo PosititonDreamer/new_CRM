@@ -73,7 +73,8 @@ export const Packing = defineStore('Packing', () => {
         formData.append('id', id)
         axios.post('/admin/products/packing/delete.php', formData)
             .then(() => {
-                packing.value = packing.value.filter(pack => pack.id !== id)
+                packing.value = packing.value.filter(pack => +pack.id !== +id)
+                router.push({name: "Packing"})
             })
             .catch(err => {
                 addErrors(err.response.data.messages)

@@ -127,6 +127,10 @@ const routes = [
             {
                 name: "PackingUpdate",
                 path: 'update/:id',
+            },
+            {
+                name: "PackingDelete",
+                path: 'delete/:id',
             }
         ]
     },

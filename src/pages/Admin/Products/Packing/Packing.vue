@@ -29,7 +29,7 @@ export default {
   setup() {
     const {getProducts} = Products()
     const {getMeasureUnits} = MeasureUnits()
-    const {route, router, getPacking, deletePackingId, product, packing, submitCreatePacking, submitUpdatePacking, submitDeletePacking} = HookPacking()
+    const {route, router, getPacking, product, packing, submitCreatePacking, submitUpdatePacking, submitDeletePacking} = HookPacking()
     const openAccordion = ref(null)
 
 
@@ -113,7 +113,6 @@ export default {
       getPacking,
       route,
       router,
-      deletePackingId,
       computedProducts,
       computedMeasure,
       getMeasureUnits,
@@ -155,7 +154,7 @@ export default {
                 class="packing__actions"
                 :actions="actions"
                 :key="`packing-actions-${pack.id}`"
-                @remove="deletePackingId = pack.id"
+                @remove="router.push({name: 'PackingDelete', params:{id: pack.id}})"
                 @update="router.push({name: 'PackingUpdate', params:{id: pack.id}})"
 
             />
@@ -165,11 +164,11 @@ export default {
     </div>
 
     <u-alert
-        v-if="deletePackingId"
+        v-if="route.name === 'PackingDelete' && route.params.id"
         title="Удалить упаковку?"
         type="confirm"
-        @close="deletePackingId = null"
-        @accept="submitDeletePacking()"
+        @close="router.push({name: 'Packing'})"
+        @accept="submitDeletePacking"
     />
 
     <u-popup

@@ -6,7 +6,6 @@ import {validateInput} from "@/hooks/validateInput.js";
 
 export const HookPacking = () => {
     const {getPacking, updatePacking, removePacking, createPacking} = Packing()
-    const deletePackingId = ref(null)
     const router = useRouter()
     const route = useRoute()
 
@@ -39,8 +38,7 @@ export const HookPacking = () => {
     }
 
     const submitDeletePacking = async () => {
-        await removePacking(deletePackingId.value)
-        deletePackingId.value = null
+        await removePacking(route.params.id)
     }
 
 
@@ -48,7 +46,6 @@ export const HookPacking = () => {
         route,
         router,
         getPacking,
-        deletePackingId,
         product,
         packing,
         submitCreatePacking,
