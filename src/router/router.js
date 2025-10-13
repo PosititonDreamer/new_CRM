@@ -8,6 +8,7 @@ import ProductsPage from "@/pages/Admin/Products/Products.vue";
 import MeasureUnitsPage from "@/pages/Admin/Products/MeasureUnits/MeasureUnits.vue";
 import OtherPage from "@/pages/Admin/Products/Other/Other.vue";
 import PackingPage from "@/pages/Admin/Products/Packing/Packing.vue";
+import WarehousesPage from "@/pages/Admin/Warehouses/Warehouses.vue";
 
 const routes = [
     {
@@ -118,6 +119,32 @@ const routes = [
             {
                 name: "PackingUpdate",
                 path: 'update/:id',
+            }
+        ]
+    },
+    {
+        name: "Warehouses",
+        path: '/admin/warehouses',
+        component: WarehousesPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            page: 'warehouses',
+            title: "Склады"
+        },
+        children: [
+            {
+                name: "WarehousesCreate",
+                path: 'create',
+            },
+            {
+                name: "WarehousesUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "WarehousesDelete",
+                path: 'delete/:id',
             }
         ]
     }

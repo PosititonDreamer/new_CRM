@@ -54,6 +54,7 @@ export default {
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'MeasureUnits'}">Единицы измерения</router-link>
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Packing'}">Упаковки</router-link>
         </u-accordion>
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Warehouses'}">Склады</router-link>
       </div>
     </div>
   </div>
