@@ -75,7 +75,7 @@ export const Warehouses = defineStore('Warehouses', () => {
         formData.append('id', id)
         await axios.post(`/admin/warehouses/delete.php`, formData)
             .then(() => {
-                warehouses.value = warehouses.value.filter(warehouse => warehouse.id !== id)
+                warehouses.value = warehouses.value.filter(warehouse => +warehouse.id !== +id)
                 router.push({name: "Warehouses"})
             })
             .catch((err) => {
