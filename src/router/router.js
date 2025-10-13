@@ -92,6 +92,12 @@ const routes = [
             page: 'products',
             title: "Кривые продукты"
         },
+        children: [
+            {
+                name: "OtherUpdate",
+                path: 'update/:id',
+            }
+        ]
     },
     {
         name: "Packing",
