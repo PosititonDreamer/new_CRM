@@ -57,6 +57,10 @@ const routes = [
             {
                 name: "ProductsUpdate",
                 path: 'update/:id',
+            },
+            {
+                name: "ProductsDelete",
+                path: 'delete/:id',
             }
         ]
     },

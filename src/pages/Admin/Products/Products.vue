@@ -28,7 +28,6 @@ export default {
     const {
       product,
       getProducts,
-      deleteProductId,
       router,
       route,
       submitCreateProduct,
@@ -108,7 +107,6 @@ export default {
       route,
       actions,
       product,
-      deleteProductId,
       submitCreateProduct,
       submitUpdateProduct,
       submitDeleteProduct,
@@ -144,7 +142,7 @@ export default {
         <u-actions
             class="products__actions"
             :actions="actions"
-            @remove="deleteProductId = product.id"
+            @remove="router.push({name: 'ProductsDelete', params: {id: product.id}})"
             @update="router.push({name: 'ProductsUpdate', params:{id: product.id}})"
             :key="`products-actions-${product.id}`"
         />
@@ -152,7 +150,7 @@ export default {
     </div>
 
     <u-alert
-        v-if="deleteProductId"
+        v-if="route.name === 'ProductsDelete' && route.params.id"
         title="Удалить единицу измеренеия?"
         type="confirm"
         @close="deleteProductId = null"

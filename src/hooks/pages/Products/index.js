@@ -10,7 +10,6 @@ export const HookProducts = () => {
     const {data: showTitle} = validateInput("String", "", 0)
     const {data: sort} = validateInput("Number", 0, 0)
     const {data: measureUnit} = validateInput("String", "", 0)
-    const deleteProductId = ref(null)
     const router = useRouter()
     const route = useRoute()
 
@@ -49,13 +48,11 @@ export const HookProducts = () => {
     }
 
     const submitDeleteProduct = async () => {
-        await removeProduct(deleteProductId.value)
-        deleteProductId.value = null
+        await removeProduct(route.params.id)
     }
 
     return {
         product,
-        deleteProductId,
         getProducts,
         router,
         route,

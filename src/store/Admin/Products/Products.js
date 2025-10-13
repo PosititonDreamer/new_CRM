@@ -73,7 +73,8 @@ export const Products = defineStore('Products', () => {
         formData.append('id', id)
         await axios.post('/admin/products/delete.php', formData)
             .then(() => {
-                products.value = products.value.filter(product => product.id !== id)
+                products.value = products.value.filter(product => +product.id !== +id)
+                router.push({name: "Products"})
             })
             .catch(err => {
                 addErrors(err.response.data.messages)
