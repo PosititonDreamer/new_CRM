@@ -21,7 +21,7 @@ export default {
     document.body.removeAttribute("style");
   },
   setup() {
-    const {title, router, route, getMeasureUnits, deleteMeasureUnitsId, submitCreateMeasureUnit, submitUpdateMeasureUnit, submitDeleteMeasureUnits} = HookMeasureUnits()
+    const {title, router, route, getMeasureUnits, submitCreateMeasureUnit, submitUpdateMeasureUnit, submitDeleteMeasureUnits} = HookMeasureUnits()
 
     const actions = ref([
       {
@@ -70,7 +70,6 @@ export default {
       title,
       submitCreateMeasureUnit,
       submitUpdateMeasureUnit,
-      deleteMeasureUnitsId,
       submitDeleteMeasureUnits,
     }
   }
@@ -97,7 +96,7 @@ export default {
         <u-actions
             class="measure-units__actions"
             :actions="actions"
-            @remove="deleteMeasureUnitsId = measureUnit.id"
+            @remove="router.push({name: 'MeasureUnitsDelete', params:{id: measureUnit.id}})"
             @update="router.push({name: 'MeasureUnitsUpdate', params:{id: measureUnit.id}})"
             :key="`measure-units-actions-${measureUnit.id}`"/>
       </u-card>
@@ -106,11 +105,11 @@ export default {
 
   <!-- todo: Подтверждение удаления -->
   <u-alert
-      v-if="deleteMeasureUnitsId"
+      v-if="route.name === 'MeasureUnitsDelete' && route.params.id"
       title="Удалить единицу измеренеия?"
       type="confirm"
-      @close="deleteMeasureUnitsId = null"
-      @accept="submitDeleteMeasureUnits()"
+      @close="router.push({name: 'MeasureUnits'})"
+      @accept="submitDeleteMeasureUnits"
   />
 
   <!-- todo: Добавление -->

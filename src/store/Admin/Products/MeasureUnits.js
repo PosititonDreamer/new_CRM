@@ -70,7 +70,8 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
         formData.append('id', id)
         await axios.post('/admin/products/measure_units/delete.php', formData)
             .then(() => {
-                measureUnits.value = measureUnits.value.filter(measureUnit => measureUnit.id !== id)
+                measureUnits.value = measureUnits.value.filter(measureUnit => +measureUnit.id !== +id)
+                router.push({name: 'MeasureUnits'})
             })
             .catch(err => {
                 addErrors(err.response.data.messages)

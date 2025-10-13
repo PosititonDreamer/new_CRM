@@ -83,6 +83,10 @@ const routes = [
             {
                 name: "MeasureUnitsUpdate",
                 path: 'update/:id',
+            },
+            {
+                name: "MeasureUnitsDelete",
+                path: 'delete/:id',
             }
         ]
     },

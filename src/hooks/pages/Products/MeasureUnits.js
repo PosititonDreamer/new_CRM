@@ -7,7 +7,6 @@ export const HookMeasureUnits = () => {
     const {getMeasureUnits, createMeasureUnits, removeMeasureUnits, updateMeasureUnits} = MeasureUnits()
 
     const {data: title} = validateInput("String", "", 3)
-    const deleteMeasureUnitsId = ref(null)
     const router = useRouter()
     const route = useRoute()
 
@@ -29,14 +28,12 @@ export const HookMeasureUnits = () => {
         }
     }
     const submitDeleteMeasureUnits = async () => {
-        await removeMeasureUnits(deleteMeasureUnitsId.value)
-        deleteMeasureUnitsId.value = null
+        await removeMeasureUnits(route.params.id)
     }
 
     return {
         title,
         getMeasureUnits,
-        deleteMeasureUnitsId,
         submitCreateMeasureUnit,
         submitUpdateMeasureUnit,
         submitDeleteMeasureUnits,
