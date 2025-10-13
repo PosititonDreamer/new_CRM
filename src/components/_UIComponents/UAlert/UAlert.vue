@@ -53,8 +53,8 @@ export default {
           <u-button @click="close">Принять</u-button>
         </div>
         <div v-else class="u-alert__actions">
-          <u-button @click="accept">Принять</u-button>
           <u-button @click="close" modifier="red">Отменить</u-button>
+          <u-button @click="accept">Принять</u-button>
         </div>
       </div>
     </div>
