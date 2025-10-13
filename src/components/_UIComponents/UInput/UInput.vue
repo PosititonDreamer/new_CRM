@@ -27,7 +27,7 @@ export default {
     const model = ref(startValue);
 
     const changeModel = () => {
-      if (type === 'text') {
+      if (type === 'text' || type === 'textarea') {
         emit('update:modelValue', model.value.trim())
       }
       if (type === 'number') {
@@ -53,6 +53,7 @@ export default {
         @change="$emit('change')"
         @blur="$emit('blur')"
     >
+      {{model}}
     </textarea>
     <input
         v-else
