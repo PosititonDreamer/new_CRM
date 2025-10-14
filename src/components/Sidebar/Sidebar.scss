@@ -72,10 +72,6 @@
       pointer-events: none;
       opacity: 0.65;
     }
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
   }
 
   &__list {
@@ -88,6 +84,14 @@
     &::v-deep {
       .u-accordion__content {
         padding-left: 10px;
+      }
+    }
+
+    .sidebar {
+      &__link {
+        &:not(:last-child) {
+          margin-bottom: 10px;
+        }
       }
     }
   }
