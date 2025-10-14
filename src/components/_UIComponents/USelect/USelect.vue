@@ -33,13 +33,7 @@ export default {
     }
 
     const getModel = computed(() => {
-      const findItem = values.find(item => item.value === model.value)
-
-      if (findItem) {
-        return findItem.name
-      }
-
-      return ""
+        return values.find(item => item.value === model.value)?.name
     })
 
     document.body.addEventListener("click", (e) => {
