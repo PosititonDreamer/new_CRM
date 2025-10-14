@@ -11,6 +11,7 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
+import {Messages} from "@/store/Messages.js";
 
 export default {
   name: "Workers",
@@ -24,6 +25,7 @@ export default {
   },
   setup() {
     const {getWarehouses} = Warehouses()
+    const {addMessages} = Messages()
     const {
       router,
       route,
@@ -70,6 +72,7 @@ export default {
 
     const copyToken = (token) => {
       navigator.clipboard.writeText(token)
+      addMessages(['Токен успешно скопирован'], 'success')
     }
 
     const changeRoute = (to) => {
@@ -106,7 +109,6 @@ export default {
         worker.name.value.value = findWorker.name
 
         const findWorkerWarehouses = getWorkersWarehouses.value.filter(item => {
-          console.log(item)
           return +item.worker === +to.params.id
         })
         findWorkerWarehouses.forEach(item => {
