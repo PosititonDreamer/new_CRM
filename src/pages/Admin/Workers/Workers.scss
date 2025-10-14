@@ -1,0 +1,110 @@
+.workers {
+  &__create {
+    margin-bottom: 20px;
+  }
+
+  &__list {
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+
+  &__item {
+    position: relative;
+    background: var(--white);
+    z-index: var(--z-index);
+  }
+
+  &__content {
+    max-width: calc(100% - 50px);
+    color: var(--primary);
+  }
+
+  &__title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--primary);
+  }
+
+  &__text {
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    span {
+      &:not(:last-child) {
+        &::after {
+          content: ", ";
+        }
+      }
+    }
+  }
+
+  &__actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  &__warehouse-select {
+    z-index: var(--z-index);
+  }
+
+  &__rule {
+    z-index: 2;
+  }
+
+  &__warehouse-list {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__warehouse {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    &--division {
+      position: relative;
+
+      .workers {
+        &__warehouse-select {
+          max-width: calc(100% - 50px);
+        }
+      }
+    }
+  }
+
+  &__warehouse-delete {
+    position: absolute;
+    right: 0;
+    top: 16px;
+    width: 33px;
+    height: 33px;
+
+    &::before, &::after {
+      content: '';
+      width: 80%;
+      height: 2px;
+      background: var(--red);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: left top;
+    }
+
+    &::before {
+      transform: rotate(45deg) translate(-50%, -50%);
+    }
+
+    &::after {
+      transform: rotate(-45deg) translate(-50%, -50%);
+    }
+  }
+
+  &__add-warehouse {
+    margin-left: auto;
+  }
+}

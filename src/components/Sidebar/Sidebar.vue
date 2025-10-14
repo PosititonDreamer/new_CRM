@@ -55,6 +55,7 @@ export default {
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Packing'}">Упаковки</router-link>
         </u-accordion>
         <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Warehouses'}">Склады</router-link>
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Workers'}">Работники</router-link>
       </div>
     </div>
   </div>

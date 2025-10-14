@@ -9,6 +9,7 @@ import MeasureUnitsPage from "@/pages/Admin/Products/MeasureUnits/MeasureUnits.v
 import OtherPage from "@/pages/Admin/Products/Other/Other.vue";
 import PackingPage from "@/pages/Admin/Products/Packing/Packing.vue";
 import WarehousesPage from "@/pages/Admin/Warehouses/Warehouses.vue";
+import WorkersPage from "@/pages/Admin/Workers/Workers.vue";
 
 const routes = [
     {
@@ -156,6 +157,36 @@ const routes = [
             },
             {
                 name: "WarehousesDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "Workers",
+        path: '/admin/workers',
+        component: WorkersPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            page: 'workers',
+            title: "Работники"
+        },
+        children: [
+            {
+                name: "WorkersCreate",
+                path: 'create',
+            },
+            {
+                name: "WorkersUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "WorkersUpdateToken",
+                path: 'update-token/:id',
+            },
+            {
+                name: "WorkersDelete",
                 path: 'delete/:id',
             }
         ]
