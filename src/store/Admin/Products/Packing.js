@@ -3,7 +3,7 @@ import {computed, ref} from "vue";
 import {Loader} from "@/store/Loader.js";
 import router from "@/router/router.js";
 import axios from "axios";
-import {Errors} from "@/store/Errors.js";
+import {Messages} from "@/store/Messages.js";
 
 
 export const Packing = defineStore('Packing', () => {
@@ -12,16 +12,17 @@ export const Packing = defineStore('Packing', () => {
     const getPacking = computed(() => packing)
 
     const {updateLoader} = Loader()
-    const {addErrors} = Errors();
+    const {addMessages} = Messages();
 
     const findPacking = async () => {
         updateLoader({method: 'findPacking', status: false})
         axios.get('/admin/products/packing/list.php')
             .then(res => {
                 packing.value = res.data.packing
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'findPacking', status: true})
     }
@@ -34,11 +35,12 @@ export const Packing = defineStore('Packing', () => {
         axios.post('/admin/products/packing/create.php', formData)
             .then(res => {
                 packing.value.push(res.data.product_packing)
-                packing.value = packing.value.sort((a, b) => a.packing-b.packing)
+                packing.value = packing.value.sort((a, b) => a.packing - b.packing)
                 router.push({name: "Packing"})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'createPacking', status: true})
     }
@@ -59,9 +61,10 @@ export const Packing = defineStore('Packing', () => {
                 })
                 packing.value = packing.value.sort((a, b) => a.packing - b.packing)
                 router.push({name: "Packing"})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
 
         updateLoader({method: 'updatePacking', status: true})
@@ -72,12 +75,13 @@ export const Packing = defineStore('Packing', () => {
         const formData = new FormData()
         formData.append('id', id)
         axios.post('/admin/products/packing/delete.php', formData)
-            .then(() => {
+            .then(res => {
                 packing.value = packing.value.filter(pack => +pack.id !== +id)
                 router.push({name: "Packing"})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'removePacking', status: true})
     }

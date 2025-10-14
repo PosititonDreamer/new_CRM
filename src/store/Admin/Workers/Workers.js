@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {Errors} from "@/store/Errors.js";
+import {Messages} from "@/store/Messages.js";
 import {Loader} from "@/store/Loader.js";
 import {useRouter} from "vue-router";
 import {computed, ref} from "vue";
@@ -15,7 +15,7 @@ export const Workers = defineStore('Workers', () => {
     const getWorkersWarehouses = computed(() => workersWarehouses)
 
     const {updateLoader} = Loader()
-    const {addErrors} = Errors();
+    const {addMessages} = Messages();
     const router = useRouter();
 
     const findWorkers = async () => {
@@ -25,9 +25,10 @@ export const Workers = defineStore('Workers', () => {
                 workers.value = res.data.workers
                 workersRules.value = res.data.rules
                 workersWarehouses.value = res.data.warehouses
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'findWorkers', status: true})
     }
@@ -46,9 +47,10 @@ export const Workers = defineStore('Workers', () => {
                 workers.value.push(res.data.worker)
                 workersWarehouses.value = [...workersWarehouses.value, ...res.data.warehouses]
                 router.push({name: 'Workers'})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'createWorkers', status: true})
     }
@@ -72,9 +74,10 @@ export const Workers = defineStore('Workers', () => {
                 })
                 workersWarehouses.value = [...workersWarehouses.value.filter(warehouse => +warehouse.worker !== +id), ...res.data.warehouses]
                 router.push({name: 'Workers'})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'updateWorkers', status: true})
     }
@@ -92,9 +95,10 @@ export const Workers = defineStore('Workers', () => {
                     return worker
                 })
                 router.push({name: 'Workers'})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'updateWorkers', status: true})
     }
@@ -104,13 +108,14 @@ export const Workers = defineStore('Workers', () => {
         const formData = new FormData()
         formData.append('id', id)
         await axios.post('/admin/workers/delete.php',formData)
-            .then(() => {
+            .then(res => {
                 workers.value = workers.value.filter(worker => +worker.id !== +id)
                 workersWarehouses.value = workersWarehouses.value.filter(warehouse => +warehouse.worker !== +id)
                 router.push({name: 'Workers'})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'deleteWorkers', status: true})
     }

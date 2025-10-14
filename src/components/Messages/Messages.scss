@@ -1,4 +1,4 @@
-.errors {
+.messages {
   pointer-events: none;
   position: fixed;
   top: 0;
@@ -11,16 +11,23 @@
   z-index: 100000;
 
   &__item {
-    background: var(--red);
     color: var(--white);
     padding: 5px 10px;
     pointer-events: all;
     font-size: 18px;
+
+    &--error {
+      background: var(--red);
+    }
+
+    &--success {
+      background: var(--green);
+    }
   }
 }
 
 @media screen and (max-width: 1000px) {
-  .errors {
+  .messages {
     max-width: 100vw;
 
     &__item {

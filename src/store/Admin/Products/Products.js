@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {ref, computed} from 'vue';
 import axios from "axios";
-import {Errors} from "@/store/Errors.js";
+import {Messages} from "@/store/Messages.js";
 import {Loader} from "@/store/Loader.js";
 import router from "@/router/router.js";
 
@@ -11,16 +11,17 @@ export const Products = defineStore('Products', () => {
     const getProducts = computed(() => products)
 
     const {updateLoader} = Loader()
-    const {addErrors} = Errors();
+    const {addMessages} = Messages();
 
     const findProducts = async () => {
         updateLoader({method: 'findProducts', status: false})
         await axios.get('/admin/products/list.php')
-        .then(res => {
-            products.value = res.data.products
-        })
+            .then(res => {
+                products.value = res.data.products
+                addMessages(res.data.messages, 'success')
+            })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'findProducts', status: true})
     }
@@ -35,9 +36,10 @@ export const Products = defineStore('Products', () => {
             .then(res => {
                 products.value.push(res.data.product)
                 router.push({name: "Products"})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'createProduct', status: true})
     }
@@ -53,16 +55,17 @@ export const Products = defineStore('Products', () => {
         await axios.post('/admin/products/update.php', formData)
             .then(res => {
                 products.value = products.value.map(product => {
-                    if(product.id === id) {
+                    if (product.id === id) {
                         return res.data.product
                     }
                     return product
                 })
-                products.value = products.value.sort((a, b) => a.sort-b.sort)
+                products.value = products.value.sort((a, b) => a.sort - b.sort)
                 router.push({name: "Products"})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'updateProduct', status: true})
     }
@@ -72,12 +75,13 @@ export const Products = defineStore('Products', () => {
         const formData = new FormData()
         formData.append('id', id)
         await axios.post('/admin/products/delete.php', formData)
-            .then(() => {
+            .then(res => {
                 products.value = products.value.filter(product => +product.id !== +id)
                 router.push({name: "Products"})
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'removeProduct', status: true})
     }

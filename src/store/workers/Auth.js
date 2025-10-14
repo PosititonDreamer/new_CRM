@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import {ref, computed} from 'vue';
 import axios from "axios";
-import {Errors} from "@/store/Errors.js";
+import {Messages} from "@/store/Messages.js";
 import {useRoute} from "vue-router";
 import router from "@/router/router.js";
 import {Loader} from "@/store/Loader.js";
@@ -12,6 +12,7 @@ export const Auth = defineStore('Auth', () => {
 
     const route = useRoute();
     const {updateLoader} = Loader()
+    const {addMessages} = Messages();
 
     const auth = async (token) => {
         updateLoader({method: 'auth', status: false})
@@ -22,6 +23,7 @@ export const Auth = defineStore('Auth', () => {
                 worker.value = res.data.worker;
                 localStorage.setItem('token', token);
                 axios.defaults.headers.common['Authorization'] = `${token}`;
+                addMessages(res.data.messages, 'success')
                 if(route.name === 'Auth') {
                     if(worker.value.rule === 'Админ') {
                         router.push('/admin');
@@ -29,8 +31,7 @@ export const Auth = defineStore('Auth', () => {
                 }
             })
             .catch(err => {
-                const {addErrors} = Errors();
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
                 localStorage.removeItem('token');
                 if(route.name !== 'Auth') {
                     router.push('/');
@@ -47,10 +48,10 @@ export const Auth = defineStore('Auth', () => {
             .then(res => {
                 worker.value = res.data.worker;
                 axios.defaults.headers.common['Authorization'] = `${token}`;
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                const {addErrors} = Errors();
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'checkAuth', status: true})
     }

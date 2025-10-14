@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {Errors} from "@/store/Errors.js";
+import {Messages} from "@/store/Messages.js";
 import {Loader} from "@/store/Loader.js";
 import {useRouter} from "vue-router";
 import {computed, ref} from "vue";
@@ -13,7 +13,7 @@ export const Warehouses = defineStore('Warehouses', () => {
     const getWarehousesTypes = computed(() => warehousesTypes)
 
     const {updateLoader} = Loader()
-    const {addErrors} = Errors();
+    const {addMessages} = Messages();
     const router = useRouter();
 
     const findWarehouses = async () => {
@@ -22,9 +22,10 @@ export const Warehouses = defineStore('Warehouses', () => {
             .then(res => {
                 warehouses.value = res.data.warehouses
                 warehousesTypes.value = res.data.warehouses_type
+                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'findWarehouses', status: true})
     }
@@ -39,9 +40,10 @@ export const Warehouses = defineStore('Warehouses', () => {
             .then(res => {
                 warehouses.value.push(res.data.warehouse)
                 router.push({name: "Warehouses"})
+                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'createWarehouse', status: true})
     }
@@ -56,15 +58,16 @@ export const Warehouses = defineStore('Warehouses', () => {
         await axios.post(`/admin/warehouses/update.php`, formData)
             .then(res => {
                 warehouses.value = warehouses.value.map(warehouse => {
-                    if(warehouse.id === id) {
+                    if (warehouse.id === id) {
                         return res.data.warehouse
                     }
                     return warehouse
                 })
                 router.push({name: "Warehouses"})
+                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'updateWarehouse', status: true})
     }
@@ -74,12 +77,13 @@ export const Warehouses = defineStore('Warehouses', () => {
         const formData = new FormData()
         formData.append('id', id)
         await axios.post(`/admin/warehouses/delete.php`, formData)
-            .then(() => {
+            .then(res => {
                 warehouses.value = warehouses.value.filter(warehouse => +warehouse.id !== +id)
                 router.push({name: "Warehouses"})
+                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'removeWarehouse', status: true})
     }

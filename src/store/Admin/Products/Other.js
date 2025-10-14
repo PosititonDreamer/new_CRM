@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import {Loader} from "@/store/Loader.js";
 import router from "@/router/router.js";
 import axios from "axios";
-import {Errors} from "@/store/Errors.js";
+import {Messages} from "@/store/Messages.js";
 import {computed, ref} from "vue";
 
 export const Other = defineStore('Other', () => {
@@ -11,16 +11,17 @@ export const Other = defineStore('Other', () => {
     const getOthers = computed(() => others)
 
     const {updateLoader} = Loader()
-    const {addErrors} = Errors()
+    const {addMessages} = Messages()
 
     const findOthers = async () => {
         updateLoader({method: 'findOther', status: false})
         await axios.get("/admin/products/other/list.php")
             .then(res => {
                 others.value = res.data.products_other
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'findOther', status: true})
     }
@@ -39,9 +40,10 @@ export const Other = defineStore('Other', () => {
                     return other
                 })
                 router.push('/admin/products/other')
+                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
-                addErrors(err.response.data.messages)
+                addMessages(err.response.data.messages, 'error')
             })
         updateLoader({method: 'updateOther', status: true})
     }
