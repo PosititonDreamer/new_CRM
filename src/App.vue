@@ -3,13 +3,13 @@ import DefaultLayout from "@/layouts/DefaultLayout/DefaultLayout.vue";
 import SidebarLayout from "@/layouts/SidebarLayout/SidebarLayout.vue";
 import {computed} from "vue";
 import {useRoute} from "vue-router";
-import Errors from "@/components/Errors/Errors.vue";
 import ULoader from "@/components/_UIComponents/ULoader/ULoader.vue";
+import Messages from "@/components/Messages/Messages.vue";
 
 export default {
   components: {
     ULoader,
-    Errors,
+    Messages,
     DefaultLayout,
     SidebarLayout,
   },
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <template>
-  <Errors />
+  <Messages />
   <ULoader />
   <component :is="layout">
     <router-view></router-view>
