@@ -37,11 +37,3 @@
     right: 10px;
   }
 }
-
-@media screen and (max-width: 1000px) {
-  .products {
-    &__list {
-      grid-template-columns: 1fr;
-    }
-  }
-}
