@@ -6,7 +6,7 @@ import {computed, ref} from "vue";
 import axios from "axios";
 
 export const Warehouses = defineStore('Warehouses', () => {
-    const warehouses = ref()
+    const warehouses = ref([])
     const warehousesTypes = ref([])
 
     const getWarehouses = computed(() => warehouses)
