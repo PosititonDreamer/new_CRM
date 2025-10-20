@@ -10,6 +10,11 @@ import OtherPage from "@/pages/Admin/Products/Other/Other.vue";
 import PackingPage from "@/pages/Admin/Products/Packing/Packing.vue";
 import WarehousesPage from "@/pages/Admin/Warehouses/Warehouses.vue";
 import WorkersPage from "@/pages/Admin/Workers/Workers.vue";
+import GoodsPage from "@/pages/Admin/Warehouses/Goods/Goods.vue";
+import GoodsWeightPage from "@/pages/Admin/Warehouses/Goods/Weight/Weight.vue";
+import GoodsConsumablePage from "@/pages/Admin/Warehouses/Goods/Consumable/Consumable.vue";
+import GoodsOtherPage from "@/pages/Admin/Warehouses/Goods/Other/Other.vue";
+import GoodsKitPage from "@/pages/Admin/Warehouses/Goods/Kit/Kit.vue";
 
 const routes = [
     {
@@ -47,7 +52,6 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            page: 'products',
             title: "Продукты"
         },
         children: [
@@ -73,7 +77,6 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            page: 'products',
             title: "Единицы измерения"
         },
         children: [
@@ -99,7 +102,6 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            page: 'products',
             title: "Кривые продукты"
         },
         children: [
@@ -117,7 +119,6 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            page: 'products',
             title: "Упаковки"
         },
         children: [
@@ -143,7 +144,6 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            page: 'warehouses',
             title: "Склады"
         },
         children: [
@@ -169,7 +169,6 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            page: 'workers',
             title: "Работники"
         },
         children: [
@@ -187,6 +186,151 @@ const routes = [
             },
             {
                 name: "WorkersDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "Goods",
+        path: '/admin/warehouses/:warehouse/goods',
+        component: GoodsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Фасованные товары"
+        },
+        children: [
+            {
+                name: "GoodsCreate",
+                path: 'create',
+            },
+            {
+                name: "GoodsUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "GoodsUpdateBalance",
+                path: 'update-balance/:id',
+            },
+            {
+                name: "GoodsDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "GoodsWeight",
+        path: '/admin/warehouses/:warehouse/goods-weight',
+        component: GoodsWeightPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Весовые товары"
+        },
+        children: [
+            {
+                name: "GoodsWeightCreate",
+                path: 'create',
+            },
+            {
+                name: "GoodsWeightUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "GoodsWeightUpdateBalance",
+                path: 'update-balance/:id',
+            },
+            {
+                name: "GoodsWeightDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "GoodsConsumable",
+        path: '/admin/warehouses/:warehouse/goods-consumable',
+        component: GoodsConsumablePage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Расходники"
+        },
+        children: [
+            {
+                name: "GoodsConsumableCreate",
+                path: 'create',
+            },
+            {
+                name: "GoodsConsumableUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "GoodsConsumableUpdateBalance",
+                path: 'update-balance/:id',
+            },
+            {
+                name: "GoodsConsumableDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "GoodsOther",
+        path: '/admin/warehouses/:warehouse/goods-other',
+        component: GoodsOtherPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Коробки и остальное"
+        },
+        children: [
+            {
+                name: "GoodsOtherCreate",
+                path: 'create',
+            },
+            {
+                name: "GoodsOtherUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "GoodsOtherUpdateBalance",
+                path: 'update-balance/:id',
+            },
+            {
+                name: "GoodsOtherDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "GoodsKit",
+        path: '/admin/warehouses/:warehouse/goods-kit',
+        component: GoodsKitPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Наборы товаров"
+        },
+        children: [
+            {
+                name: "GoodsKitCreate",
+                path: 'create',
+            },
+            {
+                name: "GoodsKitUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "GoodsKitUpdateBalance",
+                path: 'update-balance/:id',
+            },
+            {
+                name: "GoodsKitDelete",
                 path: 'delete/:id',
             }
         ]
