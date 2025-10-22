@@ -4,10 +4,10 @@ import {Messages} from "@/store/Messages.js";
 export default {
   name: 'Messages',
   setup() {
-    const {getMessages, removeErrors} = Messages();
+    const {getMessages, removeMessages} = Messages();
 
     return {
-      getMessages,removeErrors
+      getMessages,removeMessages
     }
   }
 }
@@ -15,7 +15,7 @@ export default {
 
 <template>
   <div class="messages" v-if="getMessages.length">
-    <p :class="`messages__item messages__item--${message.type}`" v-for="message in getMessages" @click="removeErrors(message.id)">
+    <p :class="`messages__item messages__item--${message.type}`" v-for="message in getMessages" @click="removeMessages(message.id)">
       {{message.message}}
     </p>
   </div>
