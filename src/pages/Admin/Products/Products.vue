@@ -153,7 +153,7 @@ export default {
         v-if="route.name === 'ProductsDelete' && route.params.id"
         title="Удалить единицу измеренеия?"
         type="confirm"
-        @close="deleteProductId = null"
+        @close="router.push({name: 'Products'})"
         @accept="submitDeleteProduct()"
     />
 
