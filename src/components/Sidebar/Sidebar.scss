@@ -58,19 +58,19 @@
 
     @media (hover: hover) {
       &:hover {
-        opacity: 0.65;
+        opacity: 0.5;
       }
     }
 
     @media (hover: none) {
       &:active {
-        opacity: 0.65;
+        opacity: 0.5;
       }
     }
 
     &--active {
       pointer-events: none;
-      opacity: 0.65;
+      opacity: 0.5;
     }
 
     &--disabled {

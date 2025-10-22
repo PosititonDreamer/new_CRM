@@ -26,6 +26,11 @@
       --primary: var(--red);
     }
   }
+
+  &--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 @media screen and (max-width: 1000px) {
