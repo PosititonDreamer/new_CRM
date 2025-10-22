@@ -21,6 +21,10 @@ export default {
     startValue: {
       type: [String, Number],
       default: '',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   },
   setup({startValue, type}, {emit}) {
@@ -43,7 +47,7 @@ export default {
 </script>
 
 <template>
-  <label :class="['u-input', {'u-input--error': error.trim().length > 0}]">
+  <label :class="['u-input', {'u-input--error': error.trim().length > 0}, {'u-input--disabled': disabled}]">
     <span class="u-input__title">{{ title }}</span>
     <textarea
         v-if="type === 'textarea'" rows="4"

@@ -19,6 +19,10 @@ export default {
     values: {
       type: Array,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   },
   setup({startValue, values}, { emit }) {
@@ -48,7 +52,7 @@ export default {
 </script>
 
 <template>
-  <div :class="['u-select', {'u-select--open': openSelect}, {'u-select--error': error.trim().length > 0}]">
+  <div :class="['u-select', {'u-select--open': openSelect}, {'u-select--error': error.trim().length > 0}, {'u-select--disabled': disabled}]">
     <p class="u-select__title" >{{title}}</p>
     <p class="u-select__value" @click="openSelect = !openSelect">
       {{getModel}}
