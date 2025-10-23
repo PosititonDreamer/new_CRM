@@ -4,7 +4,8 @@
   min-height: var(--window-height);
 
   &__content {
-    padding: 20px;
+    padding: 20px 20px calc(var(--window-height) / 4) 20px;
+
   }
 
   &__title {
