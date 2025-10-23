@@ -31,7 +31,7 @@ export const HookWorkers = () => {
     const router = useRouter()
     const route = useRoute()
 
-    const addWorkerWarehouse = (startValue = "", id = Date.now) => {
+    const addWorkerWarehouse = (startValue = "", id = Date.now()) => {
         const {data: warehouse} = validateInput("String", startValue, 1)
         worker.warehouses.value.push({id, warehouse})
     }
