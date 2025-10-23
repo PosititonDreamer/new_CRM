@@ -285,6 +285,7 @@ export default {
                 :values="computedWarehouses.filter(ware => !ware.selected || ware.value === warehouse.warehouse.value)"
                 :style="[{'--z-index': worker.warehouses.value.length - id}]"
                 :start-value="warehouse.warehouse.value"
+                :error="warehouse.warehouse.error"
                 v-model="warehouse.warehouse.value"
             />
             <u-button
@@ -369,6 +370,7 @@ export default {
                 :values="computedWarehouses.filter(ware => !ware.selected || ware.value === warehouse.warehouse.value)"
                 :style="[{'--z-index': worker.warehouses.value.length - id}]"
                 :start-value="warehouse.warehouse.value"
+                :error="warehouse.warehouse.error"
                 v-model="warehouse.warehouse.value"
             />
             <u-button
