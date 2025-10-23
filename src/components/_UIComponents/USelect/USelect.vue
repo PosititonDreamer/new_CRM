@@ -55,7 +55,9 @@ export default {
   <div :class="['u-select', {'u-select--open': openSelect}, {'u-select--error': error.trim().length > 0}, {'u-select--disabled': disabled}]">
     <p class="u-select__title" >{{title}}</p>
     <p class="u-select__value" @click="openSelect = !openSelect">
-      {{getModel}}
+      <span>
+        {{getModel}}
+      </span>
       <svg width="7" height="13" viewBox="0 0 7 13" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1.32002 11.2L5.52002 6.58001L1.32002 1.96002" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
       </svg>

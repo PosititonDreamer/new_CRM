@@ -61,6 +61,13 @@
       width: 8px;
       height: auto;
     }
+
+    span {
+      width: calc(100% - 35px);
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+    }
   }
 
   &__list {
@@ -84,6 +91,7 @@
     font-size: 18px;
     color: var(--primary);
     cursor: pointer;
+    white-space: nowrap;
 
     &--active {
       background: var(--back);
