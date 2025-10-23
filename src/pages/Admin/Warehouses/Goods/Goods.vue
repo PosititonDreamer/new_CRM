@@ -260,7 +260,7 @@ export default {
         @close="router.push({name: 'Goods', params: {warehouse: route.params.warehouse}})"
     >
       <u-form
-          :text="`Изменить ${route.name === 'GoodsUpdateBalance' ? 'остаток' : ''} фасованный товар`"
+          :text="route.name === 'GoodsUpdateBalance' ? 'Изменить остаток фасованного товара' : 'Изменить фасованный товар'"
           @submit.prevent="route.name === 'GoodsUpdateBalance' ? submitUpdateBalanceGoods()  : submitUpdateGoods()"
       >
         <u-select
