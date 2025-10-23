@@ -22,7 +22,7 @@ export default {
   setup({value}, {emit}) {
 
     const change = (checked) => {
-      emit('change', {value, checked})
+      emit('checked', {value, checked})
     }
 
     return {
