@@ -1,5 +1,5 @@
 <script>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 import {useRoute} from "vue-router";
 import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
@@ -27,6 +27,12 @@ export default {
       open.value = false
       document.body.removeAttribute("style")
     }
+
+    watch(route,
+        () => {
+          closeSidebar()
+        }
+    )
 
 
     return {
