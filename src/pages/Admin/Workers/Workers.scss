@@ -102,9 +102,34 @@
     &::after {
       transform: rotate(-45deg) translate(-50%, -50%);
     }
+
+    &:hover, &:active {
+      &::before, &::after {
+        background: var(--white);
+      }
+    }
   }
 
   &__add-warehouse {
     margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .workers {
+    &__warehouse-delete {
+      width: 28px;
+      height: 28px;
+      top: 14px;
+    }
+    &__warehouse {
+      &--division {
+        .workers {
+          &__warehouse-select {
+            max-width: calc(100% - 38px);
+          }
+        }
+      }
+    }
   }
 }
