@@ -285,7 +285,7 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            title: "Коробки и остальное"
+            title: "Коробки и магниты"
         },
         children: [
             {
