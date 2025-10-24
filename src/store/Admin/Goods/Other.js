@@ -18,7 +18,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
     const route = useRoute();
 
     const findGoodsOther = async () => {
-        updateLoader({method: 'findGoodsOther', status: true})
+        updateLoader({method: 'findGoodsOther', status: false})
         await axios.get(`/admin/goods/other/list.php?warehouse=${route.params.warehouse}`)
             .then((res) => {
                 goodsOther.value = res.data.goods_other
@@ -32,7 +32,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
     }
 
     const createGoodsOther = async ({warehouse, type, title, balance, few, few_very}) => {
-        updateLoader({method: 'createGoodsOther', status: true})
+        updateLoader({method: 'createGoodsOther', status: false})
         const formData = new FormData()
         formData.append('warehouse', warehouse)
         formData.append('type', type)
@@ -53,7 +53,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
     }
 
     const updateGoodsOther = async ({warehouse, type, title, balance, few, few_very, id, sort}) => {
-        updateLoader({method: 'updateGoodsOther', status: true})
+        updateLoader({method: 'updateGoodsOther', status: false})
         const formData = new FormData()
         formData.append('warehouse', warehouse)
         formData.append('type', type)
@@ -83,7 +83,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
     }
 
     const updateBalanceGoodsOther = async ({id, balance, warehouse}) => {
-        updateLoader({method: 'updateBalanceGoodsOther', status: true})
+        updateLoader({method: 'updateBalanceGoodsOther', status: false})
         const formData = new FormData()
         formData.append('balance', balance)
         formData.append('id', id)
@@ -101,7 +101,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
     }
 
     const deleteGoodsOther = async ({id, warehouse}) => {
-        updateLoader({method: 'deleteGoodsOther', status: true})
+        updateLoader({method: 'deleteGoodsOther', status: false})
         const formData = new FormData()
         formData.append('id', id)
         await axios.post('/admin/goods/other/delete.php', formData)
