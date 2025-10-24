@@ -9,6 +9,10 @@ export default {
     open: {
       type: Boolean,
       required: true,
+    },
+    small: {
+      type: Boolean,
+      default: false,
     }
   },
   setup() {
@@ -18,7 +22,7 @@ export default {
 </script>
 
 <template>
-  <div :class="['u-accordion', {'u-accordion--open': open}]">
+  <div :class="['u-accordion', {'u-accordion--open': open}, {'u-accordion--small': small}]">
     <p class="u-accordion__header" @click="$emit('open')">
       <span>{{title}}</span>
       <svg width="7" height="13" viewBox="0 0 7 13" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">

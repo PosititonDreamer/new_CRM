@@ -12,6 +12,14 @@
     }
   }
 
+  &--small {
+    .u-accordion {
+      &__header {
+        font-size: 18px;
+      }
+    }
+  }
+
   &__header {
     position: relative;
     display: flex;
