@@ -129,7 +129,7 @@ export default {
         consumable.sort.value.value = findConsumable.sort
         consumable.binding.value = findConsumable.binding.map(bind => bind.good)
 
-        consumable.title.value.tacked = false
+        consumable.title.value.tacked = true
       }
     }
 
