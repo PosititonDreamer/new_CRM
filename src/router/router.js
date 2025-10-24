@@ -326,10 +326,6 @@ const routes = [
                 path: 'update/:id',
             },
             {
-                name: "GoodsKitUpdateBalance",
-                path: 'update-balance/:id',
-            },
-            {
                 name: "GoodsKitDelete",
                 path: 'delete/:id',
             }
