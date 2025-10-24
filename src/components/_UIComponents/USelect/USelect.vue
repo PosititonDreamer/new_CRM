@@ -1,5 +1,5 @@
 <script>
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 
 export default {
   name: "USelect",
@@ -25,7 +25,7 @@ export default {
       default: false,
     }
   },
-  setup({startValue, values}, { emit }) {
+  setup({startValue}, { emit }) {
     const model = ref(startValue)
     const openSelect = ref(false)
 
@@ -36,16 +36,12 @@ export default {
       emit("update:modelValue", value)
     }
 
-    const getModel = computed(() => {
-        return values.find(item => item.value === model.value)?.name
-    })
-
-    document.body.addEventListener("click", (e) => {
+    document.body.addEventListener("click", () => {
       openSelect.value = false
     })
 
     return {
-      model, changeValue, getModel, openSelect
+      model, changeValue, openSelect
     }
   }
 }
@@ -56,7 +52,7 @@ export default {
     <p class="u-select__title" >{{title}}</p>
     <p class="u-select__value" @click="openSelect = !openSelect">
       <span>
-        {{getModel}}
+        {{values.find(item => item.value === model)?.name}}
       </span>
       <svg width="7" height="13" viewBox="0 0 7 13" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1.32002 11.2L5.52002 6.58001L1.32002 1.96002" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -68,6 +64,7 @@ export default {
           v-for="item in values"
           :class="['u-select__item', {'u-select__item--active': model === item.value}]"
           @click.stop="changeValue(item.value)" type="button"
+          :key="`select-item-value-${item.value}`"
       >
         {{item.name}}
       </button>
