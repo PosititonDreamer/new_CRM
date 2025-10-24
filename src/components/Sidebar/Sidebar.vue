@@ -91,7 +91,7 @@ export default {
                   <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'GoodsConsumable', params: {warehouse: warehouse.id}}">Расходники</router-link>
                 </div>
                 <div class="sidebar__item">
-                  <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'GoodsOther', params: {warehouse: warehouse.id}}">Коробки и другое</router-link>
+                  <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'GoodsOther', params: {warehouse: warehouse.id}}">Коробки и магниты</router-link>
                 </div>
                 <div class="sidebar__item" v-if="getWarehousesTypes.find(type => type.id === warehouse.type)?.title === 'Товарный'">
                   <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'GoodsKit', params: {warehouse: warehouse.id}}">Наборы товаров</router-link>
