@@ -25,6 +25,7 @@ import SuppliesWarehousePage from "@/pages/Admin/Warehouses/Supplies/Supplies.vu
 import ClientsPage from "@/pages/Admin/Clients/Clients.vue";
 import PromosPage from "@/pages/Admin/Promos/Promos.vue";
 import OrdersFindPage from "@/pages/Admin/Orders/Find/Find.vue";
+import ClientsFindPage from "@/pages/Admin/Clients/Find/Find.vue";
 
 const routes = [
     {
@@ -383,7 +384,19 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            title: "Клиенты"
+            title: "Список клиентов"
+        },
+        children: []
+    },
+    {
+        name: "ClientsFind",
+        path: '/admin/clients-find',
+        component: ClientsFindPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Поиск клиентов"
         },
         children: []
     },

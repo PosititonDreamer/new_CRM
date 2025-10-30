@@ -86,7 +86,15 @@ export default {
           </div>
         </div>
         <div class="sidebar__item">
-          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Clients'}">Клиенты</router-link>
+          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Clients' || route.name === 'ClientsFind'}] ">Клиенты</p>
+          <div class="sidebar__sub-list">
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Clients'}">Список клиентов</router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'ClientsFind'}">Поиск клиентов</router-link>
+            </div>
+          </div>
         </div>
         <div class="sidebar__item">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Products'}">Продукты</router-link>
