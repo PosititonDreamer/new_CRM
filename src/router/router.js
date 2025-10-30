@@ -17,6 +17,12 @@ import GoodsOtherPage from "@/pages/Admin/Warehouses/Goods/Other/Other.vue";
 import GoodsKitPage from "@/pages/Admin/Warehouses/Goods/Kit/Kit.vue";
 import OperatorPage from "@/pages/Operator/Operator.vue";
 import AssemblerPage from "@/pages/Assembler/Assembler.vue";
+import GraphicsPage from "@/pages/Admin/Graphics/Graphics.vue";
+import OrdersPage from "@/pages/Admin/Orders/Orders.vue";
+import SalariesPage from "@/pages/Admin/Salaries/Salaries.vue";
+import SuppliesPage from "@/pages/Admin/Supplies/Supplies.vue";
+import SuppliesWarehousePage from "@/pages/Admin/Warehouses/Supplies/Supplies.vue";
+import ClientsPage from "@/pages/Admin/Clients/Clients.vue";
 
 const routes = [
     {
@@ -354,6 +360,78 @@ const routes = [
                 path: 'delete/:id',
             }
         ]
+    },
+    {
+        name: "SuppliesWarehouse",
+        path: '/admin/warehouses/:warehouse/supplies',
+        component: SuppliesWarehousePage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Поставки"
+        },
+        children: []
+    },
+    {
+        name: "Clients",
+        path: '/admin/clients',
+        component: ClientsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Клиенты"
+        },
+        children: []
+    },
+    {
+        name: "Graphics",
+        path: '/admin/graphics',
+        component: GraphicsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Грфики"
+        },
+        children: []
+    },
+    {
+        name: "Orders",
+        path: '/admin/orders',
+        component: OrdersPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Заказы"
+        },
+        children: []
+    },
+    {
+        name: "Salaries",
+        path: '/admin/salaries',
+        component: SalariesPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Заплаты"
+        },
+        children: []
+    },
+    {
+        name: "Supplies",
+        path: '/admin/supplies',
+        component: SuppliesPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Связь складов"
+        },
+        children: []
     }
 ];
 
