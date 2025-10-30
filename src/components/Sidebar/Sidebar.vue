@@ -3,16 +3,13 @@ import {ref, watch} from "vue";
 import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 import {useRoute} from "vue-router";
 import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
+import {Auth} from "@/store/workers/Auth.js";
 
 export default {
   name: "Sidebar",
   components: {UAccordion},
-  async beforeCreate() {
-    const {findWarehouses} = Warehouses()
-
-    await findWarehouses()
-  },
   setup() {
+    const {getWorker} = Auth()
     const open = ref(false)
 
     const openSidebar = () => {
@@ -28,6 +25,12 @@ export default {
       document.body.removeAttribute("style")
     }
 
+    if(getWorker.value.rule === 'Админ') {
+      const {findWarehouses} = Warehouses()
+
+      findWarehouses()
+    }
+
     watch(route,
         () => {
           closeSidebar()
@@ -41,7 +44,8 @@ export default {
       openSidebar,
       closeSidebar,
       getWarehouses,
-      getWarehousesTypes
+      getWarehousesTypes,
+      getWorker
     }
   }
 }
@@ -57,7 +61,7 @@ export default {
   <div :class="['sidebar', {'sidebar--open': open}]">
     <div class="sidebar__content">
       <button class="sidebar__close" @click="closeSidebar"></button>
-      <div class="sidebar__list">
+      <div class="sidebar__list" v-if="getWorker.rule === 'Админ'">
         <div class="sidebar__item">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Products'}">Продукты</router-link>
           <div class="sidebar__sub-list">
@@ -100,6 +104,10 @@ export default {
             </div>
           </div>
         </div>
+      </div>
+      <div class="sidebar__list" v-else-if="getWorker.rule === 'Сборщик'">
+      </div>
+      <div class="sidebar__list" v-else>
       </div>
     </div>
   </div>
