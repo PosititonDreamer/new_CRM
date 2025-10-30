@@ -63,7 +63,27 @@ export default {
       <button class="sidebar__close" @click="closeSidebar"></button>
       <div class="sidebar__list" v-if="getWorker.rule === 'Админ'">
         <div class="sidebar__item">
-          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Orders'}">Заказы</router-link>
+          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind'}] ">Заказы</p>
+          <div class="sidebar__sub-list">
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Orders', params: {status: 3}}">В обработке</router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Orders', params: {status: 1}}">Текущие</router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Orders', params: {status: 2}}">Собранные</router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Orders', params: {status: 4}}">Отправленные</router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Orders', params: {status: 5}}">Возвращенные</router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OrdersFind'}">Поиск заказов</router-link>
+            </div>
+          </div>
         </div>
         <div class="sidebar__item">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Clients'}">Клиенты</router-link>

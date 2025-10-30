@@ -24,6 +24,7 @@ import SuppliesPage from "@/pages/Admin/Supplies/Supplies.vue";
 import SuppliesWarehousePage from "@/pages/Admin/Warehouses/Supplies/Supplies.vue";
 import ClientsPage from "@/pages/Admin/Clients/Clients.vue";
 import PromosPage from "@/pages/Admin/Promos/Promos.vue";
+import OrdersFindPage from "@/pages/Admin/Orders/Find/Find.vue";
 
 const routes = [
     {
@@ -400,13 +401,25 @@ const routes = [
     },
     {
         name: "Orders",
-        path: '/admin/orders',
+        path: '/admin/orders/:status',
         component: OrdersPage,
         meta: {
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
             title: "Заказы"
+        },
+        children: []
+    },
+    {
+        name: "OrdersFind",
+        path: '/admin/orders/find',
+        component: OrdersFindPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Поиск заказов"
         },
         children: []
     },
