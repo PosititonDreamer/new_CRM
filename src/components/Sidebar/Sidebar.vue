@@ -122,6 +122,9 @@ export default {
         <div class="sidebar__item">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Graphics'}">Графики</router-link>
         </div>
+        <div class="sidebar__item">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Promos'}">Промокоды</router-link>
+        </div>
       </div>
       <div class="sidebar__list" v-else-if="getWorker.rule === 'Сборщик'">
       </div>

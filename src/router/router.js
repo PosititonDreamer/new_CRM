@@ -23,6 +23,7 @@ import SalariesPage from "@/pages/Admin/Salaries/Salaries.vue";
 import SuppliesPage from "@/pages/Admin/Supplies/Supplies.vue";
 import SuppliesWarehousePage from "@/pages/Admin/Warehouses/Supplies/Supplies.vue";
 import ClientsPage from "@/pages/Admin/Clients/Clients.vue";
+import PromosPage from "@/pages/Admin/Promos/Promos.vue";
 
 const routes = [
     {
@@ -430,6 +431,18 @@ const routes = [
             isAdmin: true,
             layout: 'Sidebar',
             title: "Связь складов"
+        },
+        children: []
+    },
+    {
+        name: "Promos",
+        path: '/admin/promos',
+        component: PromosPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Промокоды"
         },
         children: []
     }
