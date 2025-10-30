@@ -15,6 +15,8 @@ import GoodsWeightPage from "@/pages/Admin/Warehouses/Goods/Weight/Weight.vue";
 import GoodsConsumablePage from "@/pages/Admin/Warehouses/Goods/Consumable/Consumable.vue";
 import GoodsOtherPage from "@/pages/Admin/Warehouses/Goods/Other/Other.vue";
 import GoodsKitPage from "@/pages/Admin/Warehouses/Goods/Kit/Kit.vue";
+import OperatorPage from "@/pages/Operator/Operator.vue";
+import AssemblerPage from "@/pages/Assembler/Assembler.vue";
 
 const routes = [
     {
@@ -42,6 +44,28 @@ const routes = [
             isAdmin: true,
             layout: 'Sidebar',
             title: "Админка"
+        },
+    },
+    {
+        name: 'Operator',
+        path: '/operator',
+        component: OperatorPage,
+        meta: {
+            isAuth: true,
+            isOperator: true,
+            layout: 'Sidebar',
+            title: "Оператор"
+        },
+    },
+    {
+        name: 'Assembler',
+        path: '/assembler',
+        component: AssemblerPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Сборщик"
         },
     },
     {
@@ -339,23 +363,53 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    const token = localStorage.getItem('token')
-    const {checkAuth, getWorker} = Auth();
+        const token = localStorage.getItem('token')
+        const {checkAuth, getWorker} = Auth();
 
-    if(to.meta.isAuth && to.meta.isAdmin) {
-        if(!getWorker.value.rule && token) {
+        if (!getWorker.value.rule && token) {
             await checkAuth(token)
         }
 
-        if(getWorker.value.rule && getWorker.value.rule === 'Админ') {
-            next()
+        if (to.meta.isAuth && to.meta.isAdmin) {
+            if (getWorker.value.rule && getWorker.value.rule === 'Админ') {
+                next()
+            } else if (getWorker.value.rule && getWorker.value.rule === 'Сборщик') {
+                next({name: "Assembler"})
+            } else if (getWorker.value.rule && getWorker.value.rule === 'Оператор') {
+                next({name: "Operator"})
+            } else {
+                localStorage.removeItem('token')
+                next({name: "Auth"})
+            }
+        } else if (to.meta.isAuth && to.meta.isOperator) {
+            if (getWorker.value.rule && getWorker.value.rule === 'Оператор') {
+                next()
+            } else if (getWorker.value.rule && getWorker.value.rule === 'Сборщик') {
+                next({name: "Assembler"})
+            } else if (getWorker.value.rule && getWorker.value.rule === 'Админ') {
+                next({name: "Admin"})
+            } else {
+                localStorage.removeItem('token')
+                next({name: "Auth"})
+            }
+        } else if (to.meta.isAuth && to.meta.isAssembler) {
+            if (getWorker.value.rule && getWorker.value.rule === 'Сборщик') {
+                next()
+            } else if (getWorker.value.rule && getWorker.value.rule === 'Оператор') {
+                next({name: "Operator"})
+            } else if (getWorker.value.rule && getWorker.value.rule === 'Админ') {
+                next({name: "Admin"})
+            } else {
+                localStorage.removeItem('token')
+                next({name: "Auth"})
+            }
         } else {
-            // todo: Для других ролей
-            next('/')
+            if (to.name !== 'Auth') {
+                next({name: "Auth"})
+            }
+            next();
         }
-    } else {
-        next()
     }
-})
+)
 
 export default router;
