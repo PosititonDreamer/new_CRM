@@ -26,7 +26,11 @@ export const Auth = defineStore('Auth', () => {
                 addMessages(res.data.messages, 'success')
                 if(route.name === 'Auth') {
                     if(worker.value.rule === 'Админ') {
-                        router.push('/admin');
+                        router.push({name: "Admin"});
+                    } else if(worker.value.rule === 'Оператор') {
+                        router.push({name: 'Operator'});
+                    } else if(worker.value.rule === 'Сборщик') {
+                        router.push({name: 'Assembler'});
                     }
                 }
             })
