@@ -63,7 +63,7 @@ export default {
       <button class="sidebar__close" @click="closeSidebar"></button>
       <div class="sidebar__list" v-if="getWorker.rule === 'Админ'">
         <div class="sidebar__item">
-          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind'}] ">Заказы</p>
+          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind' || route.matched.find(item => item.name === 'Orders')}] ">Заказы</p>
           <div class="sidebar__sub-list">
             <div class="sidebar__item">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Orders', params: {status: 3}}">В обработке</router-link>
