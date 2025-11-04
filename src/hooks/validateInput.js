@@ -18,15 +18,22 @@ export const validateInput = (type, startValue, min = null) => {
             }
 
             if(type === "String") {
-                if(data.value.tacked && data.value.value.trim().length === 0) {
+                if(data.value.tacked && data.value.value?.trim().length === 0) {
                     return "Обязательно поле для заполнения"
                 }
 
-                if(data.value.tacked && data.value.value.trim().length < min) {
+                if(data.value.tacked && data.value.value?.trim().length < min) {
                     return `Минимальное количество символов ${min}`
                 }
 
                 return  ""
+            }
+
+            if(type === 'File') {
+                if(!data.value.value && data.value.tacked) {
+                    return "Обязтельное поле для заполнения"
+                }
+                return ""
             }
         }),
         valid: computed(() =>{
