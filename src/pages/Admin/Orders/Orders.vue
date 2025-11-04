@@ -326,7 +326,6 @@ export default {
         @sendMessage="sendTelegramMessage"
         @addTrack="e => router.push({name: 'OrdersAddTrack', params: {id: e}})"
         @return="e => router.push({name: 'OrdersReturn', params: {id: e}})"
-        @openOrder="e => router.push({name: 'OrdersPreview', params: {id: e}})"
         @send="e => router.push({name: 'OrdersSend', params: {id: e}})"
         @copyTrack="e => copyTrack(e)"
     />

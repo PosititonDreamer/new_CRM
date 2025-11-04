@@ -77,7 +77,6 @@ export default {
             v-for="(order, id) in orders"
             :key="`order-item-${order.id}`"
             :style="[{'--z-index': orders.length - id}]"
-            @click="$emit('openOrder', order.id)"
     >
       <p class="orders-list__title">{{ order.track ? order.track : 'Не присвоен' }}</p>
       <div class="orders-list__wrapper">
