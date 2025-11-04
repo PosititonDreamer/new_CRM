@@ -39,6 +39,7 @@ export const HookOrders = () => {
         addTrack,
         addBlank,
         sendTelegramMessage,
+        findOrders
     } = Orders()
 
     const {data: client} = validateInput("String", "", 1)
