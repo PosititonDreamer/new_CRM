@@ -422,7 +422,48 @@ const routes = [
             layout: 'Sidebar',
             title: "Заказы"
         },
-        children: []
+        children: [
+            {
+                name: "OrdersCreate",
+                path: 'create',
+            },
+            {
+                name: "OrdersUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "OrdersDelete",
+                path: 'delete/:id',
+            },
+            {
+                name: "OrdersReturn",
+                path: 'return/:id',
+            },
+            {
+                name: "OrdersAddBlank",
+                path: "add-blank/:id"
+            },
+            {
+                name: "OrdersAddTrack",
+                path: "add-track/:id"
+            },
+            {
+                name: "OrdersPreview",
+                path: "preview/:id"
+            },
+            {
+                name: "OrdersCollect",
+                path: "collect/:id"
+            },
+            {
+                name: "OrdersSend",
+                path: "send/:id"
+            },
+            {
+                name: "OrdersSendSeveral",
+                path: "send-several"
+            }
+        ]
     },
     {
         name: "OrdersFind",
