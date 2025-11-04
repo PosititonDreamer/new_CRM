@@ -1,0 +1,26 @@
+.orders-send {
+  &__name {
+    font-size: 18px;
+  }
+
+  &__info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 5px;
+    align-items: center;
+  }
+
+  &__card {
+    &--collect {
+      opacity: 0.7;
+
+      * {
+        color: var(--primary);
+      }
+    }
+  }
+
+  &__take-all {
+    margin-bottom: 10px;
+  }
+}
