@@ -1,0 +1,117 @@
+.orders-collect {
+  &__title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  &__track {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  &__item {
+    padding-left: 10px;
+
+    .orders-collect {
+      &__text {
+        font-size: 16px;
+      }
+    }
+  }
+
+  &__over {
+    color: var(--yellow);
+    font-weight: 700;
+  }
+
+  &__form-item {
+    position: relative;
+    grid-gap: 10px;
+    z-index: var(--z-index);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    &--division {
+      padding-right: 50px;
+    }
+  }
+
+  &__add-box {
+    margin-left: auto;
+  }
+
+  &__delete-box {
+    position: absolute;
+    right: 10px;
+    top: 26px;
+    width: 33px;
+    height: 33px;
+
+    &::before, &::after {
+      content: '';
+      width: 80%;
+      height: 2px;
+      background: var(--red);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: left top;
+    }
+
+    &::before {
+      transform: rotate(45deg) translate(-50%, -50%);
+    }
+
+    &::after {
+      transform: rotate(-45deg) translate(-50%, -50%);
+    }
+
+    &:hover, &:active {
+      &::before, &::after {
+        background: var(--white);
+      }
+    }
+  }
+
+  &__select {
+    z-index: 10;
+  }
+
+  &__info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 5px;
+    align-items: center;
+  }
+
+  &__name {
+    font-size: 18px;
+  }
+
+  &__alarm {
+    margin-top: 10px;
+    text-align: center;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  &__card {
+
+    &--collect {
+      opacity: 0.7;
+
+      * {
+        color: var(--primary);
+      }
+    }
+  }
+}
