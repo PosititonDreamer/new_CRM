@@ -1,0 +1,48 @@
+.orders-preview {
+  &__tabs {
+    display: grid;
+    margin: 10px 0;
+    grid-gap: 10px;
+  }
+  &__button-list {
+    display: flex;
+    grid-gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  &__track {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  &__item {
+    padding-left: 10px;
+
+    .orders-preview {
+      &__text {
+        font-size: 16px;
+      }
+    }
+  }
+
+  &__over {
+    color: var(--yellow);
+    font-weight: 700;
+  }
+
+  &__collect {
+    margin-bottom: 10px;
+  }
+}
