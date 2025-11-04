@@ -23,6 +23,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    empty: {
+      type: Boolean,
+      default: true,
     }
   },
   setup({startValue}, { emit }) {
@@ -32,8 +36,9 @@ export default {
     const changeValue = (value) => {
       model.value = value
       openSelect.value = false
-      emit("change")
       emit("update:modelValue", value)
+      emit("change")
+      emit("update")
     }
 
     document.body.addEventListener("click", () => {
@@ -50,7 +55,7 @@ export default {
 <template>
   <div :class="['u-select', {'u-select--open': openSelect}, {'u-select--error': error.trim().length > 0}, {'u-select--disabled': disabled}]">
     <p class="u-select__title" >{{title}}</p>
-    <p class="u-select__value" @click="openSelect = !openSelect">
+    <p class="u-select__value" @click.stop="openSelect = !openSelect">
       <span>
         {{values.find(item => item.value === model)?.name}}
       </span>
@@ -59,7 +64,7 @@ export default {
       </svg>
     </p>
     <div class="u-select__list" v-show="openSelect">
-      <button class="u-select__item" type="button" @click.stop="changeValue('')"></button>
+      <button class="u-select__item" type="button" v-if="empty" @click.stop="changeValue('')"></button>
       <button
           v-for="item in values"
           :class="['u-select__item', {'u-select__item--active': model === item.value}]"
