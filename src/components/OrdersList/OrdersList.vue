@@ -1,6 +1,7 @@
 <script>
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
+import {computed} from "vue";
 
 export default {
   name: 'OrdersList',
@@ -13,9 +14,13 @@ export default {
     orders: {
       type: Array,
       required: true
+    },
+    checkStatus: {
+      type: Boolean,
+      default: false
     }
   },
-  setup() {
+  setup({actions, checkStatus}) {
     const computedStatus = (status) => {
       if (+status === 1) {
         return 'Создан'
@@ -32,9 +37,35 @@ export default {
       return 'Возвращен'
     }
 
+    const computedActions = computed(() => {
+      if (!checkStatus) {
+        return actions.map(action => {
+          if (action.name === 'addBlank') {
+            if (order.delivery !== 'CDEK') {
+              return {
+                text: order.blank ? 'Изменить бланк' : 'Добавить бланк',
+                name: 'addBlank'
+              }
+            } else {
+              return null
+            }
+          } else if (action.name === 'openBlank') {
+            if (order.delivery === 'CDEK') {
+              return null
+            } else if (!order.blank) {
+              return null
+            } else {
+              return action
+            }
+          } else {
+            return action
+          }
+        }).filter(action => action)
+      }
+    })
 
     return {
-      computedStatus
+      computedStatus, computedActions
     }
   }
 }
@@ -75,30 +106,7 @@ export default {
       </div>
       <u-actions
           class="orders-list__actions"
-          :actions="actions
-            .map(action => {
-              if(action.name === 'addBlank') {
-                if(order.delivery !== 'CDEK') {
-                  return {
-                    text: order.blank ? 'Изменить бланк' : 'Добавить бланк',
-                    name: 'addBlank'
-                  }
-                } else {
-                  return null
-                }
-              } else if (action.name === 'openBlank') {
-                if (order.delivery === 'CDEK') {
-                  return null
-                } else if(!order.blank) {
-                  return null
-                } else {
-                  return action
-                }
-              } else {
-                return action
-              }
-            }
-          ).filter(action => action)"
+          :actions="checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : computedActions"
           @collect="$emit('collect', order.id)"
           @preview="$emit('preview', order.id)"
           @update="$emit('update', order.id)"
