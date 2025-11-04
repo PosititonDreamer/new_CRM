@@ -467,7 +467,7 @@ const routes = [
     },
     {
         name: "OrdersFind",
-        path: '/admin/orders/find',
+        path: '/admin/orders-find',
         component: OrdersFindPage,
         meta: {
             isAuth: true,
@@ -475,7 +475,24 @@ const routes = [
             layout: 'Sidebar',
             title: "Поиск заказов"
         },
-        children: []
+        children: [
+            {
+                name: "OrdersFindDelete",
+                path: 'delete/:id',
+            },
+            {
+                name: "OrdersFindReturn",
+                path: 'return/:id',
+            },
+            {
+                name: "OrdersFindPreview",
+                path: "preview/:id"
+            },
+            {
+                name: "OrdersFindSetting",
+                path: "setting"
+            }
+        ]
     },
     {
         name: "Salaries",
