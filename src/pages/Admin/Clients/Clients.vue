@@ -103,7 +103,7 @@ export default {
         })
       }
 
-      if (to.name === 'ClientPreviewOrder') {
+      if (to.name === 'ClientsPreviewOrder') {
         await findOrdersDetail()
         await findGoodsList()
       }
@@ -202,7 +202,7 @@ export default {
                 :orders="clientItem.orders"
                 :actions="actionsOrders"
                 :check-blank="false"
-                @preview="e => router.push({name: 'ClientPreviewOrder', params: {id: e}})"
+                @preview="e => router.push({name: 'ClientsPreviewOrder', params: {id: e}})"
             />
           </u-accordion>
         </u-card>
@@ -378,7 +378,7 @@ export default {
       </u-form>
     </u-popup>
     <orders-preview
-        v-if="route.name === 'ClientPreviewOrder' && getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
+        v-if="route.name === 'ClientsPreviewOrder' && getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
         :computed-detail-orders-goods="computedDetailOrdersGoods"
         :computed-detail-orders-composition="computedDetailOrdersComposition"
         :computed-status="computedStatus"
