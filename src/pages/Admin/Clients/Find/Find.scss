@@ -1,0 +1,137 @@
+.clients-find {
+  color: var(--primary);
+
+  &__filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+    grid-gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__list {
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &__title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    margin-bottom: 5px;
+  }
+
+  &__address-list {
+    margin-bottom: 10px;
+  }
+
+  &__address {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  &__clients-list {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+    height: 200px;
+    overflow: hidden auto;
+
+    .clients {
+      &__title {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__select-button {
+    text-align: left;
+  }
+
+  &__delete-client {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 25px;
+
+    &::before, &::after {
+      content: '';
+      width: 80%;
+      height: 2px;
+      background: var(--red);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: left top;
+    }
+
+    &::before {
+      transform: rotate(45deg) translate(-50%, -50%);
+    }
+
+    &::after {
+      transform: rotate(-45deg) translate(-50%, -50%);
+    }
+
+    &:hover, &:active {
+      &::before, &::after {
+        background: var(--white);
+      }
+    }
+  }
+
+  &__join-item {
+    position: relative;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__alarm {
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  &__select {
+    z-index: 10;
+
+    &--two {
+      z-index: 5;
+    }
+
+    &::v-deep {
+      .u-select__item {
+        &:first-child {
+          height: 28px;
+        }
+
+        width: 100%;
+        white-space: unset;
+        height: max-content;
+      }
+    }
+  }
+
+  &__setting {
+    margin-bottom: 10px;
+  }
+}

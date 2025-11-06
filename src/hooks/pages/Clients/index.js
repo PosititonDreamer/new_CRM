@@ -39,10 +39,10 @@ export const HookClients = () => {
         await findClients({...filter.value}, getNextPage.value)
     }
 
-    const submitFindClientsList = async () => {
+    const submitFindClientsList = async (afterPage) => {
         client.value.tacked = true
         if (client.value.valid) {
-            await findClientsList(client.value.value)
+            await findClientsList(client.value.value, afterPage)
         }
     }
 
@@ -139,13 +139,16 @@ export const HookClients = () => {
             return []
         }
         const findClient = getClients.value.find((client) => +client.id ===+ route.params.client)
-        return findClient.address.map(address => {
-            return {
-                name: `${address.delivery} ${address.address}`,
-                value: address.id,
-                item: address
-            }
-        })
+        if(findClient){
+            return findClient.address.map(address => {
+                return {
+                    name: `${address.delivery} ${address.address}`,
+                    value: address.id,
+                    item: address
+                }
+            })
+        }
+        return []
     })
 
     const clearData = () => {

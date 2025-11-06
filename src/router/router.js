@@ -400,7 +400,7 @@ const routes = [
                 path: "join-address/:client"
             },
             {
-                name: "ClientPreviewOrder",
+                name: "ClientsPreviewOrder",
                 path: "order/:id"
             }
         ]
@@ -415,7 +415,28 @@ const routes = [
             layout: 'Sidebar',
             title: "Поиск клиентов"
         },
-        children: []
+        children: [
+            {
+                name: "ClientsFindUpdate",
+                path: 'update/:client',
+            },
+            {
+                name: "ClientsFindJoin",
+                path: 'join/:client',
+            },
+            {
+                name: "ClientsFindJoinAddress",
+                path: "join-address/:client"
+            },
+            {
+                name: "ClientsFindPreviewOrder",
+                path: "order/:id"
+            },
+            {
+                name: "ClientsFindSetting",
+                path: "setting"
+            }
+        ]
     },
     {
         name: "Graphics",
