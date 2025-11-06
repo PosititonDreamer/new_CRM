@@ -18,6 +18,7 @@ export const Clients = defineStore('Clients', () => {
     const {addMessages} = Messages();
 
     const router = useRouter();
+    const route = useRoute();
 
     const findClients = async ({sort}, page = 0) => {
         if(page === 0) {
@@ -44,15 +45,16 @@ export const Clients = defineStore('Clients', () => {
         updateLoader({method: 'findClients', status: true})
     }
 
-    const findClientsList = async (text) => {
+    const findClientsList = async (text, afterPage) => {
         clients.value = []
         updateLoader({method: 'findClientsList', status: false})
         const formData = new FormData();
         formData.append('text', text)
-        axios.post('/clients/find_list.php', formData)
+        await axios.post('/clients/find_list.php', formData)
             .then((res) => {
                 clients.value = res.data.clients
                 addMessages(res.data.messages, 'success')
+                router.push({name: afterPage})
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -67,7 +69,10 @@ export const Clients = defineStore('Clients', () => {
         formData.append('clients_join', JSON.stringify(clients_join))
         await axios.post('clients/join.php', formData)
             .then((res) => {
-                findClients({sort: 'new'}, 0)
+                clients.value = clients.value
+                    .filter(item => +item.id !== +client)
+                    .filter(item=> !clients_join.find(child => +item.id === +child))
+                findClientId(client)
                 router.push({name: afterPage})
                 addMessages(res.data.messages, 'success')
             })
@@ -84,7 +89,8 @@ export const Clients = defineStore('Clients', () => {
         formData.append('address_join', JSON.stringify(address_join))
         await axios.post('clients/join_address.php', formData)
             .then((res) => {
-                findClients({sort: 'new'}, 0)
+                clients.value = clients.value.filter(item => +item.id !== +route.params.client)
+                findClientId(route.params.client)
                 router.push({name: afterPage})
                 addMessages(res.data.messages, 'success')
             })
@@ -138,12 +144,16 @@ export const Clients = defineStore('Clients', () => {
         clientsFullNameList.value = []
     }
 
+    const clearClients = () => {
+        clients.value = []
+    }
+
     const findClientId = async (id) => {
         const formData = new FormData()
         formData.append('id', id)
         await axios.post('clients/item.php', formData)
             .then((res) => {
-                clients.value.push(res.data.client)
+                clients.value.unshift(res.data.client)
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -161,7 +171,8 @@ export const Clients = defineStore('Clients', () => {
         findClientsFullNameList,
         updateClients,
         clearClientsFullNameList,
-        findClientId
+        findClientId,
+        clearClients
     }
 
 });
