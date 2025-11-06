@@ -7,12 +7,10 @@ import {useRouter, useRoute} from "vue-router";
 
 export const Clients = defineStore('Clients', () => {
     const clients = ref([]);
-    const clientsList = ref([]);
     const clientsFullNameList = ref([])
     const nextPage = ref(null)
 
     const getClients = computed(() => clients)
-    const getClientsList = computed(() => clientsList)
     const getClientsFullNameList = computed(() => clientsFullNameList)
     const getNextPage = computed(() => nextPage)
 
@@ -22,6 +20,9 @@ export const Clients = defineStore('Clients', () => {
     const router = useRouter();
 
     const findClients = async ({sort}, page = 0) => {
+        if(page === 0) {
+            clients.value = []
+        }
         updateLoader({method: 'findClients', status: false})
         await axios.get(`/clients/list.php?sort=${sort}&page=${page}`)
             .then((res) => {
@@ -44,13 +45,13 @@ export const Clients = defineStore('Clients', () => {
     }
 
     const findClientsList = async (text) => {
-        clientsList.value = []
+        clients.value = []
         updateLoader({method: 'findClientsList', status: false})
         const formData = new FormData();
         formData.append('text', text)
         axios.post('/clients/find_list.php', formData)
             .then((res) => {
-                clientsList.value = res.data.clients
+                clients.value = res.data.clients
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
@@ -151,7 +152,6 @@ export const Clients = defineStore('Clients', () => {
 
     return {
         getClients,
-        getClientsList,
         getClientsFullNameList,
         getNextPage,
         findClients,

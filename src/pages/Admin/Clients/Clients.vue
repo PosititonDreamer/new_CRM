@@ -22,7 +22,6 @@ export default {
   setup() {
     const {
       getClients,
-      getClientsList,
       getClientsFullNameList,
       filter,
       joinClientsList,
@@ -118,7 +117,6 @@ export default {
 
     return {
       getClients,
-      getClientsList,
       getClientsFullNameList,
       filter,
       joinClientsList,

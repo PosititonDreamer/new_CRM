@@ -6,7 +6,6 @@ import {validateInput} from "@/hooks/validateInput.js";
 export const HookClients = () => {
     const {
         getClients,
-        getClientsList,
         getClientsFullNameList,
         getNextPage,
         findClients,
@@ -170,7 +169,6 @@ export const HookClients = () => {
 
     return {
         getClients,
-        getClientsList,
         getClientsFullNameList,
         filter,
         joinClientsList,
