@@ -37,6 +37,7 @@ export default {
       model.value = value
       openSelect.value = false
       emit("update:modelValue", value)
+      emit("select", value)
       emit("change")
       emit("update")
     }
