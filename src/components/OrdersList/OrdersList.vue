@@ -18,6 +18,10 @@ export default {
     checkStatus: {
       type: Boolean,
       default: false
+    },
+    checkBlank: {
+      type: Boolean,
+      default: true
     }
   },
   setup({actions, checkStatus}) {
@@ -99,7 +103,7 @@ export default {
           <b>Комментарий: </b> {{ order.comment }}
         </p>
         <p :class="['orders-list__text', {'orders-list__text--alarm': !order.blank}]"
-           v-if="order.delivery !== 'CDEK' && (+order.status === 1 || +order.status === 2)">
+           v-if="order.delivery !== 'CDEK' && (+order.status === 1 || +order.status === 2) && checkBlank">
           <b>Бланк для печати: </b> {{ order.blank ? "Загружен" : "Не загружен" }}
         </p>
       </div>
