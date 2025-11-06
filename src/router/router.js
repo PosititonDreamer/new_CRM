@@ -386,7 +386,24 @@ const routes = [
             layout: 'Sidebar',
             title: "Список клиентов"
         },
-        children: []
+        children: [
+            {
+                name: "ClientsUpdate",
+                path: 'update/:client',
+            },
+            {
+                name: "ClientsJoin",
+                path: 'join/:client',
+            },
+            {
+                name: "ClientsJoinAddress",
+                path: "join-address/:client"
+            },
+            {
+                name: "ClientPreviewOrder",
+                path: "order/:id"
+            }
+        ]
     },
     {
         name: "ClientsFind",
