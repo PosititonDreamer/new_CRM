@@ -5,6 +5,10 @@ export default {
     title: {
       type: String,
       required: true,
+    },
+    big: {
+      type: Boolean,
+      default: false,
     }
   },
   beforeCreate() {
@@ -32,7 +36,7 @@ export default {
 
 <template>
   <Teleport to="body">
-    <div class="u-popup" @click="close">
+    <div :class="['u-popup', {'u-popup--big': big}]" @click="close">
       <div class="u-popup__wrapper" @click.stop>
         <div class="u-popup__header">
           <p class="u-popup__title">{{ title }}</p>
