@@ -41,7 +41,7 @@ export default {
       return 'Возвращен'
     }
 
-    const computedActions = computed(() => {
+    const computedActions = (order) => {
       if (!checkStatus) {
         return actions.map(action => {
           if (action.name === 'addBlank') {
@@ -66,7 +66,7 @@ export default {
           }
         }).filter(action => action)
       }
-    })
+    }
 
     return {
       computedStatus, computedActions
@@ -109,7 +109,7 @@ export default {
       </div>
       <u-actions
           class="orders-list__actions"
-          :actions="checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : computedActions"
+          :actions="checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : computedActions(order)"
           @collect="$emit('collect', order.id)"
           @preview="$emit('preview', order.id)"
           @update="$emit('update', order.id)"
