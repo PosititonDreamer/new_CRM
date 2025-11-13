@@ -554,7 +554,20 @@ const routes = [
             layout: 'Sidebar',
             title: "Связь складов"
         },
-        children: []
+        children: [
+            {
+                name: "SuppliesCreate",
+                path: 'create',
+            },
+            {
+                name: "SuppliesUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "SuppliesDelete",
+                path: 'delete/:id',
+            },
+        ]
     },
     {
         name: "Promos",
@@ -581,6 +594,19 @@ router.beforeEach(async (to, from, next) => {
 
         if (!getWorker.value.rule && token) {
             await checkAuth(token)
+        }
+
+        if(getWorker.value.rule && to.name === 'Auth'){
+            if(getWorker.value.rule === 'Админ') {
+                next({name: 'Admin'})
+            } else if(getWorker.value.rule === 'Сборщик') {
+                next({name: "Assembler"})
+            } else if(getWorker.value.rule === 'Оператор') {
+                next({name: "Operator"})
+            } else {
+                localStorage.removeItem('token')
+                next({name: "Auth"})
+            }
         }
 
         if (to.meta.isAuth && to.meta.isAdmin) {
@@ -618,6 +644,7 @@ router.beforeEach(async (to, from, next) => {
             }
         } else {
             if (to.name !== 'Auth') {
+                localStorage.removeItem('token')
                 next({name: "Auth"})
             }
             next();
