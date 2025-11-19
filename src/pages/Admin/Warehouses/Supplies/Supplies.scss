@@ -1,0 +1,160 @@
+.supplies {
+
+  &__create {
+    margin-bottom: 20px;
+  }
+
+  &__text {
+    &--few, &--few-very {
+      font-weight: 700;
+    }
+
+    &--few {
+      color: var(--yellow);
+    }
+
+    &--few-very {
+      color: var(--red);
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__input {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-gap: 10px;
+    max-width: 300px;
+
+    input {
+      border: 1px solid var(--primary);
+      border-radius: 5px;
+      padding: 5px 10px;
+      text-align: center;
+      color: var(--primary);
+      font-size: 18px;
+      width: 100%;
+    }
+  }
+
+  &__title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  &__sub-title {
+    font-size: 20px;
+  }
+
+  &__item {
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--primary);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__list {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__card-list {
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+
+  &__card {
+    position: relative;
+    background: var(--white);
+    z-index: var(--z-index);
+  }
+
+  &__content {
+    max-width: calc(100% - 50px);
+    color: var(--primary);
+  }
+
+  &__actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+.supplies-preview {
+  &__button {
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  &__status-item, &__list-item {
+    padding-left: 10px;
+  }
+
+  &__status-list {
+    margin: 10px 0;
+  }
+}
+
+.supplies-collect {
+  &__title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  &__text {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  &__item {
+    padding-left: 10px;
+
+    .orders-collect {
+      &__text {
+        font-size: 16px;
+      }
+    }
+  }
+
+  &__over {
+    color: var(--yellow);
+    font-weight: 700;
+  }
+
+  &__info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 5px;
+    align-items: center;
+  }
+
+  &__card {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    &--collect {
+      opacity: 0.7;
+
+      * {
+        color: var(--primary);
+      }
+    }
+  }
+}

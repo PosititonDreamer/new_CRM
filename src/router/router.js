@@ -374,7 +374,32 @@ const routes = [
             layout: 'Sidebar',
             title: "Поставки"
         },
-        children: []
+        children: [
+            {
+                name: "SuppliesWarehouseCreate",
+                path: 'create',
+            },
+            {
+                name: "SuppliesWarehouseUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "SuppliesWarehouseDelete",
+                path: 'delete/:id',
+            },
+            {
+                name: "SuppliesWarehousePreview",
+                path: 'preview/:id',
+            },
+            {
+                name: "SuppliesWarehouseCollect",
+                path: 'collect/:id',
+            },
+            {
+                name: "SuppliesWarehouseAccept",
+                path: 'accept/:id',
+            }
+        ]
     },
     {
         name: "Clients",
