@@ -35,6 +35,13 @@ export const validateInput = (type, startValue, min = null) => {
                 }
                 return ""
             }
+
+            if(type === 'Date') {
+                if(!data.value.value && data.value.tacked) {
+                    return "Обязтельное поле для заполнения"
+                }
+                return ""
+            }
         }),
         valid: computed(() =>{
             return data.value.error.trim().length === 0
