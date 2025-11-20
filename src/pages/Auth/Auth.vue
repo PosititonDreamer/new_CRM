@@ -2,7 +2,7 @@
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import {validateInput} from "@/hooks/validateInput.js";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
-import {Auth} from "@/store/workers/Auth.js";
+import {Auth} from "@/store/Workers/Auth.js";
 
 export default {
   name: "Auth",

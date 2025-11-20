@@ -3,7 +3,7 @@ import {ref, watch} from "vue";
 import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 import {useRoute} from "vue-router";
 import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
-import {Auth} from "@/store/workers/Auth.js";
+import {Auth} from "@/store/Workers/Auth.js";
 
 export default {
   name: "Sidebar",

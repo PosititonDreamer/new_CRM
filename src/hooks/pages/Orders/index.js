@@ -2,7 +2,7 @@ import {Orders} from "@/store/Orders/Orders.js";
 import {computed, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {validateInput} from "@/hooks/validateInput.js";
-import {Auth} from "@/store/workers/Auth.js";
+import {Auth} from "@/store/Workers/Auth.js";
 import {Messages} from "@/store/Messages.js";
 
 export const HookOrders = () => {

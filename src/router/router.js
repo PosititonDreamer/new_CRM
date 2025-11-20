@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import {Auth} from "@/store/workers/Auth.js";
+import {Auth} from "@/store/Workers/Auth.js";
 
 import UIPage from "@/pages/UI/UI.vue";
 import AuthPage from "@/pages/Auth/Auth.vue";
