@@ -39,6 +39,9 @@ export default {
       submitUpdateWorkers,
       submitUpdateTokenWorkers,
       submitDeleteWorkers,
+      submitCreatePenaltyWorkers,
+      penalty,
+      sumPenalty
     } = HookWorkers()
     const loading = ref(false)
 
@@ -58,6 +61,10 @@ export default {
       {
         name: "copyToken",
         text: "Скопировать токен"
+      },
+      {
+        name: "createPenalty",
+        text: "Выписать штраф"
       }
     ])
 
@@ -81,11 +88,13 @@ export default {
         worker.description.value.value = ""
         worker.rule.value.value = ""
         worker.name.value.value = ""
+        penalty.value.value = ''
 
         worker.salary.value.tacked = false
         worker.description.value.tacked = false
         worker.rule.value.tacked = false
         worker.name.value.tacked = false
+        penalty.value.tacked = false
         worker.warehouses.value = []
 
         document.body.removeAttribute("style");
@@ -162,7 +171,10 @@ export default {
       copyToken,
       rules,
       computedWarehouses,
-      loading
+      loading,
+      submitCreatePenaltyWorkers,
+      penalty,
+      sumPenalty
     }
   }
 }
@@ -203,6 +215,7 @@ export default {
             @updateToken="router.push({name: 'WorkersUpdateToken', params: {id: item.id}})"
             @remove="router.push({name: 'WorkersDelete', params: {id: item.id}})"
             @copyToken="copyToken(item.token)"
+            @createPenalty="router.push({name: 'WorkersCreatePenalty', params: {id: item.id}})"
         />
       </u-card>
     </div>
@@ -308,7 +321,6 @@ export default {
       </u-form>
     </u-popup>
 
-
     <u-popup
         v-if="route.name === 'WorkersUpdate' && loading"
         title="Изменение работника"
@@ -390,6 +402,35 @@ export default {
             Добавить склад
           </u-button>
         </u-card>
+      </u-form>
+    </u-popup>
+
+    <u-popup
+        title="Выписка штрафа"
+        v-if="route.name === 'WorkersCreatePenalty'"
+    >
+      <u-form
+          text="Выписать штраф"
+          @submit.prevent="submitCreatePenaltyWorkers"
+      >
+        <u-input
+            type="number"
+            title="Сумма"
+            v-model="sumPenalty.value"
+            :start-value="sumPenalty.value"
+            :error="sumPenalty.error"
+            @change="sumPenalty.tacked = true"
+            @blur="sumPenalty.tacked = true"
+        />
+        <u-input
+            type="textarea"
+            title="Описание штрафа"
+            :start-value="penalty.value"
+            v-model="penalty.value"
+            :error="penalty.error"
+            @change="penalty.tacked = true"
+            @blur="penalty.tacked = true"
+        />
       </u-form>
     </u-popup>
   </div>

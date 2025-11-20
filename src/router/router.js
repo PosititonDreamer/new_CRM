@@ -220,6 +220,10 @@ const routes = [
             {
                 name: "WorkersDelete",
                 path: 'delete/:id',
+            },
+            {
+                name: "WorkersCreatePenalty",
+                path: 'penalty/:id',
             }
         ]
     },
