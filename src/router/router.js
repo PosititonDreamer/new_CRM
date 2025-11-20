@@ -473,7 +473,12 @@ const routes = [
             layout: 'Sidebar',
             title: "Грфики"
         },
-        children: []
+        children: [
+            {
+                name: "GraphicsSetting",
+                path: 'setting',
+            }
+        ]
     },
     {
         name: "Orders",
