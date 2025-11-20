@@ -16,6 +16,7 @@ export default {
   beforeCreate() {
     const resize = () => {
       document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`)
+      document.documentElement.style.setProperty('--window-width', `${window.innerWidth}px`)
     }
     resize()
 
