@@ -1,0 +1,65 @@
+.salaries {
+  color: var(--primary);
+
+  &__list {
+    max-width: 600px;
+  }
+
+  &__actions {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 10px;
+  }
+
+  &__title {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  &__sub-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 700;
+
+    &--big-margin {
+      margin-top: 20px;
+    }
+  }
+
+  &__text {
+    font-size: 16px;
+
+    &--big {
+      font-size: 18px;
+    }
+
+    &--big-margin {
+      margin-top: 20px;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__card {
+    &--sticky {
+      z-index: 100;
+      background: var(--white);
+      position: sticky;
+      top: 0;
+    }
+  }
+
+  &__card, &__item {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__checkbox {
+    margin-bottom: 10px;
+  }
+}

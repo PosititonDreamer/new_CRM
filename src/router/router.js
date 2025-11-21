@@ -574,9 +574,19 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            title: "Заплаты"
+            title: "Зарлаты"
         },
-        children: []
+        children: [
+            {
+                name: "SalariesSetting",
+                path: 'setting'
+            },
+            {
+                name: "SalariesAccept",
+                path: "accept"
+            },
+
+        ]
     },
     {
         name: "Supplies",
