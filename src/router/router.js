@@ -623,7 +623,20 @@ const routes = [
             layout: 'Sidebar',
             title: "Промокоды"
         },
-        children: []
+        children: [
+            {
+                name: "PromosCreate",
+                path: 'create',
+            },
+            {
+                name: "PromosUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "PromosDelete",
+                path: 'delete/:id',
+            },
+        ]
     }
 ];
 
