@@ -79,7 +79,7 @@ export const Salaries = defineStore('Salaries', () => {
         formData.append('penalties', JSON.stringify(data.penalties));
         await axios.post('/admin/salaries/accept.php', formData)
             .then((res) => {
-                salaries.value.salaries.push(res.data.salary)
+                salaries.value.salaries.pop(res.data.salary)
                 salaries.value.penalties.forEach((penalty) => {
                     if(data.penalties.find(item => +item === +penalty.id)) {
                        penalty.ready = true
