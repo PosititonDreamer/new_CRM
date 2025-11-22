@@ -76,6 +76,10 @@
     &--disabled {
       pointer-events: none;
     }
+
+    &--yellow {
+      color: var(--yellow);
+    }
   }
 
   &__list, &__sub-list {

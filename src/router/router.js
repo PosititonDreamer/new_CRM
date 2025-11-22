@@ -26,6 +26,7 @@ import ClientsPage from "@/pages/Admin/Clients/Clients.vue";
 import PromosPage from "@/pages/Admin/Promos/Promos.vue";
 import OrdersFindPage from "@/pages/Admin/Orders/Find/Find.vue";
 import ClientsFindPage from "@/pages/Admin/Clients/Find/Find.vue";
+import NotificationsPage from "@/pages/Admin/Warehouses/Notifications/Notifications.vue";
 
 const routes = [
     {
@@ -637,6 +638,18 @@ const routes = [
                 path: 'delete/:id',
             },
         ]
+    },
+    {
+        name: "Notifications",
+        path: '/admin/warehouses/notifications',
+        component: NotificationsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Малое количество товаров"
+        },
+
     }
 ];
 
@@ -653,12 +666,12 @@ router.beforeEach(async (to, from, next) => {
             await checkAuth(token)
         }
 
-        if(getWorker.value.rule && to.name === 'Auth'){
-            if(getWorker.value.rule === 'Админ') {
+        if (getWorker.value.rule && to.name === 'Auth') {
+            if (getWorker.value.rule === 'Админ') {
                 next({name: 'Admin'})
-            } else if(getWorker.value.rule === 'Сборщик') {
+            } else if (getWorker.value.rule === 'Сборщик') {
                 next({name: "Assembler"})
-            } else if(getWorker.value.rule === 'Оператор') {
+            } else if (getWorker.value.rule === 'Оператор') {
                 next({name: "Operator"})
             } else {
                 localStorage.removeItem('token')

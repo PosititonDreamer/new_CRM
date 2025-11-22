@@ -9,8 +9,14 @@ export const Warehouses = defineStore('Warehouses', () => {
     const warehouses = ref([])
     const warehousesTypes = ref([])
 
+    const notifications = ref(false)
+    const notificationsDetail = ref(null)
+
     const getWarehouses = computed(() => warehouses)
     const getWarehousesTypes = computed(() => warehousesTypes)
+
+    const getNotifications = computed(() => notifications)
+    const getNotificationsDetail = computed(() => notificationsDetail)
 
     const {updateLoader} = Loader()
     const {addMessages} = Messages();
@@ -88,6 +94,37 @@ export const Warehouses = defineStore('Warehouses', () => {
         updateLoader({method: 'removeWarehouse', status: true})
     }
 
+    const findNotifications = async () => {
+        updateLoader({method: 'findNotifications', status: false})
+        await axios.get(`/admin/goods/notifications.php?check`)
+            .then(res => {
+                console.log(res.data.check)
+                notifications.value = res.data.check
+                addMessages(res.data.messages, 'success')
+            })
+            .catch((err) => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'findNotifications', status: true})
+    }
+
+    const findNotificationsDetail = async () => {
+        updateLoader({method: 'findNotifications', status: false})
+        await axios.get(`/admin/goods/notifications.php`)
+            .then(res => {
+                notificationsDetail.value = {
+                    products: res.data.products,
+                    measure_units: res.data.measure_units,
+                    warehouses: res.data.warehouses,
+                }
+                addMessages(res.data.messages, 'success')
+            })
+            .catch((err) => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'findNotifications', status: true})
+    }
+
     return {
         getWarehouses,
         getWarehousesTypes,
@@ -95,6 +132,10 @@ export const Warehouses = defineStore('Warehouses', () => {
         createWarehouse,
         updateWarehouse,
         removeWarehouse,
+        findNotifications,
+        findNotificationsDetail,
+        getNotifications,
+        getNotificationsDetail,
     }
 
 });
