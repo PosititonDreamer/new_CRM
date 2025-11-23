@@ -19,7 +19,7 @@ export const HookOrdersFind = () => {
     const {data: type} = validateInput("String", "track", 1)
     const {data: text} = validateInput("String", "", 3)
 
-    const submitFindOrders = async () => {
+    const submitFindOrders = async (afterPage = 'OrdersFind') => {
         type.value.tacked = true
         text.value.tacked = true
 
@@ -27,16 +27,16 @@ export const HookOrdersFind = () => {
             await findOrders({
                 type: type.value.value,
                 text: text.value.value
-            })
+            }, afterPage)
         }
     }
 
-    const submitDeleteOrders = async () => {
-        await deleteOrders(route.params.id)
+    const submitDeleteOrders = async (afterPage = 'OrdersFind') => {
+        await deleteOrders(route.params.id, afterPage)
     }
 
-    const submitReturnOrders = async () => {
-        await returnOrders(route.params.id)
+    const submitReturnOrders = async (afterPage = 'OrdersFind') => {
+        await returnOrders(route.params.id, afterPage)
     }
 
     const typesList = [

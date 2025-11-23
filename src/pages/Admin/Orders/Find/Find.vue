@@ -101,7 +101,7 @@ export default {
     >
       <u-form
           text="Найти заказы"
-          @submit.prevent="submitFindOrders"
+          @submit.prevent="submitFindOrders()"
       >
         <u-select
             title="Поиск по"
@@ -144,14 +144,14 @@ export default {
         title="Удалить заказ?"
         type="confirm"
         @close="router.push({name: 'OrdersFind', params: {status: route.params.status}})"
-        @accept="submitDeleteOrders"
+        @accept="submitDeleteOrders()"
     />
     <u-alert
         v-if="route.name === 'OrdersFindReturn' && route.params.id"
         title="Вернуть заказ?"
         type="confirm"
         @close="router.push({name: 'OrdersFind', params: {status: route.params.status}})"
-        @accept="submitReturnOrders"
+        @accept="submitReturnOrders()"
     />
   </div>
 </template>

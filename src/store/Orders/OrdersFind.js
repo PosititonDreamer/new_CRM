@@ -14,7 +14,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
     const {addMessages} = Messages();
     const router = useRouter();
 
-    const findOrders = async ({type, text}) => {
+    const findOrders = async ({type, text}, afterPage) => {
         clearOrders()
         updateLoader({method: 'findOrders', status: false})
         const formData = new FormData();
@@ -24,7 +24,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
             .then(res => {
                 orders.value = res.data.orders
                 addMessages(res.data.messages, 'success')
-                router.push({name: 'OrdersFind'})
+                router.push({name: afterPage})
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -32,7 +32,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
         updateLoader({method: 'findOrders', status: true})
     }
 
-    const deleteOrders = async (id) => {
+    const deleteOrders = async (id, afterPage) => {
         updateLoader({method: 'deleteOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
@@ -40,7 +40,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
             .then((res) => {
                 orders.value = orders.value.filter(order => +order.id !== +id)
                 addMessages(res.data.messages, 'success')
-                router.push({name: 'OrdersFind'})
+                router.push({name: afterPage})
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -48,7 +48,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
         updateLoader({method: 'deleteOrders', status: true})
     }
 
-    const returnOrders = async (id) => {
+    const returnOrders = async (id, afterPage) => {
         updateLoader({method: 'returnOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
@@ -59,7 +59,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
                         order.status = 5
                     }
                 })
-                router.push({name: 'OrdersFind'})
+                router.push({name: afterPage})
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
