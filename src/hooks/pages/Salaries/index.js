@@ -41,7 +41,7 @@ export const HookSalaries = () => {
         penaltiesList,
     }
 
-    const submitFindSalaries = async () => {
+    const submitFindSalaries = async (afterPage = 'Salaries') => {
         if(getWorker.value.rule === 'Админ') {
             worker.value.tacked = true
             date_start.value.tacked = true
@@ -53,7 +53,7 @@ export const HookSalaries = () => {
                         worker: worker.value.value,
                         date_start: date_start.value.value,
                         date_end: date_end.value.value,
-                    }
+                    }, afterPage
                 )
             }
         } else {
@@ -66,7 +66,8 @@ export const HookSalaries = () => {
                         worker: getWorker.value.id,
                         date_start: date_start.value.value,
                         date_end: date_end.value.value,
-                    }
+                    },
+                    afterPage
                 )
             }
         }

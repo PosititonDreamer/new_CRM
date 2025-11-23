@@ -421,7 +421,7 @@ export default {
     >
       <u-form
           text="Найти зарплату"
-          @submit.prevent="submitFindSalaries"
+          @submit.prevent="submitFindSalaries()"
       >
         <u-select
             title="Работник"
@@ -461,7 +461,7 @@ export default {
       <u-form
           v-if="+getSalaries.rule === 2"
           text="Выдать зарплату"
-          @submit.prevent="submitAcceptSalariesAssembler"
+          @submit.prevent="submitAcceptSalariesAssembler()"
       >
         <u-card class="salaries__card salaries__card--sticky">
           <p class="salaries__sub-title">
@@ -535,7 +535,7 @@ export default {
       <u-form
           v-if="+getSalaries.rule === 3"
           text="Выдать зарплату"
-          @submit.prevent="submitAcceptSalariesOperator"
+          @submit.prevent="submitAcceptSalariesOperator()"
       >
         <u-card class="salaries__card salaries__card--sticky">
           <p class="salaries__sub-title">
