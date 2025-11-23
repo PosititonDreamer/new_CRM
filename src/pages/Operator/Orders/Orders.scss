@@ -1,0 +1,153 @@
+.orders {
+
+  &__create {
+    margin-bottom: 20px;
+  }
+
+  &__filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+    grid-gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__list {
+    position: relative;
+    z-index: 0;
+    margin-bottom: 20px;
+  }
+
+  &__filter-delivery {
+    z-index: 1;
+  }
+
+  &__title {
+    margin-bottom: 10px;
+  }
+
+  &__select {
+    &--type {
+      z-index: 15;
+    }
+
+    &--product {
+      z-index: 10;
+    }
+
+    &--good {
+      z-index: 5;
+    }
+
+    &--delivery {
+      z-index: 20;
+    }
+  }
+
+  &__add-order {
+    margin-left: auto;
+  }
+
+  &__delete-order {
+    position: absolute;
+    right: 10px;
+    top: 26px;
+    width: 33px;
+    height: 33px;
+
+    &::before, &::after {
+      content: '';
+      width: 80%;
+      height: 2px;
+      background: var(--red);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: left top;
+    }
+
+    &::before {
+      transform: rotate(45deg) translate(-50%, -50%);
+    }
+
+    &::after {
+      transform: rotate(-45deg) translate(-50%, -50%);
+    }
+
+    &:hover, &:active {
+      &::before, &::after {
+        background: var(--white);
+      }
+    }
+  }
+
+  &__form-item {
+    position: relative;
+    grid-gap: 10px;
+    z-index: var(--z-index);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    &--division {
+      padding-right: 50px;
+    }
+  }
+
+  &__title, &__content {
+    width: calc(100% - 30px);
+  }
+
+  &__content {
+    padding-left: 10px;
+  }
+
+  &__present {
+    z-index: 0;
+  }
+
+  &__item {
+    position: relative;
+    background: var(--white);
+    z-index: var(--z-index);
+  }
+
+  &__address-button {
+    text-align: left;
+  }
+
+  &__text {
+    margin-bottom: 5px;
+  }
+  &__address-list {
+    display: grid;
+    grid-gap: 5px;
+  }
+
+  &__clients-item {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__clients-list {
+    min-height: 200px;
+    max-height: 200px;
+    overflow: hidden auto;
+  }
+
+  &__input {
+    &--file {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 10px;
+  }
+}
+

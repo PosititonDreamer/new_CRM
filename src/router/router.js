@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import {Auth} from "@/store/Workers/Auth.js";
-
+// admin
 import UIPage from "@/pages/UI/UI.vue";
 import AuthPage from "@/pages/Auth/Auth.vue";
 import AdminPage from "@/pages/Admin/Admin.vue";
@@ -27,6 +27,13 @@ import PromosPage from "@/pages/Admin/Promos/Promos.vue";
 import OrdersFindPage from "@/pages/Admin/Orders/Find/Find.vue";
 import ClientsFindPage from "@/pages/Admin/Clients/Find/Find.vue";
 import NotificationsPage from "@/pages/Admin/Warehouses/Notifications/Notifications.vue";
+
+// operator
+import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
+import OperatorClientsFindPage from "@/pages/Operator/Clients/Find/Find.vue"
+import OperatorOrdersPage from "@/pages/Operator/Orders/Orders.vue"
+import OperatorOrdersFindPage from "@/pages/Operator/Orders/Find/Find.vue"
+import OperatorSalariesPage from "@/pages/Operator/Salaries/Salaries.vue"
 
 const routes = [
     {
@@ -650,7 +657,156 @@ const routes = [
             title: "Малое количество товаров"
         },
 
-    }
+    },
+    {
+        name: "OperatorClients",
+        path: '/operator/clients',
+        component: OperatorClientsPage,
+        meta: {
+            isAuth: true,
+            isOperator: true,
+            layout: 'Sidebar',
+            title: "Список клиентов"
+        },
+        children: [
+            {
+                name: "OperatorClientsUpdate",
+                path: 'update/:client',
+            },
+            {
+                name: "OperatorClientsJoin",
+                path: 'join/:client',
+            },
+            {
+                name: "OperatorClientsJoinAddress",
+                path: "join-address/:client"
+            },
+            {
+                name: "OperatorClientsPreviewOrder",
+                path: "order/:id"
+            }
+        ]
+    },
+    {
+        name: "OperatorClientsFind",
+        path: '/operator/clients-find',
+        component: OperatorClientsFindPage,
+        meta: {
+            isAuth: true,
+            isOperator: true,
+            layout: 'Sidebar',
+            title: "Поиск клиентов"
+        },
+        children: [
+            {
+                name: "OperatorClientsFindUpdate",
+                path: 'update/:client',
+            },
+            {
+                name: "OperatorClientsFindJoin",
+                path: 'join/:client',
+            },
+            {
+                name: "OperatorClientsFindJoinAddress",
+                path: "join-address/:client"
+            },
+            {
+                name: "OperatorClientsFindPreviewOrder",
+                path: "order/:id"
+            },
+            {
+                name: "OperatorClientsFindSetting",
+                path: "setting"
+            }
+        ]
+    },
+    {
+        name: "OperatorOrders",
+        path: '/operator/orders/:status',
+        component: OperatorOrdersPage,
+        meta: {
+            isAuth: true,
+            isOperator: true,
+            layout: 'Sidebar',
+            title: "Заказы"
+        },
+        children: [
+            {
+                name: "OperatorOrdersCreate",
+                path: 'create',
+            },
+            {
+                name: "OperatorOrdersUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "OperatorOrdersDelete",
+                path: 'delete/:id',
+            },
+            {
+                name: "OperatorOrdersReturn",
+                path: 'return/:id',
+            },
+            {
+                name: "OperatorOrdersAddBlank",
+                path: "add-blank/:id"
+            },
+            {
+                name: "OperatorOrdersAddTrack",
+                path: "add-track/:id"
+            },
+            {
+                name: "OperatorOrdersPreview",
+                path: "preview/:id"
+            },
+        ]
+    },
+    {
+        name: "OperatorOrdersFind",
+        path: '/operator/orders-find',
+        component: OperatorOrdersFindPage,
+        meta: {
+            isAuth: true,
+            isOperator: true,
+            layout: 'Sidebar',
+            title: "Поиск заказов"
+        },
+        children: [
+            {
+                name: "OperatorOrdersFindDelete",
+                path: 'delete/:id',
+            },
+            {
+                name: "OperatorOrdersFindReturn",
+                path: 'return/:id',
+            },
+            {
+                name: "OperatorOrdersFindPreview",
+                path: "preview/:id"
+            },
+            {
+                name: "OperatorOrdersFindSetting",
+                path: "setting"
+            }
+        ]
+    },
+    {
+        name: "OperatorSalaries",
+        path: '/operator/salaries',
+        component: OperatorSalariesPage,
+        meta: {
+            isAuth: true,
+            isOperator: true,
+            layout: 'Sidebar',
+            title: "Зарлаты"
+        },
+        children: [
+            {
+                name: "OperatorSalariesSetting",
+                path: 'setting'
+            },
+        ]
+    },
 ];
 
 const router = createRouter({
