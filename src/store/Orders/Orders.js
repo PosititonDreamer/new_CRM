@@ -97,7 +97,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'findOrdersDetail', status: true})
     }
 
-    const createOrders = async ({client, address, track, comment, phone, delivery, email, composition, payed, blank, worker}, warehouse = 1) => {
+    const createOrders = async ({client, address, track, comment, phone, delivery, email, composition, payed, blank, worker}, afterPage, warehouse = 1) => {
         updateLoader({method: 'createOrders', status: false})
         const formData = new FormData();
         formData.append('client', client)
@@ -119,9 +119,9 @@ export const Orders = defineStore('Orders', () => {
                     addBlank({
                         id: res.data.order.id,
                         blank
-                    })
+                    }, afterPage)
                 } else {
-                    router.push({name: 'Orders', params: {status: route.params.status}});
+                    router.push({name: afterPage, params: {status: route.params.status}});
                 }
             })
             .catch(err => {
@@ -130,7 +130,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'createOrders', status: true})
     }
 
-    const updateOrders = async ({id, client, address, track, comment, phone, delivery, email, composition, blank}, warehouse = 1) => {
+    const updateOrders = async ({id, client, address, track, comment, phone, delivery, email, composition, blank},afterPage, warehouse = 1) => {
         updateLoader({method: 'updateOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
@@ -160,9 +160,9 @@ export const Orders = defineStore('Orders', () => {
                     addBlank({
                         id: res.data.order.id,
                         blank
-                    })
+                    }, afterPage)
                 } else {
-                    router.push({name: 'Orders', params: {status: route.params.status}});
+                    router.push({name: afterPage, params: {status: route.params.status}});
                 }
             })
             .catch(err => {
@@ -171,14 +171,14 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'updateOrders', status: true})
     }
 
-    const deleteOrders = async (id) => {
+    const deleteOrders = async (id, afterPage) => {
         updateLoader({method: 'deleteOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
         await axios.post('/orders/delete.php', formData)
             .then((res) => {
                 orders.value = orders.value.filter(order => +order.id !== +id)
-                router.push({name: 'Orders', params: {status: route.params.status}});
+                router.push({name: afterPage, params: {status: route.params.status}});
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
@@ -187,14 +187,14 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'deleteOrders', status: true})
     }
 
-    const returnOrders = async (id) => {
+    const returnOrders = async (id, afterPage) => {
         updateLoader({method: 'returnOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
         await axios.post('/orders/return.php', formData)
             .then((res) => {
                 orders.value = orders.value.filter(order => +order.id !== +id)
-                router.push({name: 'Orders', params: {status: route.params.status}});
+                router.push({name: afterPage, params: {status: route.params.status}});
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
@@ -203,7 +203,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'returnOrders', status: true})
     }
 
-    const collectOrders = async ({id, worker, boxes}) => {
+    const collectOrders = async ({id, worker, boxes}, afterPage) => {
         updateLoader({method: 'collectOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
@@ -213,7 +213,7 @@ export const Orders = defineStore('Orders', () => {
         await axios.post('/orders/collect.php', formData)
             .then((res) => {
                 orders.value = orders.value.filter(order => +order.id !== +id)
-                router.push({name: 'Orders', params: {status: route.params.status}});
+                router.push({name: afterPage, params: {status: route.params.status}});
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
@@ -222,14 +222,14 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'collectOrders', status: true})
     }
 
-    const sendOrders = async (id_list) => {
+    const sendOrders = async (id_list, afterPage) => {
         updateLoader({method: 'sendOrders', status: false})
         const formData = new FormData();
         formData.append('orders', JSON.stringify(id_list))
         await axios.post('/orders/send.php', formData)
             .then((res) => {
                 orders.value = orders.value.filter(order => !id_list.find(id_item => +id_item === +order.id))
-                router.push({name: 'Orders', params: {status: route.params.status}});
+                router.push({name: afterPage, params: {status: route.params.status}});
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
@@ -238,7 +238,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'sendOrders', status: true})
     }
 
-    const addTrack = async ({id, track, blank}) => {
+    const addTrack = async ({id, track, blank}, afterPage) => {
         updateLoader({method: 'addTrack', status: false})
         const formData = new FormData();
         formData.append('id', id);
@@ -251,9 +251,9 @@ export const Orders = defineStore('Orders', () => {
                     addBlank({
                         id,
                         blank
-                    })
+                    }, afterPage)
                 } else {
-                    router.push({name: 'Orders', params: {status: route.params.status}});
+                    router.push({name: afterPage, params: {status: route.params.status}});
                 }
             })
             .catch(err => {
@@ -262,7 +262,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'addTrack', status: true})
     }
 
-    const addBlank = async ({id, blank}) => {
+    const addBlank = async ({id, blank}, afterPage) => {
         updateLoader({method: 'addBlank', status: false})
         const formData = new FormData();
         formData.append('id', id);
@@ -275,7 +275,7 @@ export const Orders = defineStore('Orders', () => {
                     }
                 })
                 addMessages(res.data.messages, 'success')
-                router.push({name: 'Orders', params: {status: route.params.status}});
+                router.push({name: afterPage, params: {status: route.params.status}});
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

@@ -101,7 +101,7 @@ export const HookOrders = () => {
         payed
     }
 
-    const submitCreateOrders = async () => {
+    const submitCreateOrders = async (afterPage = 'Orders') => {
         client.value.tacked = true
         phone.value.tacked = true
         address.value.tacked = true
@@ -146,11 +146,11 @@ export const HookOrders = () => {
                         type: item.type.value,
                     }
                 })
-            })
+            }, afterPage)
         }
     }
 
-    const submitUpdateOrders = async () => {
+    const submitUpdateOrders = async (afterPage = 'Orders') => {
         client.value.tacked = true
         phone.value.tacked = true
         address.value.tacked = true
@@ -195,19 +195,19 @@ export const HookOrders = () => {
                         type: item.type.value,
                     }
                 })
-            })
+            }, afterPage)
         }
     }
 
-    const submitDeleteOrders = async () => {
-        await deleteOrders(route.params.id)
+    const submitDeleteOrders = async (afterPage = 'Orders') => {
+        await deleteOrders(route.params.id, afterPage)
     }
 
-    const submitReturnOrders = async () => {
-        await returnOrders(route.params.id)
+    const submitReturnOrders = async (afterPage = 'Orders') => {
+        await returnOrders(route.params.id, afterPage)
     }
 
-    const submitCollectOrders = async () => {
+    const submitCollectOrders = async (afterPage = 'Orders') => {
         boxes.value.forEach(box => {
             box.box.tacked = true
         })
@@ -217,11 +217,11 @@ export const HookOrders = () => {
                 id: route.params.id,
                 worker: getWorker.value.id,
                 boxes: boxes.value.map(box => box.box.value)
-            })
+            }, afterPage)
         }
     }
 
-    const submitAddTrack = async () => {
+    const submitAddTrack = async (afterPage = 'Orders') => {
         if(getOrderDetail.value.address.delivery === 'CDEK') {
             track.value.tacked = true
             if (track.value.valid) {
@@ -229,7 +229,7 @@ export const HookOrders = () => {
                     id: route.params.id,
                     track: track.value.value,
                     blank: null
-                })
+                }, afterPage)
             }
         } else {
             track.value.tacked = true
@@ -239,25 +239,25 @@ export const HookOrders = () => {
                     id: route.params.id,
                     track: track.value.value,
                     blank: file.value.value
-                })
+                }, afterPage)
             }
         }
     }
 
-    const submitAddBlank = async () => {
+    const submitAddBlank = async (afterPage = 'Orders') => {
         file.value.tacked = true
 
         if (file.value.valid) {
             await addBlank({
                 id: route.params.id,
                 blank: file.value.value
-            })
+            }, afterPage)
         }
     }
 
-    const submitSendOrders = async () => {
+    const submitSendOrders = async (afterPage = 'Orders') => {
         if(tackedOrders.value.length) {
-            await sendOrders(tackedOrders.value)
+            await sendOrders(tackedOrders.value, afterPage)
         }
     }
 
@@ -427,6 +427,10 @@ export const HookOrders = () => {
                         name: "sendMessage",
                         text: "Получить в ТГ"
                     },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
                 ]
             } else if (+route.params.status === 2) {
                 return [
@@ -446,6 +450,10 @@ export const HookOrders = () => {
                         name: "sendMessage",
                         text: "Получить в ТГ"
                     },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
                 ]
             } else if (+route.params.status === 3) {
                 return [
@@ -456,6 +464,10 @@ export const HookOrders = () => {
                     {
                         name: "addTrack",
                         text: "Добавить трек-номер"
+                    },
+                    {
+                        name: "delete",
+                        text: "Удалить"
                     },
                 ]
             } else if (+route.params.status === 4) {
@@ -472,6 +484,10 @@ export const HookOrders = () => {
                         name: "sendMessage",
                         text: "Получить в ТГ"
                     },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
                 ]
             } else if (+route.params.status === 5) {
                 return [
@@ -482,6 +498,10 @@ export const HookOrders = () => {
                     {
                         name: "sendMessage",
                         text: "Получить в ТГ"
+                    },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
                     },
                 ]
             }

@@ -343,7 +343,7 @@ export default {
     >
       <u-form
           text="Добавить заказ"
-          @submit.prevent="submitCreateOrders"
+          @submit.prevent="submitCreateOrders()"
           v-if="loading"
       >
         <u-input
@@ -572,7 +572,7 @@ export default {
     >
       <u-form
           text="Изменить заказ"
-          @submit.prevent="submitUpdateOrders"
+          @submit.prevent="submitUpdateOrders()"
           v-if="loading"
       >
         <u-input
@@ -785,14 +785,14 @@ export default {
         title="Удалить заказ?"
         type="confirm"
         @close="router.push({name: 'Orders', params: {status: route.params.status}})"
-        @accept="submitDeleteOrders"
+        @accept="submitDeleteOrders()"
     />
     <u-alert
         v-if="route.name === 'OrdersReturn' && route.params.id"
         title="Вернуть заказ?"
         type="confirm"
         @close="router.push({name: 'Orders', params: {status: route.params.status}})"
-        @accept="submitReturnOrders"
+        @accept="submitReturnOrders()"
     />
     <u-alert
         v-if="route.name === 'OrdersSend' && route.params.id"
@@ -808,7 +808,7 @@ export default {
     >
       <u-form
           text="Добавить трек-номер"
-          @submit.prevent="submitAddTrack"
+          @submit.prevent="submitAddTrack()"
       >
         <p @click="copyNumber(getOrderDetail.number)"><b>Номер заказа: </b>{{ getOrderDetail.number }} </p>
         <p><b>ФИО: </b>{{ getOrderDetail.client.full_name }} </p>
@@ -837,7 +837,7 @@ export default {
     >
       <u-form
           text="Добавить бланк"
-          @submit.prevent="submitAddBlank"
+          @submit.prevent="submitAddBlank()"
       >
         <p><b>Трек-номер: </b>{{ getOrderDetail.track }} </p>
         <p @click="copyNumber(getOrderDetail.number)"><b>Номер заказа: </b>{{ getOrderDetail.number }} </p>
@@ -865,7 +865,7 @@ export default {
         v-if="route.name === 'OrdersSendSeveral' && getOrders.length"
         :tacked-orders="tackedOrders"
         :orders="getOrders"
-        @submit="submitSendOrders"
+        @submit="submitSendOrders()"
         @close="router.push({name: 'Orders'})"
       />
     <orders-collect
@@ -877,7 +877,7 @@ export default {
         :boxes="order.boxes"
         @addBox="addBox()"
         @removeBox="e=>removeBox(e)"
-        @submit="submitCollectOrders"
+        @submit="submitCollectOrders()"
         @close="router.push({name: 'Orders'})"
     />
   </div>
