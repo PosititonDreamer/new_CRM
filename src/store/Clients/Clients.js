@@ -52,6 +52,7 @@ export const Clients = defineStore('Clients', () => {
         formData.append('text', text)
         await axios.post('/clients/find_list.php', formData)
             .then((res) => {
+                nextPage.value = null
                 clients.value = res.data.clients
                 addMessages(res.data.messages, 'success')
                 router.push({name: afterPage})
