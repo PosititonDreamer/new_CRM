@@ -4,6 +4,7 @@ import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 import {useRoute} from "vue-router";
 import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
 import {Auth} from "@/store/Workers/Auth.js";
+import {Assembler} from "@/store/Assembler/Assembler.js";
 
 export default {
   name: "Sidebar",
@@ -18,6 +19,7 @@ export default {
     }
 
     const {getWarehouses, getWarehousesTypes, getNotifications} = Warehouses()
+    const {getWarehouses: warehousesAssembler} = Assembler()
     const route = useRoute()
 
     const closeSidebar = () => {
@@ -30,6 +32,12 @@ export default {
 
       findWarehouses()
       findNotifications()
+    }
+
+    if (getWorker.value.rule === 'Сборщик') {
+      const {findWarehouses} = Assembler()
+
+      findWarehouses()
     }
 
     watch(route,
@@ -48,6 +56,7 @@ export default {
       getWarehousesTypes,
       getWorker,
       getNotifications,
+      warehousesAssembler
     }
   }
 }
@@ -207,6 +216,79 @@ export default {
         </div>
       </div>
       <div class="sidebar__list" v-else-if="getWorker.rule === 'Сборщик'">
+        <div class="sidebar__item">
+          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerOrders' || route.matched.find(item => item.name === 'AssemblerOrders')}] ">
+            Заказы</p>
+          <div class="sidebar__sub-list">
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'AssemblerOrders', params: {status: 3}}">В обработке
+              </router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'AssemblerOrders', params: {status: 1}}">Текущие
+              </router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'AssemblerOrders', params: {status: 2}}">Собранные
+              </router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'AssemblerOrders', params: {status: 4}}">Отправленные
+              </router-link>
+            </div>
+            <div class="sidebar__item">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'AssemblerOrders', params: {status: 5}}">Возвращенные
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar__item">
+          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerGoods' || route.name === 'AssemblerGoodsWeight'|| route.name === 'AssemblerGoodsConsumable'|| route.name === 'AssemblerGoodsOther'|| route.name === 'AssemblerSupplies'  || route.matched.find(item => item.name === 'AssemblerSupplies')}] ">
+            Склады</p>
+          <div class="sidebar__sub-list" v-if="warehousesAssembler.length">
+            <div class="sidebar__item" v-for="warehouse in warehousesAssembler">
+              <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.params.warehouse === warehouse.id}] ">
+                {{ warehouse.title }}</p>
+              <div class="sidebar__sub-list">
+                <div class="sidebar__item">
+                  <router-link class="sidebar__link" active-class="sidebar__link--active"
+                               :to="{name: 'AssemblerGoods', params: {warehouse: warehouse.id}}">Фасованные товары
+                  </router-link>
+                </div>
+                <div class="sidebar__item">
+                  <router-link class="sidebar__link" active-class="sidebar__link--active"
+                               :to="{name: 'AssemblerGoodsWeight', params: {warehouse: warehouse.id}}">Весовые товары
+                  </router-link>
+                </div>
+                <div class="sidebar__item">
+                  <router-link class="sidebar__link" active-class="sidebar__link--active"
+                               :to="{name: 'AssemblerGoodsConsumable', params: {warehouse: warehouse.id}}">Расходники
+                  </router-link>
+                </div>
+                <div class="sidebar__item">
+                  <router-link class="sidebar__link" active-class="sidebar__link--active"
+                               :to="{name: 'AssemblerGoodsOther', params: {warehouse: warehouse.id}}">Коробки и магниты
+                  </router-link>
+                </div>
+                <div class="sidebar__item" v-if="warehouse.supply">
+                  <router-link class="sidebar__link" active-class="sidebar__link--active"
+                               :to="{name: 'AssemblerSupplies', params: {warehouse: warehouse.id}}">Поставки
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar__item">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'AssemblerSalaries'}">Зарплаты
+          </router-link>
+        </div>
       </div>
       <div class="sidebar__list" v-else-if="getWorker.rule === 'Оператор'">
         <div class="sidebar__item">

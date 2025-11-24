@@ -35,6 +35,15 @@ import OperatorOrdersPage from "@/pages/Operator/Orders/Orders.vue"
 import OperatorOrdersFindPage from "@/pages/Operator/Orders/Find/Find.vue"
 import OperatorSalariesPage from "@/pages/Operator/Salaries/Salaries.vue"
 
+// assembler
+import AssemblerOrdersPage from "@/pages/Assembler/Orders/Orders.vue"
+import AssemblerSuppliesPage from "@/pages/Assembler/Supplies/Supplies.vue"
+import AssemblerSalariesPage from "@/pages/Assembler/Salaries/Salaries.vue"
+import AssemblerGoodsPage from "@/pages/Assembler/Goods/Goods.vue"
+import AssemblerGoodsWeightPage from "@/pages/Assembler/Goods/Weight/Weight.vue"
+import AssemblerGoodsConsumablePage from "@/pages/Assembler/Goods/Consumable/Consumable.vue"
+import AssemblerGoodsOtherPage from "@/pages/Assembler/Goods/Other/Other.vue"
+
 const routes = [
     {
         name: 'UI',
@@ -803,6 +812,133 @@ const routes = [
         children: [
             {
                 name: "OperatorSalariesSetting",
+                path: 'setting'
+            },
+        ]
+    },
+    {
+        name: "AssemblerGoods",
+        path: '/assembler/warehouses/:warehouse/goods',
+        component: AssemblerGoodsPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Фасованные товары"
+        },
+    },
+    {
+        name: "AssemblerGoodsWeight",
+        path: '/assembler/warehouses/:warehouse/goods-weight',
+        component: AssemblerGoodsWeightPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Весовые товары"
+        },
+    },
+    {
+        name: "AssemblerGoodsConsumable",
+        path: '/assembler/warehouses/:warehouse/goods-consumable',
+        component: AssemblerGoodsConsumablePage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Расходники"
+        },
+    },
+    {
+        name: "AssemblerGoodsOther",
+        path: '/assembler/warehouses/:warehouse/goods-other',
+        component: AssemblerGoodsOtherPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Коробки и магниты"
+        },
+    },
+    {
+        name: "AssemblerSupplies",
+        path: '/assembler/warehouses/:warehouse/supplies',
+        component: AssemblerSuppliesPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Поставки"
+        },
+        children: [
+            {
+                name: "AssemblerSuppliesCreate",
+                path: 'create',
+            },
+            {
+                name: "AssemblerSuppliesUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "AssemblerSuppliesDelete",
+                path: 'delete/:id',
+            },
+            {
+                name: "AssemblerSuppliesPreview",
+                path: 'preview/:id',
+            },
+            {
+                name: "AssemblerSuppliesCollect",
+                path: 'collect/:id',
+            },
+            {
+                name: "AssemblerSuppliesAccept",
+                path: 'accept/:id',
+            }
+        ]
+    },
+    {
+        name: "AssemblerOrders",
+        path: '/assembler/orders/:status',
+        component: AssemblerOrdersPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Заказы"
+        },
+        children: [
+            {
+                name: "AssemblerOrdersPreview",
+                path: "preview/:id"
+            },
+            {
+                name: "AssemblerOrdersCollect",
+                path: "collect/:id"
+            },
+            {
+                name: "AssemblerOrdersSend",
+                path: "send/:id"
+            },
+            {
+                name: "AssemblerOrdersSendSeveral",
+                path: "send-several"
+            }
+        ]
+    },
+    {
+        name: "AssemblerSalaries",
+        path: '/assembler/salaries',
+        component: AssemblerSalariesPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Зарлаты"
+        },
+        children: [
+            {
+                name: "AssemblerSalariesSetting",
                 path: 'setting'
             },
         ]
