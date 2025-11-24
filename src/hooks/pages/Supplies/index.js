@@ -4,7 +4,6 @@ import {validateInput} from "@/hooks/validateInput.js";
 import {computed, ref} from "vue";
 import {Products} from "@/store/Admin/Products/Products.js";
 import {MeasureUnits} from "@/store/Admin/Products/MeasureUnits.js";
-import supplies from "@/pages/Admin/Supplies/Supplies.vue";
 
 export const HookSupplies = () => {
     const {

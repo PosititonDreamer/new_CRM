@@ -210,7 +210,7 @@ export const HookSuppliesWarehouse = () => {
         }
     }
 
-    const submitCreateSuppliesWarehouse = async () => {
+    const submitCreateSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         supply.value.tacked = true
         if (supply.value.valid && suppliesList.value.find(item => item.value > 0)) {
             await createSuppliesWarehouse({
@@ -221,11 +221,11 @@ export const HookSuppliesWarehouse = () => {
                         quantity: item.value
                     }
                 })
-            })
+            }, afterPage)
         }
     }
 
-    const submitUpdateSuppliesWarehouse = async () => {
+    const submitUpdateSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         if (suppliesList.value.find(item => item.value > 0)) {
             await updateSuppliesWarehouse({
                 id: route.params.id,
@@ -235,22 +235,22 @@ export const HookSuppliesWarehouse = () => {
                         quantity: item.value
                     }
                 })
-            })
+            }, afterPage)
         }
     }
 
-    const submitDeleteSuppliesWarehouse = async () => {
-        await deleteSuppliesWarehouse(route.params.id)
+    const submitDeleteSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
+        await deleteSuppliesWarehouse(route.params.id, afterPage)
     }
 
-    const submitSendSuppliesWarehouse = async () => {
+    const submitSendSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         if (collectedList.value.length === getSuppliesDetail.value.list?.length) {
-            await sendSuppliesWarehouse(route.params.id)
+            await sendSuppliesWarehouse(route.params.id, afterPage)
         }
     }
 
-    const submitAcceptSuppliesWarehouse = async () => {
-        await acceptSuppliesWarehouse(route.params.id)
+    const submitAcceptSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
+        await acceptSuppliesWarehouse(route.params.id, afterPage)
     }
 
     const clearData = () => {
