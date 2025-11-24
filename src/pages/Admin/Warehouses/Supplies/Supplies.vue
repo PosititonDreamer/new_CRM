@@ -207,7 +207,7 @@ export default {
     >
       <u-form
           text="Заказать поставку"
-          @submit.prevent="submitCreateSuppliesWarehouse"
+          @submit.prevent="submitCreateSuppliesWarehouse()"
       >
         <u-select
             v-if="computedWarehouse.length > 1"
@@ -425,7 +425,7 @@ export default {
     >
       <u-form
           text="Изменить поставку"
-          @submit.prevent="submitUpdateSuppliesWarehouse"
+          @submit.prevent="submitUpdateSuppliesWarehouse()"
       >
         <u-select
             title="Поставка из"
@@ -690,7 +690,7 @@ export default {
     >
       <u-form
           text="Собрать поставку"
-          @submit.prevent="submitSendSuppliesWarehouse"
+          @submit.prevent="submitSendSuppliesWarehouse()"
       >
         <div class="supplies-collect__content">
           <p class="supplies-collect__title">
@@ -738,7 +738,7 @@ export default {
     >
       <u-form
           text="Принять поставку"
-          @submit.prevent="submitAcceptSuppliesWarehouse"
+          @submit.prevent="submitAcceptSuppliesWarehouse()"
       >
         <div class="supplies-preview">
           <p class="supplies-preview__title">
