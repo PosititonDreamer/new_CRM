@@ -14,7 +14,6 @@ export default {
   },
   setup() {
     const {getNotificationsDetail} = Warehouses()
-    const opens = ref({})
 
     const computedNotifications = computed(() => {
       if (!getNotificationsDetail.value) {
@@ -82,7 +81,6 @@ export default {
 
     return {
       computedNotifications,
-      opens
     }
   }
 }
@@ -96,8 +94,6 @@ export default {
       >
         <u-accordion
             :title="item.title"
-            :open="!!opens[`warehouse-${item.id}`]"
-            @open="opens[`warehouse-${item.id}`] = !opens[`warehouse-${item.id}`]"
         >
           <u-card
               v-if="item.goods.length"
@@ -105,8 +101,6 @@ export default {
           >
             <u-accordion
                 title="Фасованные товары"
-                :open="!!opens[`warehouse-goods-${item.id}`]"
-                @open="opens[`warehouse-goods-${item.id}`] = !opens[`warehouse-goods-${item.id}`]"
             >
               <u-card
                 class="notifications__item"
@@ -128,8 +122,6 @@ export default {
           >
             <u-accordion
                 title="Весовые товары"
-                :open="!!opens[`warehouse-weight-${item.id}`]"
-                @open="opens[`warehouse-weight-${item.id}`] = !opens[`warehouse-weight-${item.id}`]"
             >
               <u-card
                   class="notifications__item"
@@ -151,8 +143,6 @@ export default {
           >
             <u-accordion
                 title="Расходники"
-                :open="!!opens[`warehouse-consumable-${item.id}`]"
-                @open="opens[`warehouse-consumable-${item.id}`] = !opens[`warehouse-consumable-${item.id}`]"
             >
               <u-card
                   class="notifications__item"
@@ -174,8 +164,6 @@ export default {
           >
             <u-accordion
                 title="Коробки и магниты"
-                :open="!!opens[`warehouse-other-${item.id}`]"
-                @open="opens[`warehouse-other-${item.id}`] = !opens[`warehouse-other-${item.id}`]"
             >
               <u-card
                   class="notifications__item"

@@ -43,7 +43,6 @@ export default {
       submitDeleteGoodsKit,
     } = HookGoodsKit()
 
-    const openKit = ref(null)
     const loading = ref(false)
 
     const {findGoodsKit} = GoodsKit()
@@ -173,7 +172,6 @@ export default {
       submitCreateGoodsKit,
       submitUpdateGoodsKit,
       submitDeleteGoodsKit,
-      openKit,
       actions,
       loading,
       getGoods,
@@ -209,8 +207,6 @@ export default {
         <u-accordion
             class="goods-kit__accordion"
             title="Входящие фасованные товары"
-            :open="openKit === kit.id"
-            @open="openKit = openKit === kit.id ? null : kit.id"
             small
         >
           <div class="goods-kit__content">

@@ -186,8 +186,6 @@ export default {
         </p>
         <u-accordion
             title="Поставляемые товары"
-            :open="!!supply.open"
-            @open="supply.open = !supply.open"
         >
           <div class="supplies__sub-list" v-if="findSuppliesList(supply.list).goods.length">
             <p class="supplies__title">Фасованные товары</p>

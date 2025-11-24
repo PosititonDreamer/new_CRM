@@ -132,8 +132,6 @@ export default {
       >
         <u-accordion
             title="Заказы"
-            :open="!!getGraphics.orders.open"
-            @open="getGraphics.orders.open = !getGraphics.orders.open"
             key="orders-graphics-detail"
         >
           <u-card
@@ -261,8 +259,6 @@ export default {
       >
         <u-accordion
             :title="item.product"
-            :open="!!item.open"
-            @open="item.open = !item.open"
             key="orders-graphics-detail"
         >
           <p class="graphics__text">
@@ -304,8 +300,6 @@ export default {
             >
               <u-accordion
                   title="Графики по дням"
-                  :open="!!item.openGraphicsDay"
-                  @open="item.openGraphicsDay = !item.openGraphicsDay"
               >
                 <template
                     v-for="type in item.types"
@@ -343,8 +337,6 @@ export default {
             >
               <u-accordion
                   title="Графики по неделям"
-                  :open="!!item.openGraphicsWeek"
-                  @open="item.openGraphicsWeek = !item.openGraphicsWeek"
               >
                 <template
                     v-for="type in item.types"
@@ -382,8 +374,6 @@ export default {
             >
               <u-accordion
                   title="Графики по месяцам"
-                  :open="!!item.openGraphicsMonth"
-                  @open="item.openGraphicsMonth = !item.openGraphicsMonth"
               >
                 <template
                     v-for="type in item.types"
@@ -421,8 +411,6 @@ export default {
             >
               <u-accordion
                   title="Графики по годам"
-                  :open="!!item.openGraphicsYear"
-                  @open="item.openGraphicsYear = !item.openGraphicsYear"
               >
                 <template
                     v-for="type in item.types"

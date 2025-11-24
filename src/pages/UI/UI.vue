@@ -186,7 +186,7 @@ export default {
     </div>
     <div class="UI__item">
       <u-card>
-        <u-accordion title="Карточка" :open="openAccordion" @open="openAccordion = !openAccordion">
+        <u-accordion title="Карточка">
           <p>Какой-то текст</p>
           <u-button>Кнопка</u-button>
           <u-button>Кнопка</u-button>

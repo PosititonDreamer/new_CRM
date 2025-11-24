@@ -164,8 +164,6 @@ export default {
         <u-card class="clients-find__address-list">
           <u-accordion
               title="Адреса клиента"
-              :open="!!clientItem.openAddress"
-              @open="clientItem.openAddress = !clientItem.openAddress"
           >
             <u-card class="clients-find__address" v-for="addressItem in clientItem.address">
               <p class="clients-find__text">
@@ -180,8 +178,6 @@ export default {
         <u-card class="clients-find__orders-list">
           <u-accordion
               title="Заказы"
-              :open="!!clientItem.openOrders"
-              @open="clientItem.openOrders = !clientItem.openOrders"
           >
             <orders-list
                 :orders="clientItem.orders"

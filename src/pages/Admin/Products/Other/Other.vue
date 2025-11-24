@@ -32,9 +32,8 @@ export default {
     const {getProducts} = Products()
     const {getPacking} = Packing()
     const {getMeasureUnits} = MeasureUnits()
-    const openAccordion = ref(null)
     const update = ref(false)
-    const loaded = ref(false)
+    const loading = ref(false)
 
     const computedData = computed(() => {
       if (!getMeasureUnits.value.length || !getPacking.value.length || !getProducts.value.length || !getOthers.value.length) {
@@ -100,7 +99,7 @@ export default {
           product.value.tacked = false
           packing.value.tacked = false
         }
-        loaded.value = true
+        loading.value = true
       }
     }
 
@@ -154,7 +153,6 @@ export default {
       getPacking,
       getMeasureUnits,
       computedData,
-      openAccordion,
       actions,
       product,
       packing,
@@ -165,7 +163,7 @@ export default {
       packings,
       changeProduct,
       update,
-      loaded
+      loading
     }
   }
 }
@@ -199,8 +197,6 @@ export default {
       <u-card class="other__card" v-for="product in computedData.filter(item => item.other.length)">
         <u-accordion
             :title="product.show_title ? product.show_title : product.title"
-            :open="!!openAccordion && openAccordion === product.id"
-            @open="openAccordion = openAccordion === product.id ? null : product.id"
         >
           <div class="other__wrapper">
             <u-card
@@ -229,7 +225,7 @@ export default {
       </u-card>
     </div>
     <u-popup
-        v-if="route.name === 'OtherUpdate' && computedData.length && products.length && loaded"
+        v-if="route.name === 'OtherUpdate' && computedData.length && products.length && loading"
         title="Изменение кривого товара"
         @close="router.push({name: 'Other'})"
     >

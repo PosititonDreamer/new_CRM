@@ -153,8 +153,6 @@ export default {
       >
         <u-accordion
             title="Не исполненные штрафы"
-            :open="!!getSalaries.openPenalties"
-            @open="getSalaries.openPenalties = !getSalaries.openPenalties"
         >
           <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
             <p class="salaries__text">
@@ -172,8 +170,6 @@ export default {
       >
         <u-accordion
             title="Не оплаченные заказы"
-            :open="!!getSalaries.openSalaries"
-            @open="getSalaries.openSalaries = !getSalaries.openSalaries"
         >
           <u-card class="salaries__item" v-for="salary in getSalaries.salaries.filter(item => !item.ready)">
             <p class="salaries__title">
@@ -199,8 +195,6 @@ export default {
       >
         <u-accordion
             title="Исполненные штрафы"
-            :open="!!getSalaries.openPenaltiesReady"
-            @open="getSalaries.openPenaltiesReady = !getSalaries.openPenaltiesReady"
         >
           <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => item.ready)">
             <p class="salaries__text">
@@ -218,8 +212,6 @@ export default {
       >
         <u-accordion
             title="Оплаченные заказы"
-            :open="!!getSalaries.openSalariesReady"
-            @open="getSalaries.openSalariesReady = !getSalaries.openSalariesReady"
         >
           <u-card class="salaries__item" v-for="salary in getSalaries.salaries.filter(item => item.ready)">
             <p class="salaries__track">

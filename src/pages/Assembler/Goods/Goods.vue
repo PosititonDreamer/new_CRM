@@ -22,12 +22,10 @@ export default {
       findGoods,
     } = Assembler()
 
-    const openAccordion = ref(null)
     const route = useRoute()
 
     watch(() => route.params.warehouse,
         () => {
-          openAccordion.value = null
           findGoods()
         }
     )
@@ -38,7 +36,6 @@ export default {
 
     return {
       computedProducts,
-      openAccordion,
       getMeasureUnits,
       getGoods
     }
@@ -51,8 +48,6 @@ export default {
       <u-card class="goods__item" v-for="product in computedProducts" :key="`goods-item-product${product.id}`">
         <u-accordion
             :title="product.show_title ? product.show_title : product.title"
-            :open="!!openAccordion && openAccordion === product.id"
-            @open="openAccordion = openAccordion === product.id ? null : product.id"
         >
           <div class="goods__list">
             <u-card

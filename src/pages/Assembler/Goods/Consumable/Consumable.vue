@@ -30,7 +30,6 @@ export default {
     } = Assembler();
 
     const route = useRoute()
-    const openConsumable = ref(null)
 
     watch(() => route.params.warehouse,
         () => {
@@ -53,7 +52,6 @@ export default {
 
     return {
       computedConsumable,
-      openConsumable
     }
   }
 }
@@ -76,8 +74,6 @@ export default {
         <u-accordion
             class="goods-consumable__accordion"
             title="Привязанные фасованные товары"
-            :open="openConsumable === consumable.id"
-            @open="openConsumable = openConsumable === consumable.id ? null : consumable.id"
             small
         >
           <div class="goods-consumable__wrapper">

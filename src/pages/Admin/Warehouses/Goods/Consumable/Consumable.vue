@@ -46,7 +46,6 @@ export default {
     const {getMeasureUnits} = MeasureUnits()
     const {getProducts} = Products()
     const {getGoods, findGoods} = Goods()
-    const openConsumable = ref(null)
 
     watch(() => route.params.warehouse,
         () => {
@@ -151,7 +150,6 @@ export default {
       getMeasureUnits,
       getProducts,
       getGoods,
-      openConsumable,
       computedConsumable,
       actions,
       products,
@@ -185,8 +183,6 @@ export default {
         <u-accordion
             class="goods-consumable__accordion"
             title="Привязанные фасованные товары"
-            :open="openConsumable === consumable.id"
-            @open="openConsumable = openConsumable === consumable.id ? null : consumable.id"
             small
         >
           <div class="goods-consumable__wrapper">

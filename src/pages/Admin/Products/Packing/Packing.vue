@@ -30,7 +30,6 @@ export default {
     const {getProducts} = Products()
     const {getMeasureUnits} = MeasureUnits()
     const {route, router, getPacking, product, packing, submitCreatePacking, submitUpdatePacking, submitDeletePacking} = HookPacking()
-    const openAccordion = ref(null)
 
 
     const actions = ref([
@@ -116,7 +115,6 @@ export default {
       computedProducts,
       computedMeasure,
       getMeasureUnits,
-      openAccordion,
       submitDeletePacking,
       submitCreatePacking,
       submitUpdatePacking,
@@ -139,8 +137,6 @@ export default {
       >
         <u-accordion
             :title="product.show_title ? product.show_title : product.title"
-            :open="!!openAccordion && openAccordion === product.id"
-            @open="openAccordion = openAccordion === product.id ? null : product.id"
         >
           <u-card
               v-for="(pack, id) in getPacking.filter(getPack => getPack.product === product.id)"
