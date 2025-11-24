@@ -505,8 +505,75 @@ export const HookOrders = () => {
                     },
                 ]
             }
-        } else {
-            return []
+        } else if(getWorker.value.rule === 'Сборщик') {
+            if (+route.params.status === 1) {
+                return [
+                    {
+                        name: "collect",
+                        text: "Собрать"
+                    },
+                    {
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        name: "openBlank",
+                        text: "Открыть бланк"
+                    },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
+                ]
+            } else if (+route.params.status === 2) {
+                return [
+                    {
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        name: "send",
+                        text: "Отправить"
+                    },
+                    {
+                        name: "openBlank",
+                        text: "Открыть бланк"
+                    },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
+                ]
+            } else if (+route.params.status === 3) {
+                return [
+                    {
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                ]
+            } else if (+route.params.status === 4) {
+                return [
+                    {
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
+                ]
+            } else if (+route.params.status === 5) {
+                return [
+                    {
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
+                ]
+            }
         }
     })
 
