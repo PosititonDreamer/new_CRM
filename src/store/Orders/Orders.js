@@ -130,7 +130,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'createOrders', status: true})
     }
 
-    const updateOrders = async ({id, client, address, track, comment, phone, delivery, email, composition, blank},afterPage, warehouse = 1) => {
+    const updateOrders = async ({id, client, address, track, comment, phone, delivery, email, composition, blank, payed},afterPage, warehouse = 1) => {
         updateLoader({method: 'updateOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
@@ -142,6 +142,7 @@ export const Orders = defineStore('Orders', () => {
         formData.append('delivery', delivery)
         formData.append('email', email)
         formData.append('warehouse', warehouse)
+        formData.append('payed', payed)
         formData.append('composition', JSON.stringify(composition))
         await axios.post('/orders/update.php', formData)
             .then((res) => {
