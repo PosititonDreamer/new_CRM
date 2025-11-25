@@ -1,18 +1,7 @@
 .orders-collect {
-  &__track {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
 
   &__item {
     padding-left: 10px;
-
-    .orders-collect {
-      &__text {
-        font-size: 16px;
-      }
-    }
   }
 
   &__over {
