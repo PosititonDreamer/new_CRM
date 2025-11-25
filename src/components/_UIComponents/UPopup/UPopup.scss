@@ -7,7 +7,6 @@
   background: var(--back);
   display: flex;
   z-index: 100;
-  color: var(--primary);
 
   &--big {
     .u-popup {
@@ -38,8 +37,8 @@
 
   &__title {
     width: calc(100% - 30px);
-    font-size: 20px;
     font-weight: 700;
+    margin-bottom: 0;
   }
 
   &__close {
@@ -88,14 +87,7 @@
 
 @media screen and (max-width: 1000px) {
   .u-popup {
-    &__title {
-      font-size: 16px;
-    }
-
     &__close {
-      width: 30px;
-      height: 30px;
-
       &::before, &::after {
         height: 1px;
       }

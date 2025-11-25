@@ -183,30 +183,13 @@ export default {
 <template>
   <div class="workers">
     <u-button @click="router.push({name: 'WorkersCreate'})" class="workers__create">Добавить работника</u-button>
-    <div class="workers__list">
+    <div class="list workers__list">
       <u-card
           class="workers__item"
           v-for="(item, id) in getWorkers"
           :key="`workers-${item.id}`"
           :style="[{'--z-index': getWorkers.length - id}]"
       >
-        <p class="workers__title">{{ item.name }}</p>
-        <div class="workers__content">
-          <p class="workers__text">
-            <b>Описание: </b> {{ item.description }}
-          </p>
-          <p class="workers__text">
-            <b>Роль: </b> {{ getWorkersRules.find(rule => rule.id === item.rule)?.title }}
-          </p>
-          <p class="workers__text" v-if="getWarehouses.length">
-            <b>Склады: </b>
-            <span
-                v-for="warehouse in getWorkersWarehouses.filter(child => child.worker === item.id)"
-            >
-              {{ getWarehouses.find(child => child.id === warehouse.warehouse).title }}
-            </span>
-          </p>
-        </div>
         <u-actions
             class="workers__actions"
             :actions="actions"
@@ -217,6 +200,21 @@ export default {
             @copyToken="copyToken(item.token)"
             @createPenalty="router.push({name: 'WorkersCreatePenalty', params: {id: item.id}})"
         />
+        <p class="sub-title">{{ item.name }}</p>
+        <p class="text">
+          <b>Описание: </b> {{ item.description }}
+        </p>
+        <p class="text">
+          <b>Роль: </b> {{ getWorkersRules.find(rule => rule.id === item.rule)?.title }}
+        </p>
+        <p class="text workers__text" v-if="getWarehouses.length">
+          <b>Склады: </b>
+          <span
+              v-for="warehouse in getWorkersWarehouses.filter(child => child.worker === item.id)"
+          >
+            {{ getWarehouses.find(child => child.id === warehouse.warehouse).title }}
+          </span>
+        </p>
       </u-card>
     </div>
 
@@ -247,77 +245,82 @@ export default {
           @submit.prevent="submitCreateWorkers"
           @close="router.push({name: 'Workers'})"
       >
-        <u-input
-            title="Имя"
-            v-model="worker.name.value.value"
-            :start-value="worker.name.value.value"
-            :error="worker.name.value.error"
-            @change="worker.name.value.tacked = true"
-            @blur="worker.name.value.tacked = true"
-        />
-        <u-input
-            type="textarea"
-            title="Описание"
-            v-model="worker.description.value.value"
-            :start-value="worker.description.value.value"
-            :error="worker.description.value.error"
-            @change="worker.description.value.tacked = true"
-            @blur="worker.description.value.tacked = true"
-        />
-        <u-input
-            type="number"
-            title="Зарплата"
-            v-model="worker.salary.value.value"
-            :start-value="worker.salary.value.value"
-            :error="worker.salary.value.error"
-            @change="worker.salary.value.tacked = true"
-            @blur="worker.salary.value.tacked = true"
-        />
-        <u-select
-            class="workers__rule"
-            title="Роль"
-            :values="rules"
-            v-model="worker.rule.value.value"
-            :start-value="worker.rule.value.value"
-            :error="worker.rule.value.error"
-            @change="worker.rule.value.tacked = true"
-        />
-        <u-card
-            class="workers__warehouse-list"
-            v-if="computedWarehouses.length"
-        >
-          <p class="workers__title">Склады</p>
-          <div
-              v-for="(warehouse, id) in worker.warehouses.value"
-              :class="['workers__warehouse', {'workers__warehouse--division': worker.warehouses.value.length > 1}]"
-              :key="`workers-warehouse-${warehouse.id}`"
+        <div class="list">
+
+          <u-input
+              title="Имя"
+              v-model="worker.name.value.value"
+              :start-value="worker.name.value.value"
+              :error="worker.name.value.error"
+              @change="worker.name.value.tacked = true"
+              @blur="worker.name.value.tacked = true"
+          />
+          <u-input
+              type="textarea"
+              title="Описание"
+              v-model="worker.description.value.value"
+              :start-value="worker.description.value.value"
+              :error="worker.description.value.error"
+              @change="worker.description.value.tacked = true"
+              @blur="worker.description.value.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Зарплата"
+              v-model="worker.salary.value.value"
+              :start-value="worker.salary.value.value"
+              :error="worker.salary.value.error"
+              @change="worker.salary.value.tacked = true"
+              @blur="worker.salary.value.tacked = true"
+          />
+          <u-select
+              class="workers__rule"
+              title="Роль"
+              :values="rules"
+              v-model="worker.rule.value.value"
+              :start-value="worker.rule.value.value"
+              :error="worker.rule.value.error"
+              @change="worker.rule.value.tacked = true"
+          />
+          <u-card
+              class="workers__warehouse-list"
+              v-if="computedWarehouses.length"
           >
-            <u-select
-                class="workers__warehouse-select"
-                :title="`Выбор склада ${id+1}`"
-                :values="computedWarehouses.filter(ware => !ware.selected || ware.value === warehouse.warehouse.value)"
-                :style="[{'--z-index': worker.warehouses.value.length - id}]"
-                :start-value="warehouse.warehouse.value"
-                :error="warehouse.warehouse.error"
-                v-model="warehouse.warehouse.value"
-            />
-            <u-button
-                v-if="worker.warehouses.value.length > 1"
-                class="workers__warehouse-delete"
-                type="button"
-                @click="removeWorkerWarehouse(warehouse.id)"
-                modifier="red"
-            />
-          </div>
-          <u-button
-              v-if="getWarehouses && worker.warehouses.value.length !== getWarehouses.length"
-              @click="addWorkerWarehouse()"
-              type="button"
-              class="workers__add-warehouse"
-          >
-            Добавить склад
-          </u-button>
-        </u-card>
+            <p class="sub-title">Склады</p>
+            <div class="list">
+              <div
+                  v-for="(warehouse, id) in worker.warehouses.value"
+                  :class="['workers__warehouse', {'workers__warehouse--division': worker.warehouses.value.length > 1}]"
+                  :key="`workers-warehouse-${warehouse.id}`"
+              >
+                <u-select
+                    class="workers__warehouse-select"
+                    :title="`Выбор склада ${id+1}`"
+                    :values="computedWarehouses.filter(ware => !ware.selected || ware.value === warehouse.warehouse.value)"
+                    :style="[{'--z-index': worker.warehouses.value.length - id}]"
+                    :start-value="warehouse.warehouse.value"
+                    :error="warehouse.warehouse.error"
+                    v-model="warehouse.warehouse.value"
+                />
+                <u-button
+                    v-if="worker.warehouses.value.length > 1"
+                    class="workers__warehouse-delete"
+                    type="button"
+                    @click="removeWorkerWarehouse(warehouse.id)"
+                    modifier="red"
+                />
+              </div>
+              <u-button
+                  v-if="getWarehouses && worker.warehouses.value.length !== getWarehouses.length"
+                  @click="addWorkerWarehouse()"
+                  type="button"
+                  class="workers__add-warehouse"
+              >
+                Добавить склад
+              </u-button>
+            </div>
+          </u-card>
+        </div>
       </u-form>
     </u-popup>
 
@@ -331,77 +334,82 @@ export default {
           class="workers__form"
           @submit.prevent="submitUpdateWorkers"
       >
-        <u-input
-            title="Имя"
-            v-model="worker.name.value.value"
-            :start-value="worker.name.value.value"
-            :error="worker.name.value.error"
-            @change="worker.name.value.tacked = true"
-            @blur="worker.name.value.tacked = true"
-        />
-        <u-input
-            type="textarea"
-            title="Описание"
-            v-model="worker.description.value.value"
-            :start-value="worker.description.value.value"
-            :error="worker.description.value.error"
-            @change="worker.description.value.tacked = true"
-            @blur="worker.description.value.tacked = true"
-        />
-        <u-input
-            type="number"
-            title="Зарплата"
-            v-model="worker.salary.value.value"
-            :start-value="worker.salary.value.value"
-            :error="worker.salary.value.error"
-            @change="worker.salary.value.tacked = true"
-            @blur="worker.salary.value.tacked = true"
-        />
-        <u-select
-            class="workers__rule"
-            title="Роль"
-            :values="rules"
-            v-model="worker.rule.value.value"
-            :start-value="worker.rule.value.value"
-            :error="worker.rule.value.error"
-            @change="worker.rule.value.tacked = true"
-        />
-        <u-card
-            class="workers__warehouse-list"
-            v-if="computedWarehouses.length"
-        >
-          <p class="workers__title">Склады</p>
-          <div
-              v-for="(warehouse, id) in worker.warehouses.value"
-              :class="['workers__warehouse', {'workers__warehouse--division': worker.warehouses.value.length > 1}]"
-              :key="`workers-warehouse-${warehouse.id}`"
+        <div class="list">
+
+          <u-input
+              title="Имя"
+              v-model="worker.name.value.value"
+              :start-value="worker.name.value.value"
+              :error="worker.name.value.error"
+              @change="worker.name.value.tacked = true"
+              @blur="worker.name.value.tacked = true"
+          />
+          <u-input
+              type="textarea"
+              title="Описание"
+              v-model="worker.description.value.value"
+              :start-value="worker.description.value.value"
+              :error="worker.description.value.error"
+              @change="worker.description.value.tacked = true"
+              @blur="worker.description.value.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Зарплата"
+              v-model="worker.salary.value.value"
+              :start-value="worker.salary.value.value"
+              :error="worker.salary.value.error"
+              @change="worker.salary.value.tacked = true"
+              @blur="worker.salary.value.tacked = true"
+          />
+          <u-select
+              class="workers__rule"
+              title="Роль"
+              :values="rules"
+              v-model="worker.rule.value.value"
+              :start-value="worker.rule.value.value"
+              :error="worker.rule.value.error"
+              @change="worker.rule.value.tacked = true"
+          />
+          <u-card
+              class="workers__warehouse-list"
+              v-if="computedWarehouses.length"
           >
-            <u-select
-                class="workers__warehouse-select"
-                :title="`Выбор склада ${id+1}`"
-                :values="computedWarehouses.filter(ware => !ware.selected || ware.value === warehouse.warehouse.value)"
-                :style="[{'--z-index': worker.warehouses.value.length - id}]"
-                :start-value="warehouse.warehouse.value"
-                :error="warehouse.warehouse.error"
-                v-model="warehouse.warehouse.value"
-            />
-            <u-button
-                v-if="worker.warehouses.value.length > 1"
-                class="workers__warehouse-delete"
-                type="button"
-                @click="removeWorkerWarehouse(warehouse.id)"
-                modifier="red"
-            />
-          </div>
-          <u-button
-              v-if="getWarehouses && worker.warehouses.value.length !== getWarehouses.length"
-              @click="addWorkerWarehouse()"
-              type="button"
-              class="workers__add-warehouse"
-          >
-            Добавить склад
-          </u-button>
-        </u-card>
+            <p class="sub-title">Склады</p>
+            <div class="list">
+              <div
+                  v-for="(warehouse, id) in worker.warehouses.value"
+                  :class="['workers__warehouse', {'workers__warehouse--division': worker.warehouses.value.length > 1}]"
+                  :key="`workers-warehouse-${warehouse.id}`"
+              >
+                <u-select
+                    class="workers__warehouse-select"
+                    :title="`Выбор склада ${id+1}`"
+                    :values="computedWarehouses.filter(ware => !ware.selected || ware.value === warehouse.warehouse.value)"
+                    :style="[{'--z-index': worker.warehouses.value.length - id}]"
+                    :start-value="warehouse.warehouse.value"
+                    :error="warehouse.warehouse.error"
+                    v-model="warehouse.warehouse.value"
+                />
+                <u-button
+                    v-if="worker.warehouses.value.length > 1"
+                    class="workers__warehouse-delete"
+                    type="button"
+                    @click="removeWorkerWarehouse(warehouse.id)"
+                    modifier="red"
+                />
+              </div>
+              <u-button
+                  v-if="getWarehouses && worker.warehouses.value.length !== getWarehouses.length"
+                  @click="addWorkerWarehouse()"
+                  type="button"
+                  class="workers__add-warehouse"
+              >
+                Добавить склад
+              </u-button>
+            </div>
+          </u-card>
+        </div>
       </u-form>
     </u-popup>
 
@@ -413,24 +421,26 @@ export default {
           text="Выписать штраф"
           @submit.prevent="submitCreatePenaltyWorkers"
       >
-        <u-input
-            type="number"
-            title="Сумма"
-            v-model="sumPenalty.value"
-            :start-value="sumPenalty.value"
-            :error="sumPenalty.error"
-            @change="sumPenalty.tacked = true"
-            @blur="sumPenalty.tacked = true"
-        />
-        <u-input
-            type="textarea"
-            title="Описание штрафа"
-            :start-value="penalty.value"
-            v-model="penalty.value"
-            :error="penalty.error"
-            @change="penalty.tacked = true"
-            @blur="penalty.tacked = true"
-        />
+        <div class="list">
+          <u-input
+              type="number"
+              title="Сумма"
+              v-model="sumPenalty.value"
+              :start-value="sumPenalty.value"
+              :error="sumPenalty.error"
+              @change="sumPenalty.tacked = true"
+              @blur="sumPenalty.tacked = true"
+          />
+          <u-input
+              type="textarea"
+              title="Описание штрафа"
+              :start-value="penalty.value"
+              v-model="penalty.value"
+              :error="penalty.error"
+              @change="penalty.tacked = true"
+              @blur="penalty.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
   </div>

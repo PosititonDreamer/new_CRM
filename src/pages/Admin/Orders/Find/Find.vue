@@ -103,22 +103,24 @@ export default {
           text="Найти заказы"
           @submit.prevent="submitFindOrders()"
       >
-        <u-select
-            title="Поиск по"
-            :values="typesList"
-            :start-value="type.value"
-            v-model="type.value"
-            @change="type.tacked = true"
-            empty
-        />
-        <u-input
-            :title="`${type.value === 'track' ? 'Трек-номер' : 'ФИО'}`"
-            v-model="text.value"
-            :start-value="text.value"
-            :error="text.error"
-            @change="text.tacked = true"
-            @blur="text.tacked = true"
-        />
+        <div class="list">
+          <u-select
+              title="Поиск по"
+              :values="typesList"
+              :start-value="type.value"
+              v-model="type.value"
+              @change="type.tacked = true"
+              empty
+          />
+          <u-input
+              :title="`${type.value === 'track' ? 'Трек-номер' : 'ФИО'}`"
+              v-model="text.value"
+              :start-value="text.value"
+              :error="text.error"
+              @change="text.tacked = true"
+              @blur="text.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
     <orders-list

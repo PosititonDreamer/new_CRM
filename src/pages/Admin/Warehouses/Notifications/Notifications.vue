@@ -87,100 +87,112 @@ export default {
 </script>
 <template>
   <div class="notifications">
-    <div class="notifications__list" v-if="computedNotifications">
-      <u-card
-          class="notifications__item"
-          v-for="item in computedNotifications"
-      >
-        <u-accordion
-            :title="item.title"
+    <div class="list notifications__list" v-if="computedNotifications">
+      <div class="list">
+        <u-card
+            v-for="item in computedNotifications"
         >
-          <u-card
-              v-if="item.goods.length"
-              class="notifications__item"
+          <u-accordion
+              :title="item.title"
           >
-            <u-accordion
-                title="Фасованные товары"
-            >
+            <div class="list">
               <u-card
-                class="notifications__item"
-                v-for="good in item.goods"
-                :key="`good-${good.id}`"
+                  v-if="item.goods.length"
               >
-                <p class="notifications__text">
-                  <b>Название: </b> {{good.title}}
-                </p>
-                <p :class="['notifications__text', {'notifications__text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'notifications__text--few-very': +good.balance <= +good.few_very}]">
-                  <b>Остаток: </b> {{ +good.balance }} {{good.measure}}
-                </p>
+                <u-accordion
+                    title="Фасованные товары"
+                >
+                  <div class="list">
+                    <u-card
+                        v-for="good in item.goods"
+                        :key="`good-${good.id}`"
+                    >
+                      <p class="text">
+                        <b>Название: </b> {{good.title}}
+                      </p>
+                      <p :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--null': +good.balance === 0}]">
+                        <b>Остаток: </b> {{ +good.balance }}
+                        <span v-if="+good.balance === 0">не осталось товара</span>
+                        <span v-else-if="+good.balance <= +good.few && +good.balance > +good.few_very">мало товара</span>
+                        <span v-else-if="+good.balance <= +good.few_very">очень мало товара</span>
+                      </p>
+                    </u-card>
+                  </div>
+                </u-accordion>
               </u-card>
-            </u-accordion>
-          </u-card>
-          <u-card
-              v-if="item.weight.length"
-              class="notifications__item"
-          >
-            <u-accordion
-                title="Весовые товары"
-            >
               <u-card
-                  class="notifications__item"
-                  v-for="good in item.weight"
-                  :key="`weight-${good.id}`"
+                  v-if="item.weight.length"
               >
-                <p class="notifications__text">
-                  <b>Название: </b> {{good.title}}
-                </p>
-                <p :class="['notifications__text', {'notifications__text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'notifications__text--few-very': +good.balance <= +good.few_very}]">
-                  <b>Остаток: </b> {{ +good.balance }} {{good.measure}}
-                </p>
+                <u-accordion
+                    title="Весовые товары"
+                >
+                  <div class="list">
+                    <u-card
+                        v-for="good in item.weight"
+                        :key="`weight-${good.id}`"
+                    >
+                      <p class="text">
+                        <b>Название: </b> {{good.title}}
+                      </p>
+                      <p :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--null': +good.balance === 0}]">
+                        <b>Остаток: </b> {{ +good.balance }} {{good.measure}}<span v-if="+good.balance === 0">, не осталось товара</span><span v-else-if="+good.balance <= +good.few && +good.balance > +good.few_very">, мало товара</span><span v-else-if="+good.balance <= +good.few_very">, очень мало товара</span>
+                      </p>
+                    </u-card>
+                  </div>
+                </u-accordion>
               </u-card>
-            </u-accordion>
-          </u-card>
-          <u-card
-              v-if="item.consumable.length"
-              class="notifications__item"
-          >
-            <u-accordion
-                title="Расходники"
-            >
               <u-card
-                  class="notifications__item"
-                  v-for="good in item.consumable"
-                  :key="`consumable-${good.id}`"
+                  v-if="item.consumable.length"
               >
-                <p class="notifications__text">
-                  <b>Название: </b> {{good.title}}
-                </p>
-                <p :class="['notifications__text', {'notifications__text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'notifications__text--few-very': +good.balance <= +good.few_very}]">
-                  <b>Остаток: </b> {{ +good.balance }} {{good.measure}}
-                </p>
+                <u-accordion
+                    title="Расходники"
+                >
+                  <div class="list">
+                    <u-card
+                        v-for="good in item.consumable"
+                        :key="`consumable-${good.id}`"
+                    >
+                      <p class="text">
+                        <b>Название: </b> {{good.title}}
+                      </p>
+                      <p :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--null': +good.balance === 0}]">
+                        <b>Остаток: </b> {{ +good.balance }}
+                        <span v-if="+good.balance === 0">не осталось расходника</span>
+                        <span v-else-if="+good.balance <= +good.few && +good.balance > +good.few_very">мало расходника</span>
+                        <span v-else-if="+good.balance <= +good.few_very">очень мало расходника</span>
+                      </p>
+                    </u-card>
+                  </div>
+                </u-accordion>
               </u-card>
-            </u-accordion>
-          </u-card>
-          <u-card
-              v-if="item.other.length"
-              class="notifications__item"
-          >
-            <u-accordion
-                title="Коробки и магниты"
-            >
               <u-card
-                  class="notifications__item"
-                  v-for="good in item.other"
-                  :key="`other-${good.id}`"
+                  v-if="item.other.length"
               >
-                <p class="notifications__text">
-                  <b>Название: </b> {{good.title}}
-                </p>
-                <p :class="['notifications__text', {'notifications__text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'notifications__text--few-very': +good.balance <= +good.few_very}]">
-                  <b>Остаток: </b> {{ +good.balance }} {{good.measure}}
-                </p>
+                <u-accordion
+                    title="Коробки и магниты"
+                >
+                  <div class="list">
+                    <u-card
+                        v-for="good in item.other"
+                        :key="`other-${good.id}`"
+                    >
+                      <p class="text">
+                        <b>Название: </b> {{good.title}}
+                      </p>
+                      <p :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--null': +good.balance === 0}]">
+                        <b>Остаток: </b> {{ +good.balance }}
+                        <span v-if="+good.balance === 0">не осталось коробок или магнитов</span>
+                        <span v-else-if="+good.balance <= +good.few && +good.balance > +good.few_very">мало коробок или магнитов</span>
+                        <span v-else-if="+good.balance <= +good.few_very">очень мало коробок или магнитов</span>
+                      </p>
+                    </u-card>
+                  </div>
+                </u-accordion>
               </u-card>
-            </u-accordion>
-          </u-card>
-        </u-accordion>
-      </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+      </div>
     </div>
   </div>
 </template>

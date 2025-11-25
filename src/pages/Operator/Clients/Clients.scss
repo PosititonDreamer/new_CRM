@@ -12,32 +12,10 @@
 
   &__list {
     max-width: 600px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
   }
 
   &__item {
     position: relative;
-  }
-
-  &__title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-
-  &__text {
-    margin-bottom: 5px;
-  }
-
-  &__address-list {
-    margin-bottom: 10px;
-  }
-
-  &__address {
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
   }
 
   &__actions {
@@ -104,11 +82,6 @@
     &:not(:last-child) {
       margin-bottom: 10px;
     }
-  }
-
-  &__alarm {
-    color: var(--red);
-    font-weight: 700;
   }
 
   &__select {

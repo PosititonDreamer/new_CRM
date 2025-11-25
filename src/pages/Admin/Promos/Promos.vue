@@ -102,20 +102,14 @@ export default {
     >
       Добавить промокод
     </u-button>
-    <div class="promos__list">
+    <div class="list promos__list">
       <u-card
           v-for="(promo, id) in getPromos"
           :key="`promo-${promo.id}`"
           class="promos__item"
           :style="[{'--z-index': getPromos.length - id}]"
       >
-        <div class="promos__wrapper">
-          <p class="promos__title">{{ promo.title }}</p>
-          <p class="promos__text">
-            <b>Период активности: </b> {{ new Date(promo.date_start).toLocaleDateString('ru-RU') }} -
-            {{ new Date(promo.date_end).toLocaleDateString('ru-RU') }}
-          </p>
-        </div>
+        <p class="sub-title">{{ promo.title }}</p>
         <u-actions
             class="promos__actions"
             :actions="actionsPromos"
@@ -123,6 +117,10 @@ export default {
             @update="router.push({name: 'PromosUpdate', params: {id: promo.id}})"
             @remove="router.push({name: 'PromosDelete', params: {id: promo.id}})"
         />
+        <p class="text">
+          <b>Период активности: </b> {{ new Date(promo.date_start).toLocaleDateString('ru-RU') }} -
+          {{ new Date(promo.date_end).toLocaleDateString('ru-RU') }}
+        </p>
       </u-card>
     </div>
     <u-popup
@@ -134,32 +132,34 @@ export default {
           text="Добавить промокод"
           @submit.prevent="submitCreatePromos"
       >
-        <u-input
-            title="Промокод"
-            :start-value="title.value"
-            v-model="title.value"
-            :error="title.error"
-            @change="title.tacked = true"
-        />
-        <u-input
-            title="Минимальная дата"
-            type="date"
-            :min="minDate"
-            :max="date_end.value ? date_end.value : ''"
-            :start-value="date_start.value"
-            v-model="date_start.value"
-            :error="date_start.error"
-            @change="date_start.tacked = true"
-        />
-        <u-input
-            title="Максимальная дата"
-            type="date"
-            :start-value="date_end.value"
-            :min="date_start.value ? date_start.value : minDate"
-            v-model="date_end.value"
-            :error="date_end.error"
-            @change="date_end.tacked = true"
-        />
+        <div class="list">
+          <u-input
+              title="Промокод"
+              :start-value="title.value"
+              v-model="title.value"
+              :error="title.error"
+              @change="title.tacked = true"
+          />
+          <u-input
+              title="Минимальная дата"
+              type="date"
+              :min="minDate"
+              :max="date_end.value ? date_end.value : ''"
+              :start-value="date_start.value"
+              v-model="date_start.value"
+              :error="date_start.error"
+              @change="date_start.tacked = true"
+          />
+          <u-input
+              title="Максимальная дата"
+              type="date"
+              :start-value="date_end.value"
+              :min="date_start.value ? date_start.value : minDate"
+              v-model="date_end.value"
+              :error="date_end.error"
+              @change="date_end.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -171,32 +171,34 @@ export default {
           text="Изменить промокод"
           @submit.prevent="submitUpdatePromos"
       >
-        <u-input
-            title="Промокод"
-            :start-value="title.value"
-            v-model="title.value"
-            :error="title.error"
-            @change="title.tacked = true"
-        />
-        <u-input
-            title="Минимальная дата"
-            type="date"
-            :min="date_start.value ? date_start.value : ''"
-            :max="date_end.value ? date_end.value : ''"
-            :start-value="date_start.value"
-            v-model="date_start.value"
-            :error="date_start.error"
-            @change="date_start.tacked = true"
-        />
-        <u-input
-            title="Максимальная дата"
-            type="date"
-            :min="date_start.value ? date_start.value : ''"
-            :start-value="date_end.value"
-            v-model="date_end.value"
-            :error="date_end.error"
-            @change="date_end.tacked = true"
-        />
+        <div class="list">
+          <u-input
+              title="Промокод"
+              :start-value="title.value"
+              v-model="title.value"
+              :error="title.error"
+              @change="title.tacked = true"
+          />
+          <u-input
+              title="Минимальная дата"
+              type="date"
+              :min="date_start.value ? date_start.value : ''"
+              :max="date_end.value ? date_end.value : ''"
+              :start-value="date_start.value"
+              v-model="date_start.value"
+              :error="date_start.error"
+              @change="date_start.tacked = true"
+          />
+          <u-input
+              title="Максимальная дата"
+              type="date"
+              :min="date_start.value ? date_start.value : ''"
+              :start-value="date_end.value"
+              v-model="date_end.value"
+              :error="date_end.error"
+              @change="date_end.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
     <u-alert

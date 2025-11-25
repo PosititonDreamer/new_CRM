@@ -54,7 +54,7 @@ export default {
     })
 
     const changeRoute = (to) => {
-      if(to.name === "Warehouses") {
+      if (to.name === "Warehouses") {
         title.value.value = ""
         description.value.value = ""
         type.value.value = ""
@@ -66,8 +66,8 @@ export default {
         document.body.removeAttribute("style");
         return;
       }
-      if(to.name === 'WarehousesUpdate' && to.params.id){
-        if(!getWarehousesTypes.value.length) {
+      if (to.name === 'WarehousesUpdate' && to.params.id) {
+        if (!getWarehousesTypes.value.length) {
           setTimeout(() => {
             changeRoute(to)
           })
@@ -113,29 +113,28 @@ export default {
 <template>
   <div class="warehouses">
     <u-button class="warehouses__create" @click="router.push({name: 'WarehousesCreate'})">Добавить склад</u-button>
-    <div class="warehouses__list">
+    <div class="list warehouses__list">
       <u-card
           class="warehouses__item"
           v-for="(warehouse, id) in getWarehouses"
           :key="`warehouses-${warehouse.id}`"
           :style="[{'--z-index': getWarehouses.length - id}]"
       >
-        <p class="warehouses__title">{{ warehouse.title }}</p>
-        <div class="warehouses__content">
-          <p class="warehouses__text">
-            <b>Описание: </b> {{ warehouse.description }}
-          </p>
-          <p class="warehouses__text">
-
-            <b>Тип: </b> {{ getWarehousesTypes.find(getType => getType.id === warehouse.type)?.title }}
-          </p>
-        </div>
+        <p class="title">{{ warehouse.title }}</p>
         <u-actions
             class="warehouses__actions"
             :actions="actions"
             @remove="router.push({name: 'WarehousesDelete', params: {id: warehouse.id}})"
             @update="router.push({name: 'WarehousesUpdate', params: {id: warehouse.id}})"
         />
+        <p class="text">
+          <b>Описание: </b> {{ warehouse.description }}
+        </p>
+        <p class="text">
+
+          <b>Тип: </b> {{ getWarehousesTypes.find(getType => getType.id === warehouse.type)?.title }}
+        </p>
+
       </u-card>
     </div>
 
@@ -153,31 +152,33 @@ export default {
         @close="router.push({name: 'Warehouses'})"
     >
       <u-form text="Добавить склад" @submit.prevent="submitCreateWarehouses">
-        <u-input
-            title="Название"
-            :start-value="title.value"
-            :error="title.error"
-            v-model="title.value"
-            @change="title.tacked = true"
-            @blur="title.tacked = true"
-        />
-        <u-input
-            type="textarea"
-            title="Описание"
-            :start-value="description.value"
-            :error="description.error"
-            v-model="description.value"
-            @change="description.tacked = true"
-            @blur="description.tacked = true"
-        />
-        <u-select
-            title="Тип склада"
-            :values="types"
-            :start-value="type.value"
-            :error="type.error"
-            v-model="type.value"
-            @change="type.tacked = true"
-        />
+        <div class="list">
+          <u-input
+              title="Название"
+              :start-value="title.value"
+              :error="title.error"
+              v-model="title.value"
+              @change="title.tacked = true"
+              @blur="title.tacked = true"
+          />
+          <u-input
+              type="textarea"
+              title="Описание"
+              :start-value="description.value"
+              :error="description.error"
+              v-model="description.value"
+              @change="description.tacked = true"
+              @blur="description.tacked = true"
+          />
+          <u-select
+              title="Тип склада"
+              :values="types"
+              :start-value="type.value"
+              :error="type.error"
+              v-model="type.value"
+              @change="type.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
 
@@ -187,31 +188,33 @@ export default {
         @close="router.push({name: 'Warehouses'})"
     >
       <u-form text="Изменить склад" @submit.prevent="submitUpdateWarehouses">
-        <u-input
-            title="Название"
-            :start-value="title.value"
-            :error="title.error"
-            v-model="title.value"
-            @change="title.tacked = true"
-            @blur="title.tacked = true"
-        />
-        <u-input
-            type="textarea"
-            title="Описание"
-            :start-value="description.value"
-            :error="description.error"
-            v-model="description.value"
-            @change="description.tacked = true"
-            @blur="description.tacked = true"
-        />
-        <u-select
-            title="Тип склада"
-            :values="types"
-            :start-value="type.value"
-            :error="type.error"
-            v-model="type.value"
-            @change="type.tacked = true"
-        />
+        <div class="list">
+          <u-input
+              title="Название"
+              :start-value="title.value"
+              :error="title.error"
+              v-model="title.value"
+              @change="title.tacked = true"
+              @blur="title.tacked = true"
+          />
+          <u-input
+              type="textarea"
+              title="Описание"
+              :start-value="description.value"
+              :error="description.error"
+              v-model="description.value"
+              @change="description.tacked = true"
+              @blur="description.tacked = true"
+          />
+          <u-select
+              title="Тип склада"
+              :values="types"
+              :start-value="type.value"
+              :error="type.error"
+              v-model="type.value"
+              @change="type.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
   </div>

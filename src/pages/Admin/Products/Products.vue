@@ -60,7 +60,7 @@ export default {
     })
 
     const changeRoute = (to) => {
-      if(to.name === "Products") {
+      if (to.name === "Products") {
         product.measureUnit.value.value = 0
         product.sort.value.value = 0
         product.title.value.value = ""
@@ -74,8 +74,8 @@ export default {
         document.body.removeAttribute("style");
         return;
       }
-      if(to.name === 'ProductsUpdate' && to.params.id){
-        if(!getProducts.value.length) {
+      if (to.name === 'ProductsUpdate' && to.params.id) {
+        if (!getProducts.value.length) {
           setTimeout(() => {
             changeRoute(to)
           })
@@ -119,7 +119,7 @@ export default {
 <template>
   <div class="products">
     <u-button class="products__create" @click="router.push({name: 'ProductsCreate'})">Добавить продукт</u-button>
-    <div class="products__list">
+    <div class="list products__list">
       <u-card
           v-for="(product, id) in getProducts"
           class="products__item"
@@ -127,16 +127,17 @@ export default {
           :style="[{'--z-index': getProducts.length - id}]"
       >
         <div class="products__content">
-          <p class="products__title">
+          <p class="sub-title">
             {{ product.show_title ? product.show_title : product.title }}
           </p>
-          <p class="products__text">
+          <p class="text">
             <b>Название tilda: </b>{{ product.title }}
-            <br>
+          </p>
+          <p class="text">
             <b>Короткое название: </b>{{ product.show_title }}
-            <br>
-            <b>Единица
-              измеренеия: </b>{{ getMeasureUnits.find(measureUnit => measureUnit.id === product.measure_unit)?.title }}
+          </p>
+          <p class="text">
+            <b>Единица измеренеия: </b>{{ getMeasureUnits.find(measureUnit => measureUnit.id === product.measure_unit)?.title }}
           </p>
         </div>
         <u-actions
@@ -166,29 +167,31 @@ export default {
           text="Добавить продукт"
           @submit.prevent="submitCreateProduct"
       >
-        <u-input
-            title="Название tilda"
-            v-model="product.title.value.value"
-            :start-value="product.title.value.value"
-            @blur="product.title.value.tacked = true"
-            @change="product.title.value.tacked = true"
-            :error="product.title.value.error"
-        />
-        <u-input
-            title="Короткое название"
-            v-model="product.showTitle.value.value"
-            :start-value="product.showTitle.value.value"
-            @blur="product.showTitle.value.tacked = true"
-            @change="product.showTitle.value.tacked = true"
-        />
-        <u-select
-            title="Единица измеренеия"
-            :values="measures"
-            v-model="product.measureUnit.value.value"
-            :start-value="product.measureUnit.value.value"
-            @change="product.measureUnit.value.tacked = true"
-            :error="product.measureUnit.value.error"
-        />
+        <div class="list">
+          <u-input
+              title="Название tilda"
+              v-model="product.title.value.value"
+              :start-value="product.title.value.value"
+              @blur="product.title.value.tacked = true"
+              @change="product.title.value.tacked = true"
+              :error="product.title.value.error"
+          />
+          <u-input
+              title="Короткое название"
+              v-model="product.showTitle.value.value"
+              :start-value="product.showTitle.value.value"
+              @blur="product.showTitle.value.tacked = true"
+              @change="product.showTitle.value.tacked = true"
+          />
+          <u-select
+              title="Единица измеренеия"
+              :values="measures"
+              v-model="product.measureUnit.value.value"
+              :start-value="product.measureUnit.value.value"
+              @change="product.measureUnit.value.tacked = true"
+              :error="product.measureUnit.value.error"
+          />
+        </div>
       </u-form>
     </u-popup>
 
@@ -201,37 +204,39 @@ export default {
           text="Изменить продукт"
           @submit.prevent="submitUpdateProduct"
       >
-        <u-input
-            title="Название tilda"
-            v-model="product.title.value.value"
-            :start-value="product.title.value.value"
-            @blur="product.title.value.tacked = true"
-            @change="product.title.value.tacked = true"
-            :error="product.title.value.error"
-        />
-        <u-input
-            title="Короткое название"
-            v-model="product.showTitle.value.value"
-            :start-value="product.showTitle.value.value"
-            @blur="product.showTitle.value.tacked = true"
-            @change="product.showTitle.value.tacked = true"
-        />
-        <u-select
-            title="Единица измеренеия"
-            :values="measures"
-            v-model="product.measureUnit.value.value"
-            :start-value="product.measureUnit.value.value"
-            @change="product.measureUnit.value.tacked = true"
-            :error="product.measureUnit.value.error"
-        />
-        <u-input
-            type="number"
-            title="Сортировка"
-            v-model="product.sort.value.value"
-            :start-value="product.sort.value.value"
-            @blur="product.sort.value.tacked = true"
-            @change="product.sort.value.tacked = true"
-        />
+        <div class="list">
+          <u-input
+              title="Название tilda"
+              v-model="product.title.value.value"
+              :start-value="product.title.value.value"
+              @blur="product.title.value.tacked = true"
+              @change="product.title.value.tacked = true"
+              :error="product.title.value.error"
+          />
+          <u-input
+              title="Короткое название"
+              v-model="product.showTitle.value.value"
+              :start-value="product.showTitle.value.value"
+              @blur="product.showTitle.value.tacked = true"
+              @change="product.showTitle.value.tacked = true"
+          />
+          <u-select
+              title="Единица измеренеия"
+              :values="measures"
+              v-model="product.measureUnit.value.value"
+              :start-value="product.measureUnit.value.value"
+              @change="product.measureUnit.value.tacked = true"
+              :error="product.measureUnit.value.error"
+          />
+          <u-input
+              type="number"
+              title="Сортировка"
+              v-model="product.sort.value.value"
+              :start-value="product.sort.value.value"
+              @blur="product.sort.value.tacked = true"
+              @change="product.sort.value.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
   </div>

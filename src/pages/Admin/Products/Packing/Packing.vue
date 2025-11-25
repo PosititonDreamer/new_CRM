@@ -129,7 +129,7 @@ export default {
 <template>
   <div class="packing">
     <u-button class="packing__create" @click="router.push({name: 'PackingCreate'})">Добавить упаковку</u-button>
-    <div class="packing__list">
+    <div class="list packing__list">
       <u-card
           v-for="product in computedProducts"
           class="packing__card"
@@ -138,23 +138,24 @@ export default {
         <u-accordion
             :title="product.show_title ? product.show_title : product.title"
         >
-          <u-card
-              v-for="(pack, id) in getPacking.filter(getPack => getPack.product === product.id)"
-              class="packing__item"
-              :style="[{'--z-index': getPacking.filter(getPack => getPack.product === product.id).length - id}]"
-          >
-            <p class="packing__title">
-              {{pack.packing}} {{getMeasureUnits.find(measureUnit => measureUnit.id === product.measure_unit)?.title}}
-            </p>
-            <u-actions
-                class="packing__actions"
-                :actions="actions"
-                :key="`packing-actions-${pack.id}`"
-                @remove="router.push({name: 'PackingDelete', params:{id: pack.id}})"
-                @update="router.push({name: 'PackingUpdate', params:{id: pack.id}})"
-
-            />
-          </u-card>
+          <div class="list">
+            <u-card
+                v-for="(pack, id) in getPacking.filter(getPack => getPack.product === product.id)"
+                class="packing__item"
+                :style="[{'--z-index': getPacking.filter(getPack => getPack.product === product.id).length - id}]"
+            >
+              <u-actions
+                  class="packing__actions"
+                  :actions="actions"
+                  :key="`packing-actions-${pack.id}`"
+                  @remove="router.push({name: 'PackingDelete', params:{id: pack.id}})"
+                  @update="router.push({name: 'PackingUpdate', params:{id: pack.id}})"
+              />
+              <p class="sub-title">
+                {{pack.packing}} {{getMeasureUnits.find(measureUnit => measureUnit.id === product.measure_unit)?.title}}
+              </p>
+            </u-card>
+          </div>
         </u-accordion>
       </u-card>
     </div>

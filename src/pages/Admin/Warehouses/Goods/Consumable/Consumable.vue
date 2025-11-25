@@ -90,7 +90,7 @@ export default {
     ])
 
     const checkedGood = ({value, checked}) => {
-      if(checked) {
+      if (checked) {
         consumable.binding.value.push(value)
       } else {
         consumable.binding.value = consumable.binding.value.filter(bind => bind !== value)
@@ -113,7 +113,7 @@ export default {
         return;
       }
 
-      if((to.name === 'GoodsConsumableUpdate') || (to.name === 'GoodsConsumableUpdateBalance' && to.params.id)) {
+      if ((to.name === 'GoodsConsumableUpdate') || (to.name === 'GoodsConsumableUpdateBalance' && to.params.id)) {
         if (!getGoodsConsumable.value.length) {
           setTimeout(() => {
             changeRoute(to)
@@ -167,18 +167,19 @@ export default {
     >
       Добавить расходник
     </u-button>
-    <div class="goods-consumable__list">
+    <div class="list goods-consumable__list">
       <u-card
           v-for="(consumable, id) in computedConsumable"
           class="goods-consumable__item"
           :key="`good-consumable-${consumable.id}`"
           :style="[{'--z-index': computedConsumable.length - id}]"
       >
-        <p class="goods-consumable__title">{{ consumable.title }}</p>
-        <p :class="['goods-consumable__text', {'goods-consumable__text--few': +consumable.balance <= +consumable.few && +consumable.balance > +consumable.few_very}, {'goods-consumable__text--few-very': +consumable.balance <= +consumable.few_very}]">
+        <p class="sub-title">{{ consumable.title }}</p>
+        <p :class="['text', {'text--bold text--few': +consumable.balance <= +consumable.few && +consumable.balance > +consumable.few_very}, {'text--bold text--few-very': +consumable.balance <= +consumable.few_very}, {'text--null': +consumable.balance === 0}]">
           <b>Остаток: </b> {{ consumable.balance }}
-          <span v-if="+consumable.balance <= +consumable.few && +consumable.balance > +consumable.few_very">мало расходника</span>
-          <span v-if="+consumable.balance <= +consumable.few_very">очень мало расходника</span>
+          <span v-if="+consumable.balance === 0">не осталось расходника</span>
+          <span v-else-if="+consumable.balance <= +consumable.few && +consumable.balance > +consumable.few_very">мало расходника</span>
+          <span v-else-if="+consumable.balance <= +consumable.few_very">очень мало расходника</span>
         </p>
         <u-accordion
             class="goods-consumable__accordion"
@@ -188,7 +189,7 @@ export default {
           <div class="goods-consumable__wrapper">
             <p
                 v-for="binding in consumable.binding"
-                class="goods-consumable__text"
+                class="text"
                 :key="`good-consumable-binding-${binding.id}`"
             >
               {{ binding.product_item?.show_title ? binding.product_item?.show_title : binding.product_item?.title }},
@@ -221,54 +222,56 @@ export default {
           text="Добавить расходник"
           @submit.prevent="submitCreateGoodsConsumable"
       >
-        <u-input
-            title="Название"
-            :start-value="consumable.title.value.value"
-            :error="consumable.title.value.error"
-            v-model="consumable.title.value.value"
-            @change="consumable.title.value.tacked = true"
-            @blur="consumable.title.value.tacked = true"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="consumable.balance.value.value"
-            v-model="consumable.balance.value.value"
-        />
-        <u-input
-            title="Малое количество расходника"
-            type="number"
-            :start-value="consumable.few.value.value"
-            v-model="consumable.few.value.value"
-        />
-        <u-input
-            title="Очень малое количество расходника"
-            type="number"
-            :start-value="consumable.few_very.value.value"
-            v-model="consumable.few_very.value.value"
-        />
-        <u-card>
-          <p class="goods-consumable__title">Выбор фасованных товаров</p>
-          <u-card
-              v-for="product in products"
-              class="goods-consumable__good-list"
-              :key="`good-consumable-list-${product.id}`"
-          >
-            <p class="goods-consumable__title">{{product.title}}</p>
-            <div class="goods-consumable__wrapper">
-              <u-checkbox
-                  v-for="good in product.goods"
-                  class="goods-consumable__checkbox"
-                  :title="`${good.quantity} ${product.measure?.title ? product.measure?.title : ''}`"
-                  name="good"
-                  :value="good.id"
-                  :checked="!!consumable.binding.value.find(bind => bind === good.id)"
-                  @checked="checkedGood"
-                  :key="`good-consumable-item-${good.id}`"
-              />
+        <div class="list">
+          <u-input
+              title="Название"
+              :start-value="consumable.title.value.value"
+              :error="consumable.title.value.error"
+              v-model="consumable.title.value.value"
+              @change="consumable.title.value.tacked = true"
+              @blur="consumable.title.value.tacked = true"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="consumable.balance.value.value"
+              v-model="consumable.balance.value.value"
+          />
+          <u-input
+              title="Малое количество расходника"
+              type="number"
+              :start-value="consumable.few.value.value"
+              v-model="consumable.few.value.value"
+          />
+          <u-input
+              title="Очень малое количество расходника"
+              type="number"
+              :start-value="consumable.few_very.value.value"
+              v-model="consumable.few_very.value.value"
+          />
+          <u-card>
+            <p class="sub-title">Выбор фасованных товаров</p>
+            <div class="list">
+              <u-card
+                  v-for="product in products"
+                  :key="`good-consumable-list-${product.id}`"
+              >
+                <p class="sub-title">{{ product.title }}</p>
+                <div class="list goods-consumable__wrapper">
+                  <u-checkbox
+                      v-for="good in product.goods"
+                      :title="`${good.quantity} ${product.measure?.title ? product.measure?.title : ''}`"
+                      name="good"
+                      :value="good.id"
+                      :checked="!!consumable.binding.value.find(bind => bind === good.id)"
+                      @checked="checkedGood"
+                      :key="`good-consumable-item-${good.id}`"
+                  />
+                </div>
+              </u-card>
             </div>
           </u-card>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
 
@@ -281,64 +284,67 @@ export default {
           :text="route.name === 'GoodsConsumableUpdate' ? 'Изменить расходник' : 'Изменить остаток расходника'"
           @submit.prevent="route.name === 'GoodsConsumableUpdate'? submitUpdateGoodsConsumable() : submitUpdateBalanceGoodsConsumable()"
       >
-        <u-input
-            title="Название"
-            :start-value="consumable.title.value.value"
-            :error="consumable.title.value.error"
-            v-model="consumable.title.value.value"
-            @change="consumable.title.value.tacked = true"
-            @blur="consumable.title.value.tacked = true"
-            :disabled="route.name === 'GoodsConsumableUpdateBalance'"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="consumable.balance.value.value"
-            v-model="consumable.balance.value.value"
-        />
-        <u-input
-            title="Малое количество расходника"
-            type="number"
-            :start-value="consumable.few.value.value"
-            v-model="consumable.few.value.value"
-            :disabled="route.name === 'GoodsConsumableUpdateBalance'"
-        />
-        <u-input
-            title="Очень малое количество расходника"
-            type="number"
-            :start-value="consumable.few_very.value.value"
-            v-model="consumable.few_very.value.value"
-            :disabled="route.name === 'GoodsConsumableUpdateBalance'"
-        />
-        <u-input
-            title="Сортировка"
-            type="number"
-            :start-value="consumable.sort.value.value"
-            v-model="consumable.sort.value.value"
-            :disabled="route.name === 'GoodsConsumableUpdateBalance'"
-        />
-        <u-card v-if="route.name === 'GoodsConsumableUpdate'">
-          <p class="goods-consumable__title">Выбор фасованных товаров</p>
-          <u-card
-              v-for="product in products"
-              class="goods-consumable__good-list"
-              :key="`good-consumable-list-${product.id}`"
-          >
-            <p class="goods-consumable__title">{{product.title}}</p>
-            <div class="goods-consumable__wrapper">
-              <u-checkbox
-                  v-for="good in product.goods"
-                  class="goods-consumable__checkbox"
-                  :title="`${good.quantity} ${product.measure?.title ? product.measure?.title : ''}`"
-                  name="good"
-                  :value="good.id"
-                  :checked="!!consumable.binding.value.find(bind => bind === good.id)"
-                  @checked="checkedGood"
-                  :key="`good-consumable-item-${good.id}`"
-              />
+        <div class="list">
+
+          <u-input
+              title="Название"
+              :start-value="consumable.title.value.value"
+              :error="consumable.title.value.error"
+              v-model="consumable.title.value.value"
+              @change="consumable.title.value.tacked = true"
+              @blur="consumable.title.value.tacked = true"
+              :disabled="route.name === 'GoodsConsumableUpdateBalance'"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="consumable.balance.value.value"
+              v-model="consumable.balance.value.value"
+          />
+          <u-input
+              title="Малое количество расходника"
+              type="number"
+              :start-value="consumable.few.value.value"
+              v-model="consumable.few.value.value"
+              :disabled="route.name === 'GoodsConsumableUpdateBalance'"
+          />
+          <u-input
+              title="Очень малое количество расходника"
+              type="number"
+              :start-value="consumable.few_very.value.value"
+              v-model="consumable.few_very.value.value"
+              :disabled="route.name === 'GoodsConsumableUpdateBalance'"
+          />
+          <u-input
+              title="Сортировка"
+              type="number"
+              :start-value="consumable.sort.value.value"
+              v-model="consumable.sort.value.value"
+              :disabled="route.name === 'GoodsConsumableUpdateBalance'"
+          />
+          <u-card v-if="route.name === 'GoodsConsumableUpdate'">
+            <p class="sub-title">Выбор фасованных товаров</p>
+            <div class="list">
+              <u-card
+                  v-for="product in products"
+                  :key="`good-consumable-list-${product.id}`"
+              >
+                <p class="sub-title">{{ product.title }}</p>
+                <div class="list goods-consumable__wrapper">
+                  <u-checkbox
+                      v-for="good in product.goods"
+                      :title="`${good.quantity} ${product.measure?.title ? product.measure?.title : ''}`"
+                      name="good"
+                      :value="good.id"
+                      :checked="!!consumable.binding.value.find(bind => bind === good.id)"
+                      @checked="checkedGood"
+                      :key="`good-consumable-item-${good.id}`"
+                  />
+                </div>
+              </u-card>
             </div>
           </u-card>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
   </div>

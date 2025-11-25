@@ -141,7 +141,7 @@ export default {
     })
 
     const computedKits = computed(() => {
-      if(!getGoodsKit.value.length || !getGoods.value.length || !getProducts.value.length || !getMeasureUnits.value.length) {
+      if (!getGoodsKit.value.length || !getGoods.value.length || !getProducts.value.length || !getMeasureUnits.value.length) {
         return []
       }
       return getGoodsKit.value.map(kit => {
@@ -193,17 +193,23 @@ export default {
     >
       Добавить набор
     </u-button>
-    <div class="goods-kit__list">
+    <div class="list goods-kit__list">
       <u-card
           v-for="(kit, id) in computedKits"
           class="goods-kit__item"
           :key="`good-kit-${kit.id}`"
           :style="[{'--z-index': computedKits.length - id}]"
       >
-        <p class="goods-kit__title">{{ kit.title }}</p>
-        <p class="goods-kit__text">
+        <p class="sub-title">{{ kit.title }}</p>
+        <p class="text">
           <b>Номер набора: </b> {{ kit.number }}
         </p>
+        <u-actions
+            class="goods-kit__actions"
+            :actions="actions"
+            @update="router.push({name: 'GoodsKitUpdate', params: {id: kit.id}})"
+            @delete="router.push({name: 'GoodsKitDelete', params: {id: kit.id}})"
+        />
         <u-accordion
             class="goods-kit__accordion"
             title="Входящие фасованные товары"
@@ -212,19 +218,13 @@ export default {
           <div class="goods-kit__content">
             <p
                 v-for="item in kit.list"
-                class="goods-kit__text"
+                class="text"
                 :key="`good-kit-text-item-${item.id}`"
             >
               {{ item.title }}, {{ item.quantity }} шт.
             </p>
           </div>
         </u-accordion>
-        <u-actions
-            class="goods-kit__actions"
-            :actions="actions"
-            @update="router.push({name: 'GoodsKitUpdate', params: {id: kit.id}})"
-            @delete="router.push({name: 'GoodsKitDelete', params: {id: kit.id}})"
-        />
       </u-card>
     </div>
     <u-alert
@@ -243,77 +243,83 @@ export default {
           text="Добавить набор"
           @submit.prevent="submitCreateGoodsKit"
       >
-        <u-input
-            title="Название"
-            :start-value="kit.title.value.value"
-            :error="kit.title.value.error"
-            v-model="kit.title.value.value"
-            @change="kit.title.value.tacked = true"
-            @blur="kit.title.value.tacked = true"
-        />
-        <u-input
-            title="Номер"
-            type="number"
-            :start-value="kit.number.value.value"
-            :error="kit.number.value.error"
-            v-model="kit.number.value.value"
-            @change="kit.number.value.tacked = true"
-            @blur="kit.number.value.tacked = true"
-        />
-        <u-card>
-          <p class="goods-kit__title">Фасованные товары</p>
-          <u-card
-              v-for="(item, id) in kit.list.value"
-              :key="`good-kit-item${item.id}`"
-              :class="['goods-kit__form-item', {'goods-kit__form-item--division': kit.list.value.length > 1}]"
-              :style="[{'--z-index': kit.list.value.length - id}]"
-          >
-            <u-select
-                title="Продукт"
-                :values="computedProducts"
-                :start-value="item.product.value"
-                :error="item.product.error"
-                v-model="item.product.value"
-                @change="() => {
+        <div class="list">
+
+          <u-input
+              title="Название"
+              :start-value="kit.title.value.value"
+              :error="kit.title.value.error"
+              v-model="kit.title.value.value"
+              @change="kit.title.value.tacked = true"
+              @blur="kit.title.value.tacked = true"
+          />
+          <u-input
+              title="Номер"
+              type="number"
+              :start-value="kit.number.value.value"
+              :error="kit.number.value.error"
+              v-model="kit.number.value.value"
+              @change="kit.number.value.tacked = true"
+              @blur="kit.number.value.tacked = true"
+          />
+          <u-card>
+            <p class="sub-title">Фасованные товары</p>
+            <div class="list">
+
+              <u-card
+                  v-for="(item, id) in kit.list.value"
+                  :key="`good-kit-item${item.id}`"
+                  :class="['list goods-kit__form-item', {'goods-kit__form-item--division': kit.list.value.length > 1}]"
+                  :style="[{'--z-index': kit.list.value.length - id}]"
+              >
+                <u-select
+                    title="Продукт"
+                    :values="computedProducts"
+                    :start-value="item.product.value"
+                    :error="item.product.error"
+                    v-model="item.product.value"
+                    @change="() => {
                   item.product.tacked = true
                   item.good.value = ''
                 }"
-                class="goods-kit__select goods-kit__select--product"
-            />
-            <u-select
-                v-if="item.product.value"
-                title="Товар"
-                :values="computedGoods.filter(good =>  good.product === item.product.value)"
-                :start-value="item.good.value"
-                :error="item.good.error"
-                v-model="item.good.value"
-                @change="item.good.tacked = true"
-            />
-            <u-input
-                title="Количество"
-                type="number"
-                :start-value="item.quantity.value"
-                :error="item.quantity.error"
-                v-model="item.quantity.value"
-                @change="item.quantity.tacked = true"
-                @blur="item.quantity.tacked = true"
-            />
-            <u-button
-                v-if="kit.list.value.length > 1"
-                type="button"
-                modifier="red"
-                class="goods-kit__delete-kit"
-                @click="removeItem(item.id)"
-            />
+                    class="goods-kit__select goods-kit__select--product"
+                />
+                <u-select
+                    v-if="item.product.value"
+                    title="Товар"
+                    :values="computedGoods.filter(good =>  good.product === item.product.value)"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="item.good.tacked = true"
+                />
+                <u-input
+                    title="Количество"
+                    type="number"
+                    :start-value="item.quantity.value"
+                    :error="item.quantity.error"
+                    v-model="item.quantity.value"
+                    @change="item.quantity.tacked = true"
+                    @blur="item.quantity.tacked = true"
+                />
+                <u-button
+                    v-if="kit.list.value.length > 1"
+                    type="button"
+                    modifier="red"
+                    class="goods-kit__delete-kit"
+                    @click="removeItem(item.id)"
+                />
+              </u-card>
+              <u-button
+                  type="button"
+                  @click="addItem()"
+                  class="goods-kit__add-kit"
+              >
+                Добавить товар
+              </u-button>
+            </div>
           </u-card>
-          <u-button
-              type="button"
-              @click="addItem()"
-              class="goods-kit__add-kit"
-          >
-            Добавить товар
-          </u-button>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
 
@@ -326,77 +332,83 @@ export default {
           text="Изменить набор"
           @submit.prevent="submitUpdateGoodsKit"
       >
-        <u-input
-            title="Название"
-            :start-value="kit.title.value.value"
-            :error="kit.title.value.error"
-            v-model="kit.title.value.value"
-            @change="kit.title.value.tacked = true"
-            @blur="kit.title.value.tacked = true"
-        />
-        <u-input
-            title="Номер"
-            type="number"
-            :start-value="kit.number.value.value"
-            :error="kit.number.value.error"
-            v-model="kit.number.value.value"
-            @change="kit.number.value.tacked = true"
-            @blur="kit.number.value.tacked = true"
-        />
-        <u-card>
-          <p class="goods-kit__title">Фасованные товары</p>
-          <u-card
-              v-for="(item, id) in kit.list.value"
-              :key="`good-kit-item${item.id}`"
-              :class="['goods-kit__form-item', {'goods-kit__form-item--division': kit.list.value.length > 1}]"
-              :style="[{'--z-index': kit.list.value.length - id}]"
-          >
-            <u-select
-                title="Продукт"
-                :values="computedProducts"
-                :start-value="item.product.value"
-                :error="item.product.error"
-                v-model="item.product.value"
-                @change="() => {
+        <div class="list">
+
+          <u-input
+              title="Название"
+              :start-value="kit.title.value.value"
+              :error="kit.title.value.error"
+              v-model="kit.title.value.value"
+              @change="kit.title.value.tacked = true"
+              @blur="kit.title.value.tacked = true"
+          />
+          <u-input
+              title="Номер"
+              type="number"
+              :start-value="kit.number.value.value"
+              :error="kit.number.value.error"
+              v-model="kit.number.value.value"
+              @change="kit.number.value.tacked = true"
+              @blur="kit.number.value.tacked = true"
+          />
+          <u-card>
+            <p class="sub-title">Фасованные товары</p>
+            <div class="list">
+
+              <u-card
+                  v-for="(item, id) in kit.list.value"
+                  :key="`good-kit-item${item.id}`"
+                  :class="['list goods-kit__form-item', {'goods-kit__form-item--division': kit.list.value.length > 1}]"
+                  :style="[{'--z-index': kit.list.value.length - id}]"
+              >
+                <u-select
+                    title="Продукт"
+                    :values="computedProducts"
+                    :start-value="item.product.value"
+                    :error="item.product.error"
+                    v-model="item.product.value"
+                    @change="() => {
                   item.product.tacked = true
                   item.good.value = ''
                 }"
-                class="goods-kit__select goods-kit__select--product"
-            />
-            <u-select
-                v-if="item.product.value"
-                title="Товар"
-                :values="computedGoods.filter(good =>  good.product === item.product.value)"
-                :start-value="item.good.value"
-                :error="item.good.error"
-                v-model="item.good.value"
-                @change="item.good.tacked = true"
-            />
-            <u-input
-                title="Количество"
-                type="number"
-                :start-value="item.quantity.value"
-                :error="item.quantity.error"
-                v-model="item.quantity.value"
-                @change="item.quantity.tacked = true"
-                @blur="item.quantity.tacked = true"
-            />
-            <u-button
-                v-if="kit.list.value.length > 1"
-                type="button"
-                modifier="red"
-                class="goods-kit__delete-kit"
-                @click="removeItem(item.id)"
-            />
+                    class="goods-kit__select goods-kit__select--product"
+                />
+                <u-select
+                    v-if="item.product.value"
+                    title="Товар"
+                    :values="computedGoods.filter(good =>  good.product === item.product.value)"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="item.good.tacked = true"
+                />
+                <u-input
+                    title="Количество"
+                    type="number"
+                    :start-value="item.quantity.value"
+                    :error="item.quantity.error"
+                    v-model="item.quantity.value"
+                    @change="item.quantity.tacked = true"
+                    @blur="item.quantity.tacked = true"
+                />
+                <u-button
+                    v-if="kit.list.value.length > 1"
+                    type="button"
+                    modifier="red"
+                    class="goods-kit__delete-kit"
+                    @click="removeItem(item.id)"
+                />
+              </u-card>
+              <u-button
+                  type="button"
+                  @click="addItem()"
+                  class="goods-kit__add-kit"
+              >
+                Добавить товар
+              </u-button>
+            </div>
           </u-card>
-          <u-button
-              type="button"
-              @click="addItem()"
-              class="goods-kit__add-kit"
-          >
-            Добавить товар
-          </u-button>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
   </div>

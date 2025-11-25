@@ -81,7 +81,7 @@ export default {
         return;
       }
 
-      if((to.name === 'GoodsOtherUpdate') || (to.name === 'GoodsOtherUpdateBalance' && to.params.id)) {
+      if ((to.name === 'GoodsOtherUpdate') || (to.name === 'GoodsOtherUpdateBalance' && to.params.id)) {
         if (!getGoodsOther.value.length) {
           setTimeout(() => {
             changeRoute(to)
@@ -134,24 +134,13 @@ export default {
     >
       Добавить коробку или магнит
     </u-button>
-    <div class="goods-other__list">
+    <div class="list goods-other__list">
       <u-card
           v-for="(other,id) in getGoodsOther"
           class="goods-other__item"
           :key="`good-other-${other.id}`"
           :style="[{'--z-index': getGoodsOther.length - id}]"
       >
-        <p class="goods-other__title">{{other.title}}</p>
-        <div class="goods-other__content">
-          <p class="goods-other__text">
-            <b>Тип: </b> {{getGoodsOtherType.find(type => +type.id === +other.type)?.title}}
-          </p>
-          <p :class="['goods-other__text', {'goods-other__text--few': +other.balance <= +other.few && +other.balance > +other.few_very}, {'goods-other__text--few-very': +other.balance <= +other.few_very}]">
-            <b>Остаток: </b> {{other.balance}}
-            <span v-if="+other.balance <= +other.few && +other.balance > +other.few_very">мало расходника</span>
-            <span v-if="+other.balance <= +other.few_very">очень мало расходника</span>
-          </p>
-        </div>
         <u-actions
             :actions="actions"
             class="goods-other__actions"
@@ -159,6 +148,17 @@ export default {
             @updateBalance="router.push({name: 'GoodsOtherUpdateBalance', params: {id: other.id}})"
             @delete="router.push({name: 'GoodsOtherDelete', params: {id: other.id}})"
         />
+        <p class="sub-title">{{ other.title }}</p>
+        <p class="text">
+          <b>Тип: </b> {{ getGoodsOtherType.find(type => +type.id === +other.type)?.title }}
+        </p>
+        <p :class="['text', {'text--bold text--few': +other.balance <= +other.few && +other.balance > +other.few_very}, {'text--bold text--few-very': +other.balance <= +other.few_very}, {'text--null': +other.balance === 0}]">
+          <b>Остаток: </b> {{ other.balance }}
+          <span v-if="+other.balance === 0">не осталось {{+other.type === 1 ? 'магнитов' : 'коробок'}}</span>
+          <span v-else-if="+other.balance <= +other.few && +other.balance > +other.few_very">мало {{+other.type === 1 ? 'магнитов' : 'коробок'}}</span>
+          <span v-else-if="+other.balance <= +other.few_very">очень мало {{+other.type === 1 ? 'магнитов' : 'коробок'}}</span>
+        </p>
+
       </u-card>
     </div>
     <u-alert
@@ -177,40 +177,43 @@ export default {
           @submit.prevent="submitCreateOther"
           text="Добавить коробку или магнит"
       >
-        <u-input
-            title="Название"
-            :start-value="other.title.value.value"
-            :error="other.title.value.error"
-            v-model="other.title.value.value"
-            @change="other.title.value.tacked = true"
-            @blur="other.title.value.tacked = true"
-        />
-        <u-select
-            title="Тип"
-            :values="types"
-            :start-value="other.type.value.value"
-            :error="other.type.value.error"
-            v-model="other.type.value.value"
-            @change="other.type.value.tacked = true"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="other.balance.value.value"
-            v-model="other.balance.value.value"
-        />
-        <u-input
-            title="Малое количество коробок или магнитов"
-            type="number"
-            :start-value="other.few.value.value"
-            v-model="other.few.value.value"
-        />
-        <u-input
-            title="Очень малое количество коробок или магнитов"
-            type="number"
-            :start-value="other.few_very.value.value"
-            v-model="other.few_very.value.value"
-        />
+        <div class="list">
+
+          <u-input
+              title="Название"
+              :start-value="other.title.value.value"
+              :error="other.title.value.error"
+              v-model="other.title.value.value"
+              @change="other.title.value.tacked = true"
+              @blur="other.title.value.tacked = true"
+          />
+          <u-select
+              title="Тип"
+              :values="types"
+              :start-value="other.type.value.value"
+              :error="other.type.value.error"
+              v-model="other.type.value.value"
+              @change="other.type.value.tacked = true"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="other.balance.value.value"
+              v-model="other.balance.value.value"
+          />
+          <u-input
+              title="Малое количество коробок или магнитов"
+              type="number"
+              :start-value="other.few.value.value"
+              v-model="other.few.value.value"
+          />
+          <u-input
+              title="Очень малое количество коробок или магнитов"
+              type="number"
+              :start-value="other.few_very.value.value"
+              v-model="other.few_very.value.value"
+          />
+        </div>
       </u-form>
     </u-popup>
 
@@ -223,47 +226,49 @@ export default {
           @submit.prevent="route.name === 'GoodsOtherUpdate' ? submitUpdateOther() : submitUpdateBalanceOther()"
           :text="route.name === 'GoodsOtherUpdate' ? 'Изменить коробку или магнит' : 'Изменить баланс коробки или магнита'"
       >
-        <u-input
-            title="Название"
-            :start-value="other.title.value.value"
-            :error="other.title.value.error"
-            v-model="other.title.value.value"
-            @change="other.title.value.tacked = true"
-            @blur="other.title.value.tacked = true"
-            :disabled="route.name === 'GoodsOtherUpdateBalance'"
-        />
-        <u-select
-            title="Тип"
-            :values="types"
-            :start-value="other.type.value.value"
-            :error="other.type.value.error"
-            v-model="other.type.value.value"
-            @change="other.type.value.tacked = true"
-            :disabled="route.name === 'GoodsOtherUpdateBalance'"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="other.balance.value.value"
-            v-model="other.balance.value.value"
-        />
-        <u-input
-            title="Малое количество коробок или магнитов"
-            type="number"
-            :start-value="other.few.value.value"
-            v-model="other.few.value.value"
-            :disabled="route.name === 'GoodsOtherUpdateBalance'"
-        />
-        <u-input
-            title="Очень малое количество коробок или магнитов"
-            type="number"
-            :start-value="other.few_very.value.value"
-            v-model="other.few_very.value.value"
-            :disabled="route.name === 'GoodsOtherUpdateBalance'"
-        />
+        <div class="list">
+          <u-input
+              title="Название"
+              :start-value="other.title.value.value"
+              :error="other.title.value.error"
+              v-model="other.title.value.value"
+              @change="other.title.value.tacked = true"
+              @blur="other.title.value.tacked = true"
+              :disabled="route.name === 'GoodsOtherUpdateBalance'"
+          />
+          <u-select
+              title="Тип"
+              :values="types"
+              :start-value="other.type.value.value"
+              :error="other.type.value.error"
+              v-model="other.type.value.value"
+              @change="other.type.value.tacked = true"
+              :disabled="route.name === 'GoodsOtherUpdateBalance'"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="other.balance.value.value"
+              v-model="other.balance.value.value"
+          />
+          <u-input
+              title="Малое количество коробок или магнитов"
+              type="number"
+              :start-value="other.few.value.value"
+              v-model="other.few.value.value"
+              :disabled="route.name === 'GoodsOtherUpdateBalance'"
+          />
+          <u-input
+              title="Очень малое количество коробок или магнитов"
+              type="number"
+              :start-value="other.few_very.value.value"
+              v-model="other.few_very.value.value"
+              :disabled="route.name === 'GoodsOtherUpdateBalance'"
+          />
+        </div>
       </u-form>
     </u-popup>
   </div>
 </template>
 
-<style lang="scss" src="./Other.scss" scoped />
+<style lang="scss" src="./Other.scss" scoped/>

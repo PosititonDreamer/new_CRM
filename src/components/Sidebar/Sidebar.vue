@@ -72,132 +72,132 @@ export default {
   <div :class="['sidebar', {'sidebar--open': open}]">
     <div class="sidebar__content">
       <button class="sidebar__close" @click="closeSidebar"></button>
-      <div class="sidebar__list" v-if="getWorker.rule === 'Админ'">
-        <div class="sidebar__item">
+      <div class="sidebar__list list" v-if="getWorker.rule === 'Админ'">
+        <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind' || route.matched.find(item => item.name === 'Orders')}] ">
             Заказы</p>
-          <div class="sidebar__sub-list">
-            <div class="sidebar__item">
+          <div class="sidebar__sub-list list">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 3}}">В обработке
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 1}}">Текущие
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 2}}">Собранные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 4}}">Отправленные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 5}}">Возвращенные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OrdersFind'}">Поиск
                 заказов
               </router-link>
             </div>
           </div>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Clients' || route.name === 'ClientsFind'}] ">
             Клиенты</p>
-          <div class="sidebar__sub-list">
-            <div class="sidebar__item">
+          <div class="sidebar__sub-list list">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Clients'}">Список
                 клиентов
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'ClientsFind'}">Поиск
                 клиентов
               </router-link>
             </div>
           </div>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Products'}">Продукты
           </router-link>
-          <div class="sidebar__sub-list">
-            <div class="sidebar__item">
+          <div class="sidebar__sub-list list">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Other'}">Кривые
                 продукты
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'MeasureUnits'}">
                 Единицы измерения
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Packing'}">Упаковки
               </router-link>
             </div>
           </div>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Workers'}">Работники
           </router-link>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Salaries'}">Зарплаты
           </router-link>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Warehouses'}">Склады
           </router-link>
-          <div class="sidebar__sub-list" v-if="getWarehouses.length">
-            <div class="sidebar__item" v-if="getNotifications">
+          <div class="sidebar__sub-list list" v-if="getWarehouses.length">
+            <div class="list" v-if="getNotifications">
               <router-link class="sidebar__link sidebar__link--yellow" active-class="sidebar__link--active"
                            :to="{name: 'Notifications'}">Малое количество товаров
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Supplies'}">Связь
                 складов
               </router-link>
             </div>
-            <div class="sidebar__item" v-for="warehouse in getWarehouses">
+            <div class="list" v-for="warehouse in getWarehouses">
               <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.params.warehouse === warehouse.id}] ">
                 {{ warehouse.title }}</p>
-              <div class="sidebar__sub-list">
-                <div class="sidebar__item">
+              <div class="sidebar__sub-list list">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'Goods', params: {warehouse: warehouse.id}}">Фасованные товары
                   </router-link>
                 </div>
-                <div class="sidebar__item">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'GoodsWeight', params: {warehouse: warehouse.id}}">Весовые товары
                   </router-link>
                 </div>
-                <div class="sidebar__item">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'GoodsConsumable', params: {warehouse: warehouse.id}}">Расходники
                   </router-link>
                 </div>
-                <div class="sidebar__item">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'GoodsOther', params: {warehouse: warehouse.id}}">Коробки и магниты
                   </router-link>
                 </div>
-                <div class="sidebar__item"
+                <div class="list"
                      v-if="getWarehousesTypes.find(type => type.id === warehouse.type)?.title === 'Товарный'">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'GoodsKit', params: {warehouse: warehouse.id}}">Наборы товаров
                   </router-link>
                 </div>
-                <div class="sidebar__item" v-if="warehouse.supply">
+                <div class="list" v-if="warehouse.supply">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'SuppliesWarehouse', params: {warehouse: warehouse.id}}">Поставки
                   </router-link>
@@ -206,76 +206,76 @@ export default {
             </div>
           </div>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Graphics'}">Графики
           </router-link>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Promos'}">Промокоды
           </router-link>
         </div>
       </div>
-      <div class="sidebar__list" v-else-if="getWorker.rule === 'Сборщик'">
-        <div class="sidebar__item">
+      <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">
+        <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerOrders' || route.matched.find(item => item.name === 'AssemblerOrders')}] ">
             Заказы</p>
-          <div class="sidebar__sub-list">
-            <div class="sidebar__item">
+          <div class="sidebar__sub-list list">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 3}}">В обработке
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 1}}">Текущие
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 2}}">Собранные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 4}}">Отправленные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 5}}">Возвращенные
               </router-link>
             </div>
           </div>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerGoods' || route.name === 'AssemblerGoodsWeight'|| route.name === 'AssemblerGoodsConsumable'|| route.name === 'AssemblerGoodsOther'|| route.name === 'AssemblerSupplies'  || route.matched.find(item => item.name === 'AssemblerSupplies')}] ">
             Склады</p>
-          <div class="sidebar__sub-list" v-if="warehousesAssembler.length">
-            <div class="sidebar__item" v-for="warehouse in warehousesAssembler">
+          <div class="sidebar__sub-list list" v-if="warehousesAssembler.length">
+            <div class="list" v-for="warehouse in warehousesAssembler">
               <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.params.warehouse === warehouse.id}] ">
                 {{ warehouse.title }}</p>
-              <div class="sidebar__sub-list">
-                <div class="sidebar__item">
+              <div class="sidebar__sub-list list">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'AssemblerGoods', params: {warehouse: warehouse.id}}">Фасованные товары
                   </router-link>
                 </div>
-                <div class="sidebar__item">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'AssemblerGoodsWeight', params: {warehouse: warehouse.id}}">Весовые товары
                   </router-link>
                 </div>
-                <div class="sidebar__item">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'AssemblerGoodsConsumable', params: {warehouse: warehouse.id}}">Расходники
                   </router-link>
                 </div>
-                <div class="sidebar__item">
+                <div class="list">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'AssemblerGoodsOther', params: {warehouse: warehouse.id}}">Коробки и магниты
                   </router-link>
                 </div>
-                <div class="sidebar__item" v-if="warehouse.supply">
+                <div class="list" v-if="warehouse.supply">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
                                :to="{name: 'AssemblerSupplies', params: {warehouse: warehouse.id}}">Поставки
                   </router-link>
@@ -285,65 +285,65 @@ export default {
           </div>
         </div>
 
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'AssemblerSalaries'}">Зарплаты
           </router-link>
         </div>
       </div>
-      <div class="sidebar__list" v-else-if="getWorker.rule === 'Оператор'">
-        <div class="sidebar__item">
+      <div class="sidebar__list list" v-else-if="getWorker.rule === 'Оператор'">
+        <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'OperatorOrders' || route.name === 'OperatorOrdersFind' || route.matched.find(item => item.name === 'OperatorOrders')}] ">
             Заказы</p>
-          <div class="sidebar__sub-list">
-            <div class="sidebar__item">
+          <div class="sidebar__sub-list list">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 3}}">В обработке
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 1}}">Текущие
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 2}}">Собранные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 4}}">Отправленные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 5}}">Возвращенные
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorOrdersFind'}">Поиск
                 заказов
               </router-link>
             </div>
           </div>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'OperatorClients' || route.name === 'OperatorClientsFind'}] ">
             Клиенты</p>
-          <div class="sidebar__sub-list">
-            <div class="sidebar__item">
+          <div class="sidebar__sub-list list">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorClients'}">Список
                 клиентов
               </router-link>
             </div>
-            <div class="sidebar__item">
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorClientsFind'}">Поиск
                 клиентов
               </router-link>
             </div>
           </div>
         </div>
-        <div class="sidebar__item">
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorSalaries'}">Зарплаты
           </router-link>
         </div>

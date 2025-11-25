@@ -18,7 +18,7 @@ export default {
   <div class="sidebar-layout">
     <sidebar />
     <div class="sidebar-layout__content">
-      <h2 class="sidebar-layout__title">{{route.meta.title}}</h2>
+      <h2 class="title">{{route.meta.title}}</h2>
       <slot></slot>
     </div>
   </div>

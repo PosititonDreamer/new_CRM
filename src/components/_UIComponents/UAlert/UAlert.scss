@@ -14,29 +14,19 @@
     padding: 20px;
     background: var(--white);
     border-radius: 5px;
-    max-width: 300px;
+    max-width: 350px;
     width: 100%;
-    display: grid;
-    grid-gap: 20px;
     text-align: center;
-  }
-
-  &__title {
-    font-size: 20px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   &__actions {
     width: max-content;
     display: flex;
-    grid-gap: 20px;
+    grid-gap: 10px;
     margin: 0 auto;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .u-alert {
-    &__title {
-      font-size: 16px;
-    }
   }
 }

@@ -1,6 +1,6 @@
 .orders-send {
   &__name {
-    font-size: 18px;
+    margin: 0;
   }
 
   &__info {
@@ -18,9 +18,5 @@
         color: var(--primary);
       }
     }
-  }
-
-  &__take-all {
-    margin-bottom: 10px;
   }
 }

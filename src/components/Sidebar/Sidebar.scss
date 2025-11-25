@@ -82,14 +82,7 @@
     }
   }
 
-  &__list, &__sub-list {
-    display: flex;
-    flex-direction: column;
-    grid-gap: 10px;
-  }
-
   &__sub-list {
-    margin-top: 10px;
     padding-left: 20px;
     padding-bottom: 10px;
   }

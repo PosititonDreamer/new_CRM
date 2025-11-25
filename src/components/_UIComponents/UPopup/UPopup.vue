@@ -39,7 +39,7 @@ export default {
     <div :class="['u-popup', {'u-popup--big': big}]" @click="close">
       <div class="u-popup__wrapper" @click.stop>
         <div class="u-popup__header">
-          <p class="u-popup__title">{{ title }}</p>
+          <p class="u-popup__title title">{{ title }}</p>
           <button class="u-popup__close" @click="close"></button>
         </div>
         <div class="u-popup__content">

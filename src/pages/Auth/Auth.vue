@@ -31,7 +31,7 @@ export default {
 <template>
   <div class="auth">
     <u-form class="auth__form" text="Войти в систему" @submit.prevent="submitAuth">
-      <p class="auth__title">Авторизация</p>
+      <p class="title">Авторизация</p>
       <u-input
           :start-value="token.value"
           title="Токен"

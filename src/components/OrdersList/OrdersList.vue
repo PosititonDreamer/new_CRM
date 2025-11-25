@@ -49,37 +49,35 @@ export default {
 </script>
 
 <template>
-  <div class="orders-list">
+  <div class="list orders-list">
     <u-card class="orders-list__item"
             v-for="(order, id) in orders"
             :key="`order-item-${order.id}`"
             :style="[{'--z-index': orders.length - id}]"
     >
-      <p class="orders-list__title">{{ order.track ? order.track : 'Не присвоен' }}</p>
-      <div class="orders-list__wrapper">
-        <p class="orders-list__text">
-          <b>Статус: </b> {{ computedStatus(order.status) }}
-        </p>
-        <p class="orders-list__text">
-          <b>Клиент: </b> {{ order.client }}
-        </p>
-        <p class="orders-list__text">
-          <b>Доставка: </b> {{ order.delivery }}
-        </p>
-        <p class="orders-list__text">
-          <b>Дата создания: </b> {{ new Date(order.date).toLocaleDateString('ru-RU') }}
-        </p>
-        <p class="orders-list__text">
-          <b>Количество товаров: </b> {{ order.goods }}
-        </p>
-        <p class="orders-list__text" v-if="order.comment.trim().length">
-          <b>Комментарий: </b> {{ order.comment }}
-        </p>
-        <p :class="['orders-list__text', {'orders-list__text--alarm': !order.blank}]"
-           v-if="order.delivery !== 'CDEK' && (+order.status === 1 || +order.status === 2) && checkBlank">
-          <b>Бланк для печати: </b> {{ order.blank ? "Загружен" : "Не загружен" }}
-        </p>
-      </div>
+      <p class="title">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="text">
+        <b>Статус: </b> {{ computedStatus(order.status) }}
+      </p>
+      <p class="text">
+        <b>Клиент: </b> {{ order.client }}
+      </p>
+      <p class="text">
+        <b>Доставка: </b> {{ order.delivery }}
+      </p>
+      <p class="text">
+        <b>Дата создания: </b> {{ new Date(order.date).toLocaleDateString('ru-RU') }}
+      </p>
+      <p class="text">
+        <b>Количество товаров: </b> {{ order.goods }}
+      </p>
+      <p class="text" v-if="order.comment.trim().length">
+        <b>Комментарий: </b> {{ order.comment }}
+      </p>
+      <p :class="['text', {'text--few text--bold': !order.blank}]"
+         v-if="order.delivery !== 'CDEK' && (+order.status === 1 || +order.status === 2) && checkBlank">
+        <b>Бланк для печати: </b> {{ order.blank ? "Загружен" : "Не загружен" }}
+      </p>
       <u-actions
           class="orders-list__actions"
           :actions="checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : actions.map(action => {

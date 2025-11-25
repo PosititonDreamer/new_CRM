@@ -82,28 +82,25 @@ export default {
     <u-button class="measure-units__create" @click="router.push({name: 'MeasureUnitsCreate'})">Добавить единицу
       измерения
     </u-button>
-    <!-- todo: Список -->
-    <div class="measure-units__list">
+    <div class="list measure-units__list">
       <u-card
           v-for="(measureUnit, id) in getMeasureUnits"
           class="measure-units__item"
           :key="`measure-units-${measureUnit.id}`"
           :style="[{'--z-index': getMeasureUnits.length - id}]"
       >
-        <p class="measure-units__title">
-          {{ measureUnit.title }}
-        </p>
         <u-actions
             class="measure-units__actions"
             :actions="actions"
             @remove="router.push({name: 'MeasureUnitsDelete', params:{id: measureUnit.id}})"
             @update="router.push({name: 'MeasureUnitsUpdate', params:{id: measureUnit.id}})"
             :key="`measure-units-actions-${measureUnit.id}`"/>
+        <p class="sub-title">
+          {{ measureUnit.title }}
+        </p>
       </u-card>
     </div>
   </div>
-
-  <!-- todo: Подтверждение удаления -->
   <u-alert
       v-if="route.name === 'MeasureUnitsDelete' && route.params.id"
       title="Удалить единицу измеренеия?"
@@ -112,7 +109,6 @@ export default {
       @accept="submitDeleteMeasureUnits"
   />
 
-  <!-- todo: Добавление -->
   <u-popup
       v-if="route.name === 'MeasureUnitsCreate'"
       title="Добавление единицы измеренеия"
@@ -133,7 +129,6 @@ export default {
     </u-form>
   </u-popup>
 
-  <!-- todo: Редактирование -->
   <u-popup
       v-if="route.name === 'MeasureUnitsUpdate' && getMeasureUnits.find(measure => measure.id === route.params.id) && title.value"
       title="Изменение единицы измеренеия"

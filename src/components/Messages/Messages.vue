@@ -14,8 +14,8 @@ export default {
 </script>
 
 <template>
-  <div class="messages" v-if="getMessages.length">
-    <p :class="`messages__item messages__item--${message.type}`" v-for="message in getMessages" @click="removeMessages(message.id)">
+  <div class="list messages" v-if="getMessages.length">
+    <p :class="`text messages__item messages__item--${message.type}`" v-for="message in getMessages" @click="removeMessages(message.id)">
       {{message.message}}
     </p>
   </div>

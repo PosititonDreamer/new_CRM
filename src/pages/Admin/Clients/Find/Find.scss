@@ -21,25 +21,6 @@
     position: relative;
   }
 
-  &__title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-
-  &__text {
-    margin-bottom: 5px;
-  }
-
-  &__address-list {
-    margin-bottom: 10px;
-  }
-
-  &__address {
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
-  }
-
   &__actions {
     position: absolute;
     top: 10px;
@@ -100,15 +81,6 @@
 
   &__join-item {
     position: relative;
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
-  }
-
-  &__alarm {
-    color: var(--red);
-    font-weight: 700;
   }
 
   &__select {

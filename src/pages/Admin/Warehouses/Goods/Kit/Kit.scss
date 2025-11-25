@@ -7,9 +7,6 @@
 
   &__list {
     max-width: 600px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
   }
 
   &__item {
@@ -22,30 +19,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-  }
-
-  &__title {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  &__text {
-
-    &--few, &--few-very {
-      font-weight: 700;
-    }
-
-    &--few {
-      color: var(--yellow);
-    }
-
-    &--few-very {
-      color: var(--red);
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
+    z-index: 10;
   }
 
   &__select {
@@ -93,12 +67,8 @@
 
   &__form-item {
     position: relative;
-    grid-gap: 10px;
     z-index: var(--z-index);
     max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
 
     &--division {
       padding-right: 50px;

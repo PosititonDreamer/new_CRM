@@ -1,11 +1,12 @@
 .goods-other {
   color: var(--primary);
 
+  &__create {
+    margin-bottom: 20px;
+  }
+
   &__list {
     max-width: 600px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
   }
 
   &__item {
@@ -14,26 +15,9 @@
     z-index: var(--z-index);
   }
 
-  &__title {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  &__text {
-    &--few, &--few-very {
-      font-weight: 700;
-    }
-
-    &--few {
-      color: var(--yellow);
-    }
-
-    &--few-very {
-      color: var(--red);
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
+  &__actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 }

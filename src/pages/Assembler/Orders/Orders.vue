@@ -135,13 +135,6 @@ export default {
   <div class="orders">
     <div class="orders__actions">
       <u-button
-          v-if="+route.params.status === 1"
-          class="orders__create"
-          @click="router.push({name: 'AssemblerOrdersCreate'})"
-      >
-        Добавить заказ
-      </u-button>
-      <u-button
           v-if="+route.params.status === 2"
           class="orders__create"
           @click="router.push({name: 'AssemblerOrdersSendSeveral'})"
@@ -245,6 +238,8 @@ export default {
         :orders="getOrders"
         @submit="submitSendOrders()"
         @close="router.push({name: 'AssemblerOrders'})"
+        @takeOrder="e=> !!tackedOrders.find(item => +item === +e.id) ? tackedOrders = tackedOrders.filter(item => +item !== +e.id) : tackedOrders.push(e.id)"
+        @takeAll="tackedOrders = tackedOrders.length === getOrders.length ? [] : getOrders.map(item => item.id)"
     />
     <orders-collect
         v-if="route.name === 'AssemblerOrdersCollect' & getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
@@ -257,6 +252,7 @@ export default {
         @removeBox="e=>removeBox(e)"
         @submit="submitCollectOrders()"
         @close="router.push({name: 'AssemblerOrders'})"
+        @collectGoods="e => !!collectGoods.find(item => +item === +e.id) ? collectGoods = collectGoods.filter(item => +item !== +e.id) : collectGoods.push(e.id)"
     />
   </div>
 </template>

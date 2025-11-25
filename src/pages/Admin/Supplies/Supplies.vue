@@ -169,40 +169,43 @@ export default {
     >
       Добавить связь
     </u-button>
-    <div class="supplies__list">
+    <div class="list supplies__list">
       <u-card
           class="supplies__item"
           v-for="(supply, id) in getSupplies"
           :key="`supply-${supply.id}`"
           :style="[{'--z-index': getSupplies.length - id}]"
       >
-        <p class="supplies__text">
+        <p class="text">
           <b>Склад для поставки: </b>
           {{ getWarehouses.find(warehouse => +warehouse.id === +supply.warehouse_receive)?.title }}
         </p>
-        <p class="supplies__text">
+        <p class="text">
           <b>Склад от куда поставка: </b>
           {{ getWarehouses.find(warehouse => +warehouse.id === +supply.warehouse_give)?.title }}
         </p>
         <u-accordion
             title="Поставляемые товары"
         >
-          <div class="supplies__sub-list" v-if="findSuppliesList(supply.list).goods.length">
-            <p class="supplies__title">Фасованные товары</p>
-            <p class="supplies__text" v-for="good in findSuppliesList(supply.list).goods">{{ good.receive }}</p>
+          <div class="list">
+            <div v-if="findSuppliesList(supply.list).goods.length">
+              <p class="sub-title">Фасованные товары</p>
+              <p class="text" v-for="good in findSuppliesList(supply.list).goods">{{ good.receive }}</p>
+            </div>
+            <div v-if="findSuppliesList(supply.list).weight.length">
+              <p class="sub-title">Весовые товары</p>
+              <p class="text" v-for="good in findSuppliesList(supply.list).weight">{{ good.receive }}</p>
+            </div>
+            <div v-if="findSuppliesList(supply.list).consumable.length">
+              <p class="sub-title">Расходники</p>
+              <p class="text" v-for="good in findSuppliesList(supply.list).consumable">{{ good.receive }}</p>
+            </div>
+            <div v-if="findSuppliesList(supply.list).other.length">
+              <p class="sub-title">Коробки и магниты</p>
+              <p class="text" v-for="good in findSuppliesList(supply.list).other">{{ good.receive }}</p>
+            </div>
           </div>
-          <div class="supplies__sub-list" v-if="findSuppliesList(supply.list).weight.length">
-            <p class="supplies__title">Весовые товары</p>
-            <p class="supplies__text" v-for="good in findSuppliesList(supply.list).weight">{{ good.receive }}</p>
-          </div>
-          <div class="supplies__sub-list" v-if="findSuppliesList(supply.list).consumable.length">
-            <p class="supplies__title">Расходники</p>
-            <p class="supplies__text" v-for="good in findSuppliesList(supply.list).consumable">{{ good.receive }}</p>
-          </div>
-          <div class="supplies__sub-list" v-if="findSuppliesList(supply.list).other.length">
-            <p class="supplies__title">Коробки и магниты</p>
-            <p class="supplies__text" v-for="good in findSuppliesList(supply.list).other">{{ good.receive }}</p>
-          </div>
+
         </u-accordion>
         <u-actions
             class="supplies__actions"
@@ -223,226 +226,218 @@ export default {
           text="Добавить связь складов"
           @submit.prevent="submitCreateSupplies"
       >
-        <u-select
-            title="Склад для поставки"
-            :values="computedWarehouses.filter(item => +item.value !== +warehouseGive.value)"
-            :start-value="warehouseReceive.value"
-            v-model="warehouseReceive.value"
-            :error="warehouseReceive.error"
-            @change="() => {
+        <div class="list">
+
+          <u-select
+              title="Склад для поставки"
+              :values="computedWarehouses.filter(item => +item.value !== +warehouseGive.value)"
+              :start-value="warehouseReceive.value"
+              v-model="warehouseReceive.value"
+              :error="warehouseReceive.error"
+              @change="() => {
               warehouseReceive.tacked = true
               suppliesList = []
             }"
-            class="supplies__select"
-        />
-        <u-select
-            title="Склад от куда поставка"
-            :values="computedWarehouses.filter(item => +item.value !== +warehouseReceive.value)"
-            :start-value="warehouseGive.value"
-            v-model="warehouseGive.value"
-            :error="warehouseGive.error"
-            @change="() => {
+              class="supplies__select"
+          />
+          <u-select
+              title="Склад от куда поставка"
+              :values="computedWarehouses.filter(item => +item.value !== +warehouseReceive.value)"
+              :start-value="warehouseGive.value"
+              v-model="warehouseGive.value"
+              :error="warehouseGive.error"
+              @change="() => {
               warehouseGive.tacked = true
               suppliesList = []
             }"
-            class="supplies__select supplies__select--two"
-        />
-        <u-card class="supplies__list-supply">
-          <p class="supplies__title">Выбранные связи</p>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Фасованные товары</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.goods"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Весовые товары</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.weight"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Расходники</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.consumable"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Коробки и магниты</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.other"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-        </u-card>
-        <template v-if="warehouseGive.value && warehouseReceive.value">
-          <p class="supplies__alarm" v-if="!suppliesList.length">Необходимо выбрать хотя бы 1 товар для связи
-            складов</p>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Фасованные товары</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Товары из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.goods"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'good', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'good'"
+              class="supplies__select supplies__select--two"
+          />
+          <u-card class="supplies__list-supply">
+            <p class="sub-title">Выбранные связи</p>
+            <div class="list">
+              <u-card>
+                <p class="sub-title">Фасованные товары</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.goods"
                 >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Товары из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.goods"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'good', 'give')"
-                    type="button"
-                    :disabled="+give === +good.id && type === 'good'"
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Весовые товары</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.weight"
                 >
-                  {{ good.title }}
-                </u-button>
-              </div>
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Расходники</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.consumable"
+                >
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Коробки и магниты</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.other"
+                >
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
             </div>
           </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Весовые товары</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Товары из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.weight"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'weight', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'weight'"
+          <template v-if="warehouseGive.value && warehouseReceive.value">
+            <p class="text--few-very text--bold" v-if="!suppliesList.length">Необходимо выбрать хотя бы 1 товар для
+              связи
+              складов</p>
+            <div class="list">
+              <u-card>
+                <p class="sub-title">Фасованные товары</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Товары из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.goods"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'good', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'good'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Товары из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.goods"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'good', 'give')"
+                        type="button"
+                        :disabled="+give === +good.id && type === 'good'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Весовые товары</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Товары из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.weight"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'weight', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'weight'"
 
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Товары из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.weight"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'weight', 'give')"
-                    type="button"
-                    :disabled="+give === +good.id && type === 'weight'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Товары из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.weight"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'weight', 'give')"
+                        type="button"
+                        :disabled="+give === +good.id && type === 'weight'"
 
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Расходники</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Расходники из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.consumable"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'consumable', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'consumable'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Расходники</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Расходники из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.consumable"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'consumable', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'consumable'"
 
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Расходники из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.consumable"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'consumable', 'give')"
-                    type="button"
-                    :disabled="+give === +good.id && type === 'consumable'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Расходники из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.consumable"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'consumable', 'give')"
+                        type="button"
+                        :disabled="+give === +good.id && type === 'consumable'"
 
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Коробки и магниты</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Коробки и магниты из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.other"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'other', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'other'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Коробки и магниты из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.other"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'other', 'give')"
+                        type="button"
+                        :disabled="+good === +good.id && type === 'other'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
             </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Коробки и магниты</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Коробки и магниты из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.other"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'other', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'other'"
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Коробки и магниты из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.other"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'other', 'give')"
-                    type="button"
-                    :disabled="+good === +good.id && type === 'other'"
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-            </div>
-          </u-card>
-        </template>
-        <p class="supplies__alarm" v-else>Для выбора товаров поставки необходимо выбрать склады</p>
+          </template>
+          <p class="text--few-very text--bold" v-else>Для выбора товаров поставки необходимо выбрать склады</p>
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -455,216 +450,207 @@ export default {
           text="Изменить связь складов"
           @submit.prevent="submitUpdateSupplies"
       >
-        <u-select
-            title="Склад для поставки"
-            :values="computedWarehouses"
-            :start-value="warehouseReceive.value"
-            class="supplies__select"
-            disabled
-        />
-        <u-select
-            title="Склад от куда поставка"
-            :values="computedWarehouses"
-            :start-value="warehouseGive.value"
-            class="supplies__select supplies__select--two"
-            disabled
-        />
-        <u-card class="supplies__list-supply">
-          <p class="supplies__title">Выбранные связи</p>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Фасованные товары</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.goods"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Весовые товары</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.weight"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Расходники</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.consumable"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Коробки и магниты</p>
-            <div class="supplies__good-item"
-                 v-for="good in computedSuppliesList.other"
-            >
-              <p class="supplies__text">{{ good.receive }}</p>
-              <u-button
-                  class="supplies__delete-supply"
-                  type="button"
-                  @click="deleteSuppliesItem(good.id)"
-              />
-            </div>
-          </u-card>
-        </u-card>
-        <template v-if="warehouseGive.value && warehouseReceive.value">
-          <p class="supplies__alarm" v-if="!suppliesList.length">Необходимо выбрать хотя бы 1 товар для связи
-            складов</p>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Фасованные товары</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Товары из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.goods"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'good', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'good'"
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Товары из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.goods"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'good', 'give')"
-                    type="button"
-                    :disabled="+give === +good.id && type === 'good'"
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-            </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Весовые товары</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Товары из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.weight"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'weight', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'weight'"
+        <div class="list">
 
+          <u-select
+              title="Склад для поставки"
+              :values="computedWarehouses"
+              :start-value="warehouseReceive.value"
+              class="supplies__select"
+              disabled
+          />
+          <u-select
+              title="Склад от куда поставка"
+              :values="computedWarehouses"
+              :start-value="warehouseGive.value"
+              class="supplies__select supplies__select--two"
+              disabled
+          />
+          <u-card class="supplies__list-supply">
+            <p class="sub-title">Выбранные связи</p>
+            <div class="list">
+              <u-card>
+                <p class="sub-title">Фасованные товары</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.goods"
                 >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Товары из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.weight"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'weight', 'give')"
-                    type="button"
-                    :disabled="+give === +good.id && type === 'weight'"
-
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Весовые товары</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.weight"
                 >
-                  {{ good.title }}
-                </u-button>
-              </div>
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Расходники</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.consumable"
+                >
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Коробки и магниты</p>
+                <div class="supplies__good-item"
+                     v-for="good in computedSuppliesList.other"
+                >
+                  <p class="text">{{ good.receive }}</p>
+                  <u-button
+                      class="supplies__delete-supply"
+                      type="button"
+                      @click="deleteSuppliesItem(good.id)"
+                  />
+                </div>
+              </u-card>
             </div>
           </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Расходники</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Расходники из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.consumable"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'consumable', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'consumable'"
+          <template v-if="warehouseGive.value && warehouseReceive.value">
+            <p class="text--few-very text--bold" v-if="!suppliesList.length">Необходимо выбрать хотя бы 1 товар для связи
+              складов</p>
+            <div class="list">
+              <u-card>
+                <p class="sub-title">Фасованные товары</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Товары из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.goods"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'good', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'good'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Товары из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.goods"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'good', 'give')"
+                        type="button"
+                        :disabled="+give === +good.id && type === 'good'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Весовые товары</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Товары из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.weight"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'weight', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'weight'"
 
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Расходники из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.consumable"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'consumable', 'give')"
-                    type="button"
-                    :disabled="+give === +good.id && type === 'consumable'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Товары из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.weight"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'weight', 'give')"
+                        type="button"
+                        :disabled="+give === +good.id && type === 'weight'"
 
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Расходники</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Расходники из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.consumable"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'consumable', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'consumable'"
+
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Расходники из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.consumable"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'consumable', 'give')"
+                        type="button"
+                        :disabled="+give === +good.id && type === 'consumable'"
+
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
+              <u-card>
+                <p class="sub-title">Коробки и магниты</p>
+                <div class="supplies__goods-list">
+                  <div class="supplies__goods-receive">
+                    <p class="text">Коробки и магниты из склада для поставки</p>
+                    <u-button
+                        v-for="good in suppliesReceive.other"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'other', 'receive')"
+                        type="button"
+                        :disabled="+receive === +good.id && type === 'other'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                  <div class="supplies__goods-give">
+                    <p class="text">Коробки и магниты из склада от куда поставки</p>
+                    <u-button
+                        v-for="good in suppliesGive.other"
+                        :key="`good-${good.id}`"
+                        @click="takeGood(good.id, 'other', 'give')"
+                        type="button"
+                        :disabled="+good === +good.id && type === 'other'"
+                    >
+                      {{ good.title }}
+                    </u-button>
+                  </div>
+                </div>
+              </u-card>
             </div>
-          </u-card>
-          <u-card
-              class="supplies__card"
-          >
-            <p class="supplies__title">Коробки и магниты</p>
-            <div class="supplies__goods-list">
-              <div class="supplies__goods-receive">
-                <p class="supplies__text">Коробки и магниты из склада для поставки</p>
-                <u-button
-                    v-for="good in suppliesReceive.other"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'other', 'receive')"
-                    type="button"
-                    :disabled="+receive === +good.id && type === 'other'"
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-              <div class="supplies__goods-give">
-                <p class="supplies__text">Коробки и магниты из склада от куда поставки</p>
-                <u-button
-                    v-for="good in suppliesGive.other"
-                    :key="`good-${good.id}`"
-                    @click="takeGood(good.id, 'other', 'give')"
-                    type="button"
-                    :disabled="+good === +good.id && type === 'other'"
-                >
-                  {{ good.title }}
-                </u-button>
-              </div>
-            </div>
-          </u-card>
-        </template>
-        <p class="supplies__alarm" v-else>Для выбора товаров поставки необходимо выбрать склады</p>
+          </template>
+          <p class="text--few-very text--bold" v-else>Для выбора товаров поставки необходимо выбрать склады</p>
+        </div>
       </u-form>
     </u-popup>
     <u-alert

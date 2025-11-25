@@ -2,15 +2,89 @@
 @import url("./_vars.scss");
 
 html {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 body {
-    height: var(--window-height);
-    overflow: hidden auto;
+  height: var(--window-height);
+  overflow: hidden auto;
 }
 
 #app {
-    height: var(--window-height);
+  height: var(--window-height);
 }
 
+.text {
+  font-size: 16px;
+
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+
+  &--big {
+    font-size: 18px;
+  }
+
+  &--few {
+    color: var(--yellow);
+
+    * {
+      color: var(--yellow);
+    }
+  }
+
+  &--few-very {
+    color: var(--red);
+
+    * {
+      color: var(--red);
+    }
+  }
+
+  &--bold {
+    font-weight: 700;
+
+    * {
+      font-weight: 700;
+    }
+  }
+
+  &--null {
+    color: var(--gray);
+
+    * {
+      color: var(--gray);
+    }
+  }
+}
+
+.sub-title {
+  font-size: 19px;
+  font-weight: 700;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  * {
+    font-weight: 700;
+  }
+}
+
+.title {
+  font-weight: 700;
+  font-size: 22px;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  * {
+    font-weight: 700;
+  }
+}
+
+.list {
+  display: grid;
+  grid-gap: 10px;
+}

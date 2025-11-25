@@ -58,7 +58,7 @@ export default {
         if (!!+product.weight.composite) {
           product.weight.composite_list?.map(composite => {
             const weight_item = getGoodsWeight.value.find(weight => weight.id === composite.weight)
-            if(weight_item) {
+            if (weight_item) {
               composite.product = getProducts.value.find(item => item.id === weight_item.product)
             }
             return composite
@@ -79,7 +79,7 @@ export default {
 
     const changeComposite = (e) => {
       goodWeight.composite.value = e.checked
-      if(e.checked) {
+      if (e.checked) {
         addCompositeItem()
       } else {
         goodWeight.compositeList.value = []
@@ -127,7 +127,7 @@ export default {
         return;
       }
 
-      if((to.name === 'GoodsWeightUpdate') || (to.name === 'GoodsWeightUpdateBalance' && to.params.id)) {
+      if ((to.name === 'GoodsWeightUpdate') || (to.name === 'GoodsWeightUpdateBalance' && to.params.id)) {
         if (!getGoodsWeight.value.length) {
           setTimeout(() => {
             changeRoute(to)
@@ -140,7 +140,7 @@ export default {
         goodWeight.few_very.value.value = +findWeight.few_very
         goodWeight.balance.value.value = +findWeight.balance
         goodWeight.composite.value = !!+findWeight.composite
-        if(goodWeight.composite.value) {
+        if (goodWeight.composite.value) {
           findWeight.composite_list.forEach(item => {
             addCompositeItem({
               weight_composite: getGoodsWeight.value.find(weight => weight.id === item.weight).product,
@@ -189,35 +189,13 @@ export default {
     >
       Добавить весовой товар
     </u-button>
-    <div class="goods-weight__list">
+    <div class="list goods-weight__list">
       <u-card
           v-for="(product, id) in computedProducts"
           class="goods-weight__item"
           :key="`good-weight-product-${product.id}`"
           :style="[{'--z-index': computedProducts.length - id}]"
       >
-        <p class="goods-weight__title">{{ product.show_title ? product.show_title : product.title }}</p>
-        <div class="goods-weight__content">
-          <p
-              :class="['goods-weight__text', {'goods-weight__text--few': +product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very}, {'goods-weight__text--few-very': +product.weight.balance <= +product.weight.few_very}]"
-              v-if="!+product.weight.composite"
-          >
-            <b>Остаток: </b> {{ product.weight.balance }} {{ product.measure?.title }}
-            <span
-                v-if="+product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very">мало товара</span>
-            <span v-if="+product.weight.balance <= +product.weight.few_very">очень мало товара</span>
-          </p>
-          <p class="goods-weight__text goods-weight__text--composite" v-else>
-            <span><b>Составной товар:</b></span>
-            <span
-                v-for="composite in product.weight.composite_list"
-                class="goods-weight__sub-text"
-                :key="`good-weight-composite-${composite.id}`"
-            >
-                <b>{{ composite.product.show_title ? composite.product.show_title : composite.product.title }}: </b> {{ composite.proportion }}%
-              </span>
-          </p>
-        </div>
         <u-actions
             class="goods-weight__actions"
             :actions="!+product.weight.composite ? actions : actions.filter(action => action.name !== 'updateBalance')"
@@ -225,6 +203,28 @@ export default {
             @updateBalance="router.push({name: 'GoodsWeightUpdateBalance', params: {id: product.weight.id}})"
             @delete="router.push({name: 'GoodsWeightDelete', params: {id: product.weight.id}})"
         />
+        <p class="sub-title">{{ product.show_title ? product.show_title : product.title }}</p>
+        <p
+            :class="['text', {'text--bold text--few': +product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very}, {'text--bold text--few-very': +product.weight.balance <= +product.weight.few_very}, {'text--null': +product.weight.balance === 0}]"
+            v-if="!+product.weight.composite"
+        >
+          <b>Остаток: </b> {{ product.weight.balance }} {{ product.measure?.title }}
+          <span v-if="+product.weight.balance === 0">не осталось товара</span>
+          <span v-else-if="+product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very">мало товара</span>
+          <span v-else-if="+product.weight.balance <= +product.weight.few_very">очень мало товара</span>
+        </p>
+        <p class="text" v-else>
+          <span><b>Составной товар:</b></span>
+          <span
+              v-for="composite in product.weight.composite_list"
+              class="goods-weight__sub-text"
+              :key="`good-weight-composite-${composite.id}`"
+          >
+              <b>{{
+                  composite.product.show_title ? composite.product.show_title : composite.product.title
+                }}: </b> {{ composite.proportion }}%
+            </span>
+        </p>
       </u-card>
     </div>
     <u-alert
@@ -243,91 +243,94 @@ export default {
           text="Добавить весовой товар"
           @submit.prevent="submitCreateGoodsWeight"
       >
-        <u-select
-            title="Продукт"
-            :values="products.filter(product => !getGoodsWeight.find(weight => +weight.product === +product.value))"
-            :start-value="goodWeight.product.value.value"
-            :error="goodWeight.product.value.error"
-            v-model="goodWeight.product.value.value"
-            class="goods-weight__select"
-            @change="goodWeight.product.value.tacked = true"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="goodWeight.balance.value.value"
-            v-model="goodWeight.balance.value.value"
-            v-if="!goodWeight.composite.value"
-        />
-        <u-input
-            title="Малое количество товара"
-            type="number"
-            :start-value="goodWeight.few.value.value"
-            v-model="goodWeight.few.value.value"
-            v-if="!goodWeight.composite.value"
-        />
-        <u-input
-            title="Очень малое количество товара"
-            type="number"
-            :start-value="goodWeight.few_very.value.value"
-            v-model="goodWeight.few_very.value.value"
-            v-if="!goodWeight.composite.value"
-        />
-        <u-checkbox
-            title="Составной товар"
-            name="composite"
-            value="1"
-            :checked="!!goodWeight.composite.value"
-            @checked="changeComposite"
-        />
-        <u-card class="goods-weight__wrapper" v-if="goodWeight.composite.value">
-          <p class="goods-weight__title">Пропорции</p>
-          <p v-if="!sum" class="goods-weight__error">Сумма пропорций должна составлять 100%</p>
-          <u-card
-              v-for="(item, id) in goodWeight.compositeList.value"
-              :class="['goods-weight__form-item', {'goods-weight__form-item--division': goodWeight.compositeList.value.length > 1}]"
-              :key="`goods-weight-proportion-${item.id}`"
-              :style="[{'--z-index': goodWeight.compositeList.value.length - id}]"
-          >
-            <u-input
-                title="Пропорция в %"
-                type="number"
-                :start-value="item.proportion.value"
-                :error="item.proportion.error"
-                v-model="item.proportion.value"
-                @change="item.proportion.tacked = true"
-                @blur="item.proportion.tacked = true"
-            />
-            <u-select
-                title="Весовой товар"
-                :values="products
+        <div class="list">
+
+          <u-select
+              title="Продукт"
+              :values="products.filter(product => !getGoodsWeight.find(weight => +weight.product === +product.value))"
+              :start-value="goodWeight.product.value.value"
+              :error="goodWeight.product.value.error"
+              v-model="goodWeight.product.value.value"
+              class="goods-weight__select"
+              @change="goodWeight.product.value.tacked = true"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="goodWeight.balance.value.value"
+              v-model="goodWeight.balance.value.value"
+              v-if="!goodWeight.composite.value"
+          />
+          <u-input
+              title="Малое количество товара"
+              type="number"
+              :start-value="goodWeight.few.value.value"
+              v-model="goodWeight.few.value.value"
+              v-if="!goodWeight.composite.value"
+          />
+          <u-input
+              title="Очень малое количество товара"
+              type="number"
+              :start-value="goodWeight.few_very.value.value"
+              v-model="goodWeight.few_very.value.value"
+              v-if="!goodWeight.composite.value"
+          />
+          <u-checkbox
+              title="Составной товар"
+              name="composite"
+              value="1"
+              :checked="!!goodWeight.composite.value"
+              @checked="changeComposite"
+          />
+          <u-card class="goods-weight__wrapper" v-if="goodWeight.composite.value">
+            <p class="goods-weight__title">Пропорции</p>
+            <p v-if="!sum" class="goods-weight__error">Сумма пропорций должна составлять 100%</p>
+            <u-card
+                v-for="(item, id) in goodWeight.compositeList.value"
+                :class="['goods-weight__form-item', {'goods-weight__form-item--division': goodWeight.compositeList.value.length > 1}]"
+                :key="`goods-weight-proportion-${item.id}`"
+                :style="[{'--z-index': goodWeight.compositeList.value.length - id}]"
+            >
+              <u-input
+                  title="Пропорция в %"
+                  type="number"
+                  :start-value="item.proportion.value"
+                  :error="item.proportion.error"
+                  v-model="item.proportion.value"
+                  @change="item.proportion.tacked = true"
+                  @blur="item.proportion.tacked = true"
+              />
+              <u-select
+                  title="Весовой товар"
+                  :values="products
                   .filter(product => product.value !== goodWeight.product.value.value)
                   .filter(product => getGoodsWeight.find(weight => weight.product === product.value && !+weight.composite))
                   .filter(product => item.weight_composite.value === product.value || !goodWeight.compositeList.value.find(weight => weight.weight_composite.value === product.value))
                 "
-                :start-value="item.weight_composite.value"
-                :error="item.weight_composite.error"
-                v-model="item.weight_composite.value"
-                class="goods-weight__select-composite"
-                @change="item.weight_composite.tacked = true"
-            />
+                  :start-value="item.weight_composite.value"
+                  :error="item.weight_composite.error"
+                  v-model="item.weight_composite.value"
+                  class="goods-weight__select-composite"
+                  @change="item.weight_composite.tacked = true"
+              />
+              <u-button
+                  v-if="goodWeight.compositeList.value.length > 1"
+                  type="button"
+                  modifier="red"
+                  class="goods-weight__delete-composite"
+                  @click="removeCompositeItem(item.id)"
+              />
+            </u-card>
             <u-button
-              v-if="goodWeight.compositeList.value.length > 1"
-              type="button"
-              modifier="red"
-              class="goods-weight__delete-composite"
-              @click="removeCompositeItem(item.id)"
-            />
+                v-if="(getGoodsWeight.length - 1 - goodWeight.compositeList.value.length)  > 0"
+                type="button"
+                class="goods-weight__add-composite"
+                @click="addCompositeItem()"
+            >
+              Добавить пропорцию
+            </u-button>
           </u-card>
-          <u-button
-              v-if="(getGoodsWeight.length - 1 - goodWeight.compositeList.value.length)  > 0"
-              type="button"
-              class="goods-weight__add-composite"
-              @click="addCompositeItem()"
-          >
-            Добавить пропорцию
-          </u-button>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
 
@@ -340,95 +343,97 @@ export default {
           :text="route.name === 'GoodsWeightUpdate' ? 'Изменить весовой товар' : 'Изменить остаток весового товара'"
           @submit.prevent="route.name === 'GoodsWeightUpdate' ? submitUpdateGoodsWeight() : submitUpdateBalanceGoodsWeight()"
       >
-        <u-select
-            title="Продукт"
-            :values="products.filter(product => !getGoodsWeight.find(weight => +weight.product === +product.value && weight.product !== goodWeight.product.value.value))"
-            :start-value="goodWeight.product.value.value"
-            :error="goodWeight.product.value.error"
-            v-model="goodWeight.product.value.value"
-            class="goods-weight__select"
-            @change="goodWeight.product.value.tacked = true"
-            :disabled="route.name === 'GoodsWeightUpdateBalance'"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="goodWeight.balance.value.value"
-            v-model="goodWeight.balance.value.value"
-            v-if="!goodWeight.composite.value"
-        />
-        <u-input
-            title="Малое количество товара"
-            type="number"
-            :start-value="goodWeight.few.value.value"
-            v-model="goodWeight.few.value.value"
-            v-if="!goodWeight.composite.value"
-            :disabled="route.name === 'GoodsWeightUpdateBalance'"
-        />
-        <u-input
-            title="Очень малое количество товара"
-            type="number"
-            :start-value="goodWeight.few_very.value.value"
-            v-model="goodWeight.few_very.value.value"
-            v-if="!goodWeight.composite.value"
-            :disabled="route.name === 'GoodsWeightUpdateBalance'"
-        />
-        <u-checkbox
-            v-if="route.name === 'GoodsWeightUpdate'"
-            title="Составной товар"
-            name="composite"
-            value="1"
-            :checked="!!goodWeight.composite.value"
-            @checked="changeComposite"
-        />
-        <u-card class="goods-weight__wrapper" v-if="goodWeight.composite.value">
-          <p class="goods-weight__title">Пропорции</p>
-          <p v-if="!sum" class="goods-weight__error">Сумма пропорций должна составлять 100%</p>
-          <u-card
-              v-for="(item, id) in goodWeight.compositeList.value"
-              :class="['goods-weight__form-item', {'goods-weight__form-item--division': goodWeight.compositeList.value.length > 1}]"
-              :key="`goods-weight-proportion-${item.id}`"
-              :style="[{'--z-index': goodWeight.compositeList.value.length - id}]"
-          >
-            <u-input
-                title="Пропорция в %"
-                type="number"
-                :start-value="item.proportion.value"
-                :error="item.proportion.error"
-                v-model="item.proportion.value"
-                @change="item.proportion.tacked = true"
-                @blur="item.proportion.tacked = true"
-            />
-            <u-select
-                title="Весовой товар"
-                :values="products
+        <div class="list">
+          <u-select
+              title="Продукт"
+              :values="products.filter(product => !getGoodsWeight.find(weight => +weight.product === +product.value && weight.product !== goodWeight.product.value.value))"
+              :start-value="goodWeight.product.value.value"
+              :error="goodWeight.product.value.error"
+              v-model="goodWeight.product.value.value"
+              class="goods-weight__select"
+              @change="goodWeight.product.value.tacked = true"
+              :disabled="route.name === 'GoodsWeightUpdateBalance'"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="goodWeight.balance.value.value"
+              v-model="goodWeight.balance.value.value"
+              v-if="!goodWeight.composite.value"
+          />
+          <u-input
+              title="Малое количество товара"
+              type="number"
+              :start-value="goodWeight.few.value.value"
+              v-model="goodWeight.few.value.value"
+              v-if="!goodWeight.composite.value"
+              :disabled="route.name === 'GoodsWeightUpdateBalance'"
+          />
+          <u-input
+              title="Очень малое количество товара"
+              type="number"
+              :start-value="goodWeight.few_very.value.value"
+              v-model="goodWeight.few_very.value.value"
+              v-if="!goodWeight.composite.value"
+              :disabled="route.name === 'GoodsWeightUpdateBalance'"
+          />
+          <u-checkbox
+              v-if="route.name === 'GoodsWeightUpdate'"
+              title="Составной товар"
+              name="composite"
+              value="1"
+              :checked="!!goodWeight.composite.value"
+              @checked="changeComposite"
+          />
+          <u-card class="goods-weight__wrapper" v-if="goodWeight.composite.value">
+            <p class="goods-weight__title">Пропорции</p>
+            <p v-if="!sum" class="goods-weight__error">Сумма пропорций должна составлять 100%</p>
+            <u-card
+                v-for="(item, id) in goodWeight.compositeList.value"
+                :class="['goods-weight__form-item', {'goods-weight__form-item--division': goodWeight.compositeList.value.length > 1}]"
+                :key="`goods-weight-proportion-${item.id}`"
+                :style="[{'--z-index': goodWeight.compositeList.value.length - id}]"
+            >
+              <u-input
+                  title="Пропорция в %"
+                  type="number"
+                  :start-value="item.proportion.value"
+                  :error="item.proportion.error"
+                  v-model="item.proportion.value"
+                  @change="item.proportion.tacked = true"
+                  @blur="item.proportion.tacked = true"
+              />
+              <u-select
+                  title="Весовой товар"
+                  :values="products
                   .filter(product => product.value !== goodWeight.product.value.value)
                   .filter(product => getGoodsWeight.find(weight => weight.product === product.value && !+weight.composite))
                   .filter(product => item.weight_composite.value === product.value || !goodWeight.compositeList.value.find(weight => weight.weight_composite.value === product.value))
                 "
-                :start-value="item.weight_composite.value"
-                :error="item.weight_composite.error"
-                v-model="item.weight_composite.value"
-                class="goods-weight__select-composite"
-                @change="item.weight_composite.tacked = true"
-            />
+                  :start-value="item.weight_composite.value"
+                  :error="item.weight_composite.error"
+                  v-model="item.weight_composite.value"
+                  class="goods-weight__select-composite"
+                  @change="item.weight_composite.tacked = true"
+              />
+              <u-button
+                  v-if="goodWeight.compositeList.value.length > 1"
+                  type="button"
+                  modifier="red"
+                  class="goods-weight__delete-composite"
+                  @click="removeCompositeItem(item.id)"
+              />
+            </u-card>
             <u-button
-                v-if="goodWeight.compositeList.value.length > 1"
+                v-if="(getGoodsWeight.length - 1 - goodWeight.compositeList.value.length)  > 0"
                 type="button"
-                modifier="red"
-                class="goods-weight__delete-composite"
-                @click="removeCompositeItem(item.id)"
-            />
+                class="goods-weight__add-composite"
+                @click="addCompositeItem()"
+            >
+              Добавить пропорцию
+            </u-button>
           </u-card>
-          <u-button
-              v-if="(getGoodsWeight.length - 1 - goodWeight.compositeList.value.length)  > 0"
-              type="button"
-              class="goods-weight__add-composite"
-              @click="addCompositeItem()"
-          >
-            Добавить пропорцию
-          </u-button>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
   </div>

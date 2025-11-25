@@ -1,25 +1,11 @@
 .orders-list {
   color: var(--primary);
   max-width: 600px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 20px;
 
   &__item {
     position: relative;
     background: var(--white);
     z-index: var(--z-index);
-  }
-
-  &__text {
-    &--alarm {
-      color: var(--yellow);
-      font-weight: 700;
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 5px;
-    }
   }
 
   &__actions {

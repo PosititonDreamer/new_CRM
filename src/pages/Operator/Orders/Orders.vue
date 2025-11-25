@@ -286,223 +286,225 @@ export default {
           @submit.prevent="submitCreateOrders('OperatorOrders')"
           v-if="loading"
       >
-        <u-input
-            title="Трек-номер"
-            v-model="order.track.value.value"
-            :start-value="order.track.value.value"
-            :error="order.track.value.error"
-            @blur="order.track.value.tacked = true"
-            @change="order.track.value.tacked = true"
-        />
-        <u-input
-            title="ФИО"
-            v-model="order.client.value.value"
-            :start-value="order.client.value.value"
-            :error="order.client.value.error"
-            @blur="order.client.value.tacked = true"
-            @input="() => {
+        <div class="list">
+          <u-input
+              title="Трек-номер"
+              v-model="order.track.value.value"
+              :start-value="order.track.value.value"
+              :error="order.track.value.error"
+              @blur="order.track.value.tacked = true"
+              @change="order.track.value.tacked = true"
+          />
+          <u-input
+              title="ФИО"
+              v-model="order.client.value.value"
+              :start-value="order.client.value.value"
+              :error="order.client.value.error"
+              @blur="order.client.value.tacked = true"
+              @input="() => {
               order.client.value.tacked = true
               findClients()
             }"
-            @change="order.client.value.tacked = true"
-        />
-        <u-card class="orders__clients-list" v-if="getClientsList.length">
-          <p class="orders__title">Список найденных клиентов</p>
-          <u-card
-              v-for="client in getClientsList"
-              class="orders__clients-item"
-              :key="`client-item-${client.id}`"
-          >
-            <p class="orders__text">
-              <b>ФИО:</b> {{ client.full_name }}
-            </p>
-            <p class="orders__text">
-              <b>Телефон:</b> {{ client.phone }}
-            </p>
-            <p class="orders__text">
-              <b>E-mail:</b> {{ client.email }}
-            </p>
-            <div class="orders__address-list">
-              <u-button
-                  v-for="address in client.address"
-                  type="button"
-                  @click="selectClient(client.id, address.id)"
-                  :key="`client-address-${address.id}`"
-                  class="orders__address-button"
-              >
-                {{ address.delivery }} {{ address.address }}
-              </u-button>
-            </div>
+              @change="order.client.value.tacked = true"
+          />
+          <u-card class="orders__clients-list" v-if="getClientsList.length">
+            <p class="sub-title">Список найденных клиентов</p>
+            <u-card
+                v-for="client in getClientsList"
+                class="orders__clients-item"
+                :key="`client-item-${client.id}`"
+            >
+              <p class="text">
+                <b>ФИО:</b> {{ client.full_name }}
+              </p>
+              <p class="text">
+                <b>Телефон:</b> {{ client.phone }}
+              </p>
+              <p class="text">
+                <b>E-mail:</b> {{ client.email }}
+              </p>
+              <div class="list">
+                <u-button
+                    v-for="address in client.address"
+                    type="button"
+                    @click="selectClient(client.id, address.id)"
+                    :key="`client-address-${address.id}`"
+                    class="orders__address-button"
+                >
+                  {{ address.delivery }} {{ address.address }}
+                </u-button>
+              </div>
+            </u-card>
           </u-card>
-        </u-card>
-        <u-input
-            title="Адрес"
-            v-model="order.address.value.value"
-            :start-value="order.address.value.value"
-            :error="order.address.value.error"
-            @blur="order.address.value.tacked = true"
-            @change="order.address.value.tacked = true"
-        />
-        <u-input
-            title="Телефон"
-            v-model="order.phone.value.value"
-            :start-value="order.phone.value.value"
-            :error="order.phone.value.error"
-            @blur="order.phone.value.tacked = true"
-            @change="order.phone.value.tacked = true"
-        />
-        <u-input
-            title="E-mail"
-            v-model="order.email.value.value"
-            :start-value="order.email.value.value"
-        />
-        <u-input
-            title="Комментарий"
-            v-model="order.comment.value.value"
-            :start-value="order.comment.value.value"
-            type="textarea"
-        />
+          <u-input
+              title="Адрес"
+              v-model="order.address.value.value"
+              :start-value="order.address.value.value"
+              :error="order.address.value.error"
+              @blur="order.address.value.tacked = true"
+              @change="order.address.value.tacked = true"
+          />
+          <u-input
+              title="Телефон"
+              v-model="order.phone.value.value"
+              :start-value="order.phone.value.value"
+              :error="order.phone.value.error"
+              @blur="order.phone.value.tacked = true"
+              @change="order.phone.value.tacked = true"
+          />
+          <u-input
+              title="E-mail"
+              v-model="order.email.value.value"
+              :start-value="order.email.value.value"
+          />
+          <u-input
+              title="Комментарий"
+              v-model="order.comment.value.value"
+              :start-value="order.comment.value.value"
+              type="textarea"
+          />
 
-        <u-select
-            title="Доставка"
-            :values="filterDelivery.filter(delivery => delivery.value).filter(delivery => delivery.value !== 'Boxberry')"
-            v-model="order.delivery.value.value"
-            :start-value="order.delivery.value.value"
-            :error="order.delivery.value.error"
-            @blur="order.delivery.value.tacked = true"
-            @change="order.delivery.value.tacked = true"
-            class="orders__select orders__select--delivery"
-        />
-        <u-input
-            v-if="order.delivery.value.value === 'Почта России' || order.delivery.value.value === 'Яндекс Доставка'"
-            title="Бланк"
-            type="file"
-            @file="e => order.file.value.value = e"
-            class="orders__input orders__input--file"
-        />
-        <u-card>
-          <p class="orders__title">Состав заказа</p>
-          <u-card
-              v-for="(item, id) in order.composition.value"
-              :key="`good-order-item${item.id}`"
-              :class="['orders__form-item', {'orders__form-item--division': order.composition.value.length > 1}]"
-              :style="[{'--z-index': order.composition.value.length - id}]"
-          >
-            <u-select
-                title="Тип"
-                :values="compositionTypes"
-                :start-value="item.type.value"
-                :error="item.type.error"
-                v-model="item.type.value"
-                @change="() => {
+          <u-select
+              title="Доставка"
+              :values="filterDelivery.filter(delivery => delivery.value).filter(delivery => delivery.value !== 'Boxberry')"
+              v-model="order.delivery.value.value"
+              :start-value="order.delivery.value.value"
+              :error="order.delivery.value.error"
+              @blur="order.delivery.value.tacked = true"
+              @change="order.delivery.value.tacked = true"
+              class="orders__select orders__select--delivery"
+          />
+          <u-input
+              v-if="order.delivery.value.value === 'Почта России' || order.delivery.value.value === 'Яндекс Доставка'"
+              title="Бланк"
+              type="file"
+              @file="e => order.file.value.value = e"
+              class="orders__input orders__input--file"
+          />
+          <u-card>
+            <p class="sub-title">Состав заказа</p>
+            <u-card
+                v-for="(item, id) in order.composition.value"
+                :key="`good-order-item${item.id}`"
+                :class="['orders__form-item', {'orders__form-item--division': order.composition.value.length > 1}]"
+                :style="[{'--z-index': order.composition.value.length - id}]"
+            >
+              <u-select
+                  title="Тип"
+                  :values="compositionTypes"
+                  :start-value="item.type.value"
+                  :error="item.type.error"
+                  v-model="item.type.value"
+                  @change="() => {
                     item.type.tacked = true
                     item.good.value = ''
                     item.product.value = ''
                     item.present = false
                   }"
-                class="orders__select orders__select--type"
-            />
-            <template v-if="item.type.value === 'good'">
-              <u-select
-                  title="Продукт"
-                  :values="computedProducts"
-                  :start-value="item.product.value"
-                  :error="item.product.error"
-                  v-model="item.product.value"
-                  @change="() => {
+                  class="orders__select orders__select--type"
+              />
+              <template v-if="item.type.value === 'good'">
+                <u-select
+                    title="Продукт"
+                    :values="computedProducts"
+                    :start-value="item.product.value"
+                    :error="item.product.error"
+                    v-model="item.product.value"
+                    @change="() => {
                     item.product.tacked = true
                     item.good.value = ''
                   }"
-                  class="orders__select orders__select--product"
-              />
-              <u-select
-                  v-if="item.product.value"
-                  title="Товар"
-                  :values="computedGoods.filter(good =>  good.product === item.product.value)"
-                  :start-value="item.good.value"
-                  :error="item.good.error"
-                  v-model="item.good.value"
-                  @change="item.good.tacked = true"
-                  class="orders__select orders__select--good"
-              />
-              <u-input
-                  title="Количество"
-                  type="number"
-                  :start-value="item.quantity.value"
-                  :error="item.quantity.error"
-                  v-model="item.quantity.value"
-                  @change="item.quantity.tacked = true"
-                  @blur="item.quantity.tacked = true"
-              />
-              <u-checkbox
-                  class="orders__present"
-                  title="Подарок"
-                  name="present"
-                  value="1"
-                  :checked="item.present"
-                  @checked="item.present = !item.present"
-              />
-            </template>
-            <template v-else-if="item.type.value === 'kit'">
-              <u-select
-                  title="Товар"
-                  :values="computedKits"
-                  :start-value="item.good.value"
-                  :error="item.good.error"
-                  v-model="item.good.value"
-                  @change="item.good.tacked = true"
-                  class="orders__select orders__select--good"
-              />
-              <u-input
-                  title="Количество"
-                  type="number"
-                  :start-value="item.quantity.value"
-                  :error="item.quantity.error"
-                  v-model="item.quantity.value"
-                  @change="item.quantity.tacked = true"
-                  @blur="item.quantity.tacked = true"
-              />
-            </template>
-            <template v-else-if="item.type.value === 'present'">
-              <u-select
-                  title="Товар"
-                  :values="computedPresents"
-                  :start-value="item.good.value"
-                  :error="item.good.error"
-                  v-model="item.good.value"
-                  @change="() => {
+                    class="orders__select orders__select--product"
+                />
+                <u-select
+                    v-if="item.product.value"
+                    title="Товар"
+                    :values="computedGoods.filter(good =>  good.product === item.product.value)"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="item.good.tacked = true"
+                    class="orders__select orders__select--good"
+                />
+                <u-input
+                    title="Количество"
+                    type="number"
+                    :start-value="item.quantity.value"
+                    :error="item.quantity.error"
+                    v-model="item.quantity.value"
+                    @change="item.quantity.tacked = true"
+                    @blur="item.quantity.tacked = true"
+                />
+                <u-checkbox
+                    class="orders__present"
+                    title="Подарок"
+                    name="present"
+                    value="1"
+                    :checked="item.present"
+                    @checked="item.present = !item.present"
+                />
+              </template>
+              <template v-else-if="item.type.value === 'kit'">
+                <u-select
+                    title="Товар"
+                    :values="computedKits"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="item.good.tacked = true"
+                    class="orders__select orders__select--good"
+                />
+                <u-input
+                    title="Количество"
+                    type="number"
+                    :start-value="item.quantity.value"
+                    :error="item.quantity.error"
+                    v-model="item.quantity.value"
+                    @change="item.quantity.tacked = true"
+                    @blur="item.quantity.tacked = true"
+                />
+              </template>
+              <template v-else-if="item.type.value === 'present'">
+                <u-select
+                    title="Товар"
+                    :values="computedPresents"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="() => {
                     item.good.tacked = true
                     item.present = true
                     item.quantity.value = 1
 
                   }"
-                  class="orders__select orders__select--good"
+                    class="orders__select orders__select--good"
+                />
+              </template>
+              <u-button
+                  v-if="order.composition.value.length > 1"
+                  type="button"
+                  modifier="red"
+                  class="orders__delete-order"
+                  @click="removeComposition(item.id)"
               />
-            </template>
+            </u-card>
             <u-button
-                v-if="order.composition.value.length > 1"
                 type="button"
-                modifier="red"
-                class="orders__delete-order"
-                @click="removeComposition(item.id)"
-            />
+                @click="addComposition()"
+                class="orders__add-order"
+            >
+              Добавить товар
+            </u-button>
           </u-card>
-          <u-button
-              type="button"
-              @click="addComposition()"
-              class="orders__add-order"
-          >
-            Добавить товар
-          </u-button>
-        </u-card>
-        <u-checkbox
-            class="orders__present"
-            title="Заказ оплачен"
-            name="payed"
-            value="1"
-            :checked="order.payed.value"
-            @checked="order.payed.value = !order.payed.value"
-        />
+          <u-checkbox
+              class="orders__present"
+              title="Заказ оплачен"
+              name="payed"
+              value="1"
+              :checked="order.payed.value"
+              @checked="order.payed.value = !order.payed.value"
+          />
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -515,209 +517,211 @@ export default {
           @submit.prevent="submitUpdateOrders('OperatorOrders')"
           v-if="loading"
       >
-        <u-input
-            title="Трек-номер"
-            v-model="order.track.value.value"
-            :start-value="order.track.value.value"
-            :error="order.track.value.error"
-            @blur="order.track.value.tacked = true"
-            @change="order.track.value.tacked = true"
-        />
-        <u-input
-            title="ФИО"
-            v-model="order.client.value.value"
-            :start-value="order.client.value.value"
-            disabled
-        />
-        <u-card class="orders__clients-list" v-if="getClientsList.length">
-          <p class="orders__title">Список найденных клиентов</p>
-          <u-card
-              v-for="client in getClientsList"
-              class="orders__clients-item"
-              :key="`client-item-${client.id}`"
-          >
-            <p class="orders__text">
-              <b>ФИО:</b> {{ client.full_name }}
-            </p>
-            <p class="orders__text">
-              <b>Телефон:</b> {{ client.phone }}
-            </p>
-            <p class="orders__text">
-              <b>E-mail:</b> {{ client.email }}
-            </p>
-            <div class="orders__address-list">
-              <u-button
-                  v-for="address in client.address"
-                  type="button"
-                  @click="selectClient(client.id, address.id)"
-                  :key="`client-address-${address.id}`"
-                  class="orders__address-button"
-              >
-                {{ address.delivery }} {{ address.address }}
-              </u-button>
-            </div>
+        <div class="list">
+          <u-input
+              title="Трек-номер"
+              v-model="order.track.value.value"
+              :start-value="order.track.value.value"
+              :error="order.track.value.error"
+              @blur="order.track.value.tacked = true"
+              @change="order.track.value.tacked = true"
+          />
+          <u-input
+              title="ФИО"
+              v-model="order.client.value.value"
+              :start-value="order.client.value.value"
+              disabled
+          />
+          <u-card class="orders__clients-list" v-if="getClientsList.length">
+            <p class="sub-title">Список найденных клиентов</p>
+            <u-card
+                v-for="client in getClientsList"
+                class="orders__clients-item"
+                :key="`client-item-${client.id}`"
+            >
+              <p class="text">
+                <b>ФИО:</b> {{ client.full_name }}
+              </p>
+              <p class="text">
+                <b>Телефон:</b> {{ client.phone }}
+              </p>
+              <p class="text">
+                <b>E-mail:</b> {{ client.email }}
+              </p>
+              <div class="orders__address-list">
+                <u-button
+                    v-for="address in client.address"
+                    type="button"
+                    @click="selectClient(client.id, address.id)"
+                    :key="`client-address-${address.id}`"
+                    class="orders__address-button"
+                >
+                  {{ address.delivery }} {{ address.address }}
+                </u-button>
+              </div>
+            </u-card>
           </u-card>
-        </u-card>
-        <u-input
-            title="Адрес"
-            v-model="order.address.value.value"
-            :start-value="order.address.value.value"
-            :error="order.address.value.error"
-            @blur="order.address.value.tacked = true"
-            @change="order.address.value.tacked = true"
-        />
-        <u-input
-            title="Телефон"
-            v-model="order.phone.value.value"
-            :start-value="order.phone.value.value"
-            :error="order.phone.value.error"
-            @blur="order.phone.value.tacked = true"
-            @change="order.phone.value.tacked = true"
-        />
-        <u-input
-            title="E-mail"
-            v-model="order.email.value.value"
-            :start-value="order.email.value.value"
-        />
-        <u-input
-            title="Комментарий"
-            v-model="order.comment.value.value"
-            :start-value="order.comment.value.value"
-            type="textarea"
-        />
+          <u-input
+              title="Адрес"
+              v-model="order.address.value.value"
+              :start-value="order.address.value.value"
+              :error="order.address.value.error"
+              @blur="order.address.value.tacked = true"
+              @change="order.address.value.tacked = true"
+          />
+          <u-input
+              title="Телефон"
+              v-model="order.phone.value.value"
+              :start-value="order.phone.value.value"
+              :error="order.phone.value.error"
+              @blur="order.phone.value.tacked = true"
+              @change="order.phone.value.tacked = true"
+          />
+          <u-input
+              title="E-mail"
+              v-model="order.email.value.value"
+              :start-value="order.email.value.value"
+          />
+          <u-input
+              title="Комментарий"
+              v-model="order.comment.value.value"
+              :start-value="order.comment.value.value"
+              type="textarea"
+          />
 
-        <u-select
-            title="Доставка"
-            :values="filterDelivery.filter(delivery => delivery.value).filter(delivery => delivery.value !== 'Boxberry')"
-            v-model="order.delivery.value.value"
-            :start-value="order.delivery.value.value"
-            :error="order.delivery.value.error"
-            @blur="order.delivery.value.tacked = true"
-            @change="order.delivery.value.tacked = true"
-            class="orders__select orders__select--delivery"
-        />
-        <u-input
-            v-if="order.delivery.value.value === 'Почта России' || order.delivery.value.value === 'Яндекс Доставка'"
-            title="Бланк"
-            type="file"
-            @file="e => order.file.value.value = e"
-            class="orders__input orders__input--file"
-        />
-        <u-card>
-          <p class="orders__title">Состав заказа</p>
-          <u-card
-              v-for="(item, id) in order.composition.value"
-              :key="`good-order-item${item.id}`"
-              :class="['orders__form-item', {'orders__form-item--division': order.composition.value.length > 1}]"
-              :style="[{'--z-index': order.composition.value.length - id}]"
-          >
-            <u-select
-                title="Тип"
-                :values="compositionTypes"
-                :start-value="item.type.value"
-                :error="item.type.error"
-                v-model="item.type.value"
-                @change="() => {
+          <u-select
+              title="Доставка"
+              :values="filterDelivery.filter(delivery => delivery.value).filter(delivery => delivery.value !== 'Boxberry')"
+              v-model="order.delivery.value.value"
+              :start-value="order.delivery.value.value"
+              :error="order.delivery.value.error"
+              @blur="order.delivery.value.tacked = true"
+              @change="order.delivery.value.tacked = true"
+              class="orders__select orders__select--delivery"
+          />
+          <u-input
+              v-if="order.delivery.value.value === 'Почта России' || order.delivery.value.value === 'Яндекс Доставка'"
+              title="Бланк"
+              type="file"
+              @file="e => order.file.value.value = e"
+              class="orders__input orders__input--file"
+          />
+          <u-card>
+            <p class="sub-title">Состав заказа</p>
+            <u-card
+                v-for="(item, id) in order.composition.value"
+                :key="`good-order-item${item.id}`"
+                :class="['orders__form-item', {'orders__form-item--division': order.composition.value.length > 1}]"
+                :style="[{'--z-index': order.composition.value.length - id}]"
+            >
+              <u-select
+                  title="Тип"
+                  :values="compositionTypes"
+                  :start-value="item.type.value"
+                  :error="item.type.error"
+                  v-model="item.type.value"
+                  @change="() => {
                     item.type.tacked = true
                     item.good.value = ''
                     item.product.value = ''
                     item.present = false
                   }"
-                class="orders__select orders__select--type"
-            />
-            <template v-if="item.type.value === 'good'">
-              <u-select
-                  title="Продукт"
-                  :values="computedProducts"
-                  :start-value="item.product.value"
-                  :error="item.product.error"
-                  v-model="item.product.value"
-                  @change="() => {
+                  class="orders__select orders__select--type"
+              />
+              <template v-if="item.type.value === 'good'">
+                <u-select
+                    title="Продукт"
+                    :values="computedProducts"
+                    :start-value="item.product.value"
+                    :error="item.product.error"
+                    v-model="item.product.value"
+                    @change="() => {
                     item.product.tacked = true
                     item.good.value = ''
                   }"
-                  class="orders__select orders__select--product"
-              />
-              <u-select
-                  v-if="item.product.value"
-                  title="Товар"
-                  :values="computedGoods.filter(good =>  good.product === item.product.value)"
-                  :start-value="item.good.value"
-                  :error="item.good.error"
-                  v-model="item.good.value"
-                  @change="item.good.tacked = true"
-                  class="orders__select orders__select--good"
-              />
-              <u-input
-                  title="Количество"
-                  type="number"
-                  :start-value="item.quantity.value"
-                  :error="item.quantity.error"
-                  v-model="item.quantity.value"
-                  @change="item.quantity.tacked = true"
-                  @blur="item.quantity.tacked = true"
-              />
-            </template>
-            <template v-else-if="item.type.value === 'kit'">
-              <u-select
-                  title="Товар"
-                  :values="computedKits"
-                  :start-value="item.good.value"
-                  :error="item.good.error"
-                  v-model="item.good.value"
-                  @change="item.good.tacked = true"
-                  class="orders__select orders__select--good"
-              />
-              <u-input
-                  title="Количество"
-                  type="number"
-                  :start-value="item.quantity.value"
-                  :error="item.quantity.error"
-                  v-model="item.quantity.value"
-                  @change="item.quantity.tacked = true"
-                  @blur="item.quantity.tacked = true"
-              />
-            </template>
-            <template v-else-if="item.type.value === 'present'">
-              <u-select
-                  title="Товар"
-                  :values="computedPresents"
-                  :start-value="item.good.value"
-                  :error="item.good.error"
-                  v-model="item.good.value"
-                  @change="() => {
+                    class="orders__select orders__select--product"
+                />
+                <u-select
+                    v-if="item.product.value"
+                    title="Товар"
+                    :values="computedGoods.filter(good =>  good.product === item.product.value)"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="item.good.tacked = true"
+                    class="orders__select orders__select--good"
+                />
+                <u-input
+                    title="Количество"
+                    type="number"
+                    :start-value="item.quantity.value"
+                    :error="item.quantity.error"
+                    v-model="item.quantity.value"
+                    @change="item.quantity.tacked = true"
+                    @blur="item.quantity.tacked = true"
+                />
+              </template>
+              <template v-else-if="item.type.value === 'kit'">
+                <u-select
+                    title="Товар"
+                    :values="computedKits"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="item.good.tacked = true"
+                    class="orders__select orders__select--good"
+                />
+                <u-input
+                    title="Количество"
+                    type="number"
+                    :start-value="item.quantity.value"
+                    :error="item.quantity.error"
+                    v-model="item.quantity.value"
+                    @change="item.quantity.tacked = true"
+                    @blur="item.quantity.tacked = true"
+                />
+              </template>
+              <template v-else-if="item.type.value === 'present'">
+                <u-select
+                    title="Товар"
+                    :values="computedPresents"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="() => {
                     item.good.tacked = true
                     item.present = true
                     item.quantity.value = 1
 
                   }"
-                  class="orders__select orders__select--good"
+                    class="orders__select orders__select--good"
+                />
+              </template>
+              <u-button
+                  v-if="order.composition.value.length > 1"
+                  type="button"
+                  modifier="red"
+                  class="orders__delete-order"
+                  @click="removeComposition(item.id)"
               />
-            </template>
+            </u-card>
             <u-button
-                v-if="order.composition.value.length > 1"
                 type="button"
-                modifier="red"
-                class="orders__delete-order"
-                @click="removeComposition(item.id)"
-            />
+                @click="addComposition()"
+                class="orders__add-order"
+            >
+              Добавить товар
+            </u-button>
           </u-card>
-          <u-button
-              type="button"
-              @click="addComposition()"
-              class="orders__add-order"
-          >
-            Добавить товар
-          </u-button>
-        </u-card>
-        <u-checkbox
-            class="orders__present"
-            title="Заказ оплачен"
-            name="payed"
-            value="1"
-            :checked="order.payed.value"
-            @checked="order.payed.value = !order.payed.value"
-        />
+          <u-checkbox
+              class="orders__present"
+              title="Заказ оплачен"
+              name="payed"
+              value="1"
+              :checked="order.payed.value"
+              @checked="order.payed.value = !order.payed.value"
+          />
+        </div>
       </u-form>
     </u-popup>
     <u-alert
@@ -743,24 +747,26 @@ export default {
           text="Добавить трек-номер"
           @submit.prevent="submitAddTrack('OperatorOrders')"
       >
-        <p @click="copyNumber(getOrderDetail.number)"><b>Номер заказа: </b>{{ getOrderDetail.number }} </p>
-        <p><b>ФИО: </b>{{ getOrderDetail.client.full_name }} </p>
-        <u-input
-            title="Трек-номер"
-            v-model="order.track.value.value"
-            :start-value="order.track.value.value"
-            :error="order.track.value.error"
-            @blur="order.track.value.tacked = true"
-            @change="order.track.value.tacked = true"
-        />
-        <u-input
-            v-if="getOrderDetail.address.delivery !== 'CDEK'"
-            title="Бланк"
-            type="file"
-            @file="e => order.file.value.value = e"
-            class="orders__input orders__input--file"
-            :error="order.file.value.error"
-        />
+        <p class="sub-title" @click="copyNumber(getOrderDetail.number)"><b>Номер заказа: </b>{{ getOrderDetail.number }} </p>
+        <p class="text"><b>ФИО: </b>{{ getOrderDetail.client.full_name }} </p>
+        <div class="list">
+          <u-input
+              title="Трек-номер"
+              v-model="order.track.value.value"
+              :start-value="order.track.value.value"
+              :error="order.track.value.error"
+              @blur="order.track.value.tacked = true"
+              @change="order.track.value.tacked = true"
+          />
+          <u-input
+              v-if="getOrderDetail.address.delivery !== 'CDEK'"
+              title="Бланк"
+              type="file"
+              @file="e => order.file.value.value = e"
+              class="orders__input orders__input--file"
+              :error="order.file.value.error"
+          />
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -772,16 +778,18 @@ export default {
           text="Добавить бланк"
           @submit.prevent="submitAddBlank('OperatorOrders')"
       >
-        <p><b>Трек-номер: </b>{{ getOrderDetail.track }} </p>
-        <p @click="copyNumber(getOrderDetail.number)"><b>Номер заказа: </b>{{ getOrderDetail.number }} </p>
-        <p><b>ФИО: </b>{{ getOrderDetail.client.full_name }} </p>
-        <u-input
-            title="Бланк"
-            type="file"
-            @file="e => order.file.value.value = e"
-            class="orders__input orders__input--file"
-            :error="order.file.value.error"
-        />
+        <p class="sub-title"><b>Трек-номер: </b>{{ getOrderDetail.track }} </p>
+        <p class="sub-title" @click="copyNumber(getOrderDetail.number)"><b>Номер заказа: </b>{{ getOrderDetail.number }} </p>
+        <p class="text"><b>ФИО: </b>{{ getOrderDetail.client.full_name }} </p>
+        <div class="list">
+          <u-input
+              title="Бланк"
+              type="file"
+              @file="e => order.file.value.value = e"
+              class="orders__input orders__input--file"
+              :error="order.file.value.error"
+          />
+        </div>
       </u-form>
     </u-popup>
     <orders-preview

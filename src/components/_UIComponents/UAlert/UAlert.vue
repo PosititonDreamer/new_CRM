@@ -48,7 +48,7 @@ export default {
   <Teleport to="body">
     <div class="u-alert" @click="close">
       <div class="u-alert__content" @click.stop>
-        <p class="u-alert__title">{{ title }}</p>
+        <p class="sub-title">{{ title }}</p>
         <div v-if="type === 'alert'" class="u-alert__actions">
           <u-button @click="close">Принять</u-button>
         </div>

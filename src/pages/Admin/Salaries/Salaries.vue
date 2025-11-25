@@ -93,11 +93,11 @@ export default {
     })
 
     const changeRoute = (to) => {
-      if(to.name === 'Salaries') {
+      if (to.name === 'Salaries') {
         clearData()
       }
 
-      if(to.name === 'SalariesAccept' && !getSalaries.value) {
+      if (to.name === 'SalariesAccept' && !getSalaries.value) {
         router.push({name: 'Salaries'})
       }
     }
@@ -157,67 +157,69 @@ export default {
           new Date(getSalaries.date_start).toLocaleDateString('ru-RU')
         }}-{{ new Date(getSalaries.date_end).toLocaleDateString('ru-RU') }}
       </p>
-      <p class="salaries__sub-title salaries__sub-title--big-margin">
+      <p class="sub-title salaries__sub-title">
         Заказы:
       </p>
-      <p class="salaries__text">
+      <p class="text">
         <b>Всего заказов за выбранный период: </b> {{ getSalaries.salaries.length }}
       </p>
-      <p class="salaries__text">
+      <p class="text">
         <b>Оплаченных заказов за выбранный период: </b> {{ getSalaries.salaries.filter(item => item.ready).length }}
       </p>
-      <p class="salaries__text">
+      <p class="text">
         <b>Неоплаченных заказов за выбранный период: </b>
         {{ getSalaries.salaries.filter(item => !item.ready || !item.send).length }}
       </p>
-      <p class="salaries__text">
+      <p class="text">
         <b>Всего неоплаченных заказов: </b> {{ getSalaries.salaries_length }}
       </p>
       <template v-if="getSalaries.penalties.length">
-        <p class="salaries__sub-title salaries__sub-title--big-margin">
+        <p class="sub-title salaries__sub-title">
           Штрафы:
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Всего штрафов за выбранный период: </b> {{ getSalaries.penalties.length }}
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Исполненных штрафов за выбранный период: </b> {{ getSalaries.penalties.filter(item => item.ready).length }}
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Не исполненных штрафов за выбранный период: </b>
           {{ getSalaries.penalties.filter(item => !item.ready).length }}
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Всего не исполненных штрафов: </b> {{ getSalaries.penalties_length }}
         </p>
       </template>
-      <p class="salaries__sub-title salaries__sub-title--big-margin">
+      <p class="sub-title salaries__sub-title">
         Расчеты:
       </p>
-      <p class="salaries__text">
-        <b>Стоимость одного заказа: </b> {{computedSalaryWorker}} ₽
+      <p class="text">
+        <b>Стоимость одного заказа: </b> {{ computedSalaryWorker }} ₽
       </p>
 
-      <p class="salaries__text">
+      <p class="text">
         <b>Формула расчета: </b> Сумма заказов * стоимость одного заказа - сумма штрафов
       </p>
-      <p class="salaries__text">
+      <p class="text">
         <b>Оплачено: </b> {{ computedPaySalaryWorker.salary - computedPaySalaryWorker.penalty }} ₽
         <template v-if="computedPaySalaryWorker.penalty">
           ({{ computedPaySalaryWorker.salary }} - {{ computedPaySalaryWorker.penalty }})
         </template>
       </p>
 
-      <p class="salaries__text">
+      <p class="text">
         <b>Не оплачено: </b> {{ computedNotPaySalaryWorker.salary - computedNotPaySalaryWorker.penalty }} ₽
         <template v-if="computedNotPaySalaryWorker.penalty">
           ({{ computedNotPaySalaryWorker.salary }} - {{ computedNotPaySalaryWorker.penalty }})
         </template>
       </p>
 
-      <p class="salaries__text">
+      <p class="text">
         <b>Общая сумма: </b>
-        {{ (computedPaySalaryWorker.salary + computedNotPaySalaryWorker.salary) - (computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty) }}
+        {{
+          (computedPaySalaryWorker.salary + computedNotPaySalaryWorker.salary) - (computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty)
+        }}
         ₽
         <template v-if="computedNotPaySalaryWorker.penalty || computedPaySalaryWorker.penalty">
           ({{ computedPaySalaryWorker.salary + computedNotPaySalaryWorker.salary }} -
@@ -225,180 +227,194 @@ export default {
         </template>
       </p>
 
-      <p class="salaries__sub-title salaries__sub-title--big-margin">
+      <p class="sub-title salaries__sub-title">
         Списки:
       </p>
-      <u-card
-          class="salaries__card"
-          v-if="getSalaries.penalties.filter(item => !item.ready).length"
-      >
-        <u-accordion
-            title="Не исполненные штрафы"
+      <div class="list">
+        <u-card
+            v-if="getSalaries.penalties.filter(item => !item.ready).length"
         >
-          <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
-            <p class="salaries__text">
-              <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
-            </p>
-            <p class="salaries__text">
-              <b>Описание: </b>{{ penalty.description }}
-            </p>
-          </u-card>
-        </u-accordion>
-      </u-card>
-      <u-card
-          class="salaries__card"
-          v-if="getSalaries.salaries.filter(item => !item.ready).length"
-      >
-        <u-accordion
-            title="Не оплаченные заказы"
+          <u-accordion
+              title="Не исполненные штрафы"
+          >
+            <div class="list">
+              <u-card v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
+                <p class="text">
+                  <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
+                </p>
+                <p class="text">
+                  <b>Описание: </b>{{ penalty.description }}
+                </p>
+              </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+        <u-card
+            v-if="getSalaries.salaries.filter(item => !item.ready).length"
         >
-          <u-card class="salaries__item" v-for="salary in getSalaries.salaries.filter(item => !item.ready)">
-            <p class="salaries__title">
-              {{ salary.track }}
-            </p>
-            <p class="salaries__text">
-              <b>ФИО: </b> {{ salary.full_name }}
-            </p>
-            <p class="salaries__text">
-              <b>Дата создания заказа: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
-            </p>
-            <p class="salaries__text">
-              <b>
-                {{ salary.send ? 'Отправлен' : 'Не отправлен' }}
-              </b>
-            </p>
-          </u-card>
-        </u-accordion>
-      </u-card>
-      <u-card
-          class="salaries__card"
-          v-if="getSalaries.penalties.filter(item => item.ready).length"
-      >
-        <u-accordion
-            title="Исполненные штрафы"
+          <u-accordion
+              title="Не оплаченные заказы"
+          >
+            <div class="list">
+              <u-card v-for="salary in getSalaries.salaries.filter(item => !item.ready)">
+                <p class="salaries__title">
+                  {{ salary.track }}
+                </p>
+                <p class="text">
+                  <b>ФИО: </b> {{ salary.full_name }}
+                </p>
+                <p class="text">
+                  <b>Дата создания заказа: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
+                </p>
+                <p class="text">
+                  <b>
+                    {{ salary.send ? 'Отправлен' : 'Не отправлен' }}
+                  </b>
+                </p>
+              </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+        <u-card
+            v-if="getSalaries.penalties.filter(item => item.ready).length"
         >
-          <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => item.ready)">
-            <p class="salaries__text">
-              <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
-            </p>
-            <p class="salaries__text">
-              <b>Описание: </b>{{ penalty.description }}
-            </p>
-          </u-card>
-        </u-accordion>
-      </u-card>
-      <u-card
-          class="salaries__card"
-          v-if="getSalaries.salaries.filter(item => item.ready).length"
-      >
-        <u-accordion
-            title="Оплаченные заказы"
+          <u-accordion
+              title="Исполненные штрафы"
+          >
+            <div class="list">
+              <u-card v-for="penalty in getSalaries.penalties.filter(item => item.ready)">
+                <p class="text">
+                  <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
+                </p>
+                <p class="text">
+                  <b>Описание: </b>{{ penalty.description }}
+                </p>
+              </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+        <u-card
+            v-if="getSalaries.salaries.filter(item => item.ready).length"
         >
-          <u-card class="salaries__item" v-for="salary in getSalaries.salaries.filter(item => item.ready)">
-            <p class="salaries__track">
-              {{ salary.track }}
-            </p>
-            <p class="salaries__text">
-              <b>ФИО: </b> {{ salary.full_name }}
-            </p>
-            <p class="salaries__text">
-              <b>Дата создания заказа: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
-            </p>
-          </u-card>
-        </u-accordion>
-      </u-card>
+          <u-accordion
+              title="Оплаченные заказы"
+          >
+            <div class="list">
+              <u-card v-for="salary in getSalaries.salaries.filter(item => item.ready)">
+                <p class="sub-title">
+                  {{ salary.track }}
+                </p>
+                <p class="text">
+                  <b>ФИО: </b> {{ salary.full_name }}
+                </p>
+                <p class="text">
+                  <b>Дата создания заказа: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
+                </p>
+              </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+      </div>
+
     </div>
     <div class="salaries__list" v-if="getSalaries && +getSalaries?.rule === 3">
       <template v-if="getSalaries.penalties.length">
-        <p class="salaries__title">Расчет зарплаты за период:
+        <p class="title">Расчет зарплаты за период:
           {{
             new Date(getSalaries.date_start).toLocaleDateString('ru-RU')
           }}-{{ new Date(getSalaries.date_end).toLocaleDateString('ru-RU') }}
         </p>
-        <p class="salaries__sub-title salaries__sub-title--big-margin">
+        <p class="sub-title salaries__sub-title">
           Штрафы:
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Всего штрафов за выбранный период: </b> {{ getSalaries.penalties.length }}
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Исполненных штрафов за выбранный период: </b> {{ getSalaries.penalties.filter(item => item.ready).length }}
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Не исполненных штрафов за выбранный период: </b>
           {{ getSalaries.penalties.filter(item => !item.ready).length }}
         </p>
-        <p class="salaries__text">
+        <p class="text">
           <b>Всего не исполненных штрафов: </b> {{ getSalaries.penalties_length }}
         </p>
       </template>
-      <p class="salaries__sub-title salaries__sub-title--big-margin">
+      <p class="sub-title salaries__sub-title">
         Расчеты:
       </p>
-      <p class="salaries__text">
+      <p class="text">
         <b>Всего оплачено: </b> {{ computedSalariesOperator.salaries - computedSalariesOperator.penalties }} ₽
         <template v-if="computedSalariesOperator.penalties">
           ({{ computedSalariesOperator.salaries }} - {{ computedSalariesOperator.penalties }})
         </template>
       </p>
-      <p class="salaries__sub-title salaries__sub-title--big-margin">
+      <p class="sub-title salaries__sub-title">
         Списки:
       </p>
-      <u-card
-          class="salaries__card"
-          v-if="getSalaries.penalties.filter(item => !item.ready).length"
-      >
-        <u-accordion
-            title="Не исполненные штрафы"
+      <div class="list">
+        <u-card
+            v-if="getSalaries.penalties.filter(item => !item.ready).length"
         >
-          <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
-            <p class="salaries__text">
-              <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
-            </p>
-            <p class="salaries__text">
-              <b>Описание: </b>{{ penalty.description }}
-            </p>
-          </u-card>
-        </u-accordion>
-      </u-card>
-      <u-card
-          class="salaries__card"
-          v-if="getSalaries.salaries.length"
-      >
-        <u-accordion
-            title="Выплаты"
+          <u-accordion
+              title="Не исполненные штрафы"
+          >
+            <div class="list">
+              <u-card v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
+                <p class="text">
+                  <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
+                </p>
+                <p class="text">
+                  <b>Описание: </b>{{ penalty.description }}
+                </p>
+              </u-card>
+            </div>
+
+          </u-accordion>
+        </u-card>
+        <u-card
+            v-if="getSalaries.salaries.length"
         >
-          <u-card class="salaries__item" v-for="salary in getSalaries.salaries">
-            <p class="salaries__text">
-              <b>Сумма: </b> {{ salary.sum }} ₽
-            </p>
-            <p class="salaries__text">
-              <b>Описание: </b>{{ salary.description }}
-            </p>
-            <p class="salaries__text">
-              <b>Период: </b>{{ new Date(salary.date_start).toLocaleDateString('ru-RU') }} -
-              {{ new Date(salary.date_end).toLocaleDateString('ru-RU') }}
-            </p>
-          </u-card>
-        </u-accordion>
-      </u-card>
-      <u-card
-          class="salaries__card"
-          v-if="getSalaries.penalties.filter(item => item.ready).length"
-      >
-        <u-accordion
-            title="Исполненные штрафы"
+          <u-accordion
+              title="Выплаты"
+          >
+            <div class="list">
+              <u-card v-for="salary in getSalaries.salaries">
+                <p class="text">
+                  <b>Сумма: </b> {{ salary.sum }} ₽
+                </p>
+                <p class="text">
+                  <b>Описание: </b>{{ salary.description }}
+                </p>
+                <p class="text">
+                  <b>Период: </b>{{ new Date(salary.date_start).toLocaleDateString('ru-RU') }} -
+                  {{ new Date(salary.date_end).toLocaleDateString('ru-RU') }}
+                </p>
+              </u-card>
+            </div>
+
+          </u-accordion>
+        </u-card>
+        <u-card
+            v-if="getSalaries.penalties.filter(item => item.ready).length"
         >
-          <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => item.ready)">
-            <p class="salaries__text">
-              <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
-            </p>
-            <p class="salaries__text">
-              <b>Описание: </b>{{ penalty.description }}
-            </p>
-          </u-card>
-        </u-accordion>
-      </u-card>
+          <u-accordion
+              title="Исполненные штрафы"
+          >
+            <div class="list">
+              <u-card v-for="penalty in getSalaries.penalties.filter(item => item.ready)">
+                <p class="text">
+                  <b>Сумма штрафа: </b> {{ penalty.sum }} ₽
+                </p>
+                <p class="text">
+                  <b>Описание: </b>{{ penalty.description }}
+                </p>
+              </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+      </div>
     </div>
     <u-popup
         v-if="route.name === 'SalariesSetting' && computedWorkers.length"
@@ -409,34 +425,37 @@ export default {
           text="Найти зарплату"
           @submit.prevent="submitFindSalaries()"
       >
-        <u-select
-            title="Работник"
-            :values="computedWorkers"
-            v-model="worker.value"
-            :start-value="worker.value"
-            :error="worker.error"
-            @change="worker.tacked = true"
+        <div class="list">
 
-        />
-        <u-input
-            title="Минимальная дата"
-            type="date"
-            :max="new Date().toISOString().split('T')[0]"
-            :start-value="date_start.value"
-            v-model="date_start.value"
-            :error="date_start.error"
-            @change="date_start.tacked = true"
-        />
-        <u-input
-            title="Максимальная дата"
-            type="date"
-            :min="date_start.value ? date_start.value: ''"
-            :max="new Date().toISOString().split('T')[0]"
-            :start-value="date_end.value"
-            v-model="date_end.value"
-            :error="date_end.error"
-            @change="date_end.tacked = true"
-        />
+          <u-select
+              title="Работник"
+              :values="computedWorkers"
+              v-model="worker.value"
+              :start-value="worker.value"
+              :error="worker.error"
+              @change="worker.tacked = true"
+
+          />
+          <u-input
+              title="Минимальная дата"
+              type="date"
+              :max="new Date().toISOString().split('T')[0]"
+              :start-value="date_start.value"
+              v-model="date_start.value"
+              :error="date_start.error"
+              @change="date_start.tacked = true"
+          />
+          <u-input
+              title="Максимальная дата"
+              type="date"
+              :min="date_start.value ? date_start.value: ''"
+              :max="new Date().toISOString().split('T')[0]"
+              :start-value="date_end.value"
+              v-model="date_end.value"
+              :error="date_end.error"
+              @change="date_end.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -449,150 +468,161 @@ export default {
           text="Выдать зарплату"
           @submit.prevent="submitAcceptSalariesAssembler()"
       >
-        <u-card class="salaries__card salaries__card--sticky">
-          <p class="salaries__sub-title">
-            К оплате: {{computedCurrentSalaries.salaries - computedCurrentSalaries.penalties}} ₽
-          </p>
-          <p class="salaries__text">
-            <b>Заказов: </b> {{salaryAssembler.salariesList.value.length}}
-          </p>
-          <p class="salaries__text">
-            <b>Стоимость одного заказа: </b> {{computedSalaryWorker}} ₽
-          </p>
-          <p class="salaries__text">
-            <b>Сумма оплаты за заказы: </b> {{computedCurrentSalaries.salaries}} ₽
-          </p>
-          <p class="salaries__text">
-            <b>Штрафов: </b> {{salaryAssembler.penaltiesList.value.length}}
-          </p>
-          <p class="salaries__text">
-            <b>Сумма штрафов: </b> {{computedCurrentSalaries.penalties}} ₽
-          </p>
-        </u-card>
-        <u-card
-            v-if="getSalaries.penalties.filter(item => !item.ready).length"
-        >
-          <p class="salaries__sub-title">
-            Штрафы:
-          </p>
-          <u-checkbox
-              class="salaries__checkbox"
-              title="Выбрать все штрафы"
-              name="penalty"
-              value="all"
-              :checked="salaryAssembler.penaltiesList.value.length === getSalaries.penalties.filter(item => !item.ready).length"
-              @checked="e => salaryAssembler.penaltiesList.value = e.checked ? getSalaries.penalties.filter(item => !item.ready).map(item => item.id) : []"
-          />
-          <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
+        <div class="list">
+          <u-card class="salaries__card">
+            <p class="sub-title">
+              К оплате: {{ computedCurrentSalaries.salaries - computedCurrentSalaries.penalties }} ₽
+            </p>
+            <p class="text">
+              <b>Заказов: </b> {{ salaryAssembler.salariesList.value.length }}
+            </p>
+            <p class="text">
+              <b>Стоимость одного заказа: </b> {{ computedSalaryWorker }} ₽
+            </p>
+            <p class="text">
+              <b>Сумма оплаты за заказы: </b> {{ computedCurrentSalaries.salaries }} ₽
+            </p>
+            <p class="text">
+              <b>Штрафов: </b> {{ salaryAssembler.penaltiesList.value.length }}
+            </p>
+            <p class="text">
+              <b>Сумма штрафов: </b> {{ computedCurrentSalaries.penalties }} ₽
+            </p>
+          </u-card>
+          <u-card
+              v-if="getSalaries.penalties.filter(item => !item.ready).length"
+          >
+            <p class="sub-title">
+              Штрафы:
+            </p>
             <u-checkbox
-                :title="`${penalty.sum} ${penalty.description}`"
+                class="salaries__checkbox"
+                title="Выбрать все штрафы"
                 name="penalty"
-                :value="penalty.id"
-                :checked="!!salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id)"
-                @checked="salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id) ? salaryAssembler.penaltiesList.value =salaryAssembler.penaltiesList.value.filter(item => +item !== +penalty.id) : salaryAssembler.penaltiesList.value.push(penalty.id)"
+                value="all"
+                :checked="salaryAssembler.penaltiesList.value.length === getSalaries.penalties.filter(item => !item.ready).length"
+                @checked="e => salaryAssembler.penaltiesList.value = e.checked ? getSalaries.penalties.filter(item => !item.ready).map(item => item.id) : []"
             />
+            <div class="list">
+              <u-card v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
+                <u-checkbox
+                    :title="`${penalty.sum} ${penalty.description}`"
+                    name="penalty"
+                    :value="penalty.id"
+                    :checked="!!salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id)"
+                    @checked="salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id) ? salaryAssembler.penaltiesList.value =salaryAssembler.penaltiesList.value.filter(item => +item !== +penalty.id) : salaryAssembler.penaltiesList.value.push(penalty.id)"
+                />
+              </u-card>
+            </div>
           </u-card>
-        </u-card>
-        <u-card class="salaries__card">
-          <p class="salaries__sub-title">
-            Заказы:
-          </p>
-          <u-checkbox
-              class="salaries__checkbox"
-              title="Выбрать все заказы"
-              name="salary"
-              value="all"
-              :checked="salaryAssembler.salariesList.value.length === getSalaries.salaries.filter(item => !item.ready && item.send).length"
-              @checked="e => salaryAssembler.salariesList.value = e.checked ? getSalaries.salaries.filter(item => !item.ready && item.send).map(item => item.id) : []"
-          />
-
-          <u-card class="salaries__item"
-                  v-for="salary in getSalaries.salaries.filter(item => !item.ready && item.send)">
+          <u-card>
+            <p class="sub-title">
+              Заказы:
+            </p>
             <u-checkbox
-                :title="`${salary.track} ${salary.full_name}`"
+                class="salaries__checkbox"
+                title="Выбрать все заказы"
                 name="salary"
-                :value="salary.id"
-                :checked="!!salaryAssembler.salariesList.value.find(item => +item === +salary.id)"
-                @checked="salaryAssembler.salariesList.value.find(item => +item === +salary.id) ? salaryAssembler.salariesList.value = salaryAssembler.salariesList.value.filter(item => +item !== +salary.id) : salaryAssembler.salariesList.value.push(salary.id)"
+                value="all"
+                :checked="salaryAssembler.salariesList.value.length === getSalaries.salaries.filter(item => !item.ready && item.send).length"
+                @checked="e => salaryAssembler.salariesList.value = e.checked ? getSalaries.salaries.filter(item => !item.ready && item.send).map(item => item.id) : []"
             />
+            <div class="list">
+              <u-card
+                  v-for="salary in getSalaries.salaries.filter(item => !item.ready && item.send)">
+                <u-checkbox
+                    :title="`${salary.track} ${salary.full_name}`"
+                    name="salary"
+                    :value="salary.id"
+                    :checked="!!salaryAssembler.salariesList.value.find(item => +item === +salary.id)"
+                    @checked="salaryAssembler.salariesList.value.find(item => +item === +salary.id) ? salaryAssembler.salariesList.value = salaryAssembler.salariesList.value.filter(item => +item !== +salary.id) : salaryAssembler.salariesList.value.push(salary.id)"
+                />
+              </u-card>
+            </div>
           </u-card>
-        </u-card>
+        </div>
+
       </u-form>
       <u-form
           v-if="+getSalaries.rule === 3"
           text="Выдать зарплату"
           @submit.prevent="submitAcceptSalariesOperator()"
       >
-        <u-card class="salaries__card salaries__card--sticky">
-          <p class="salaries__sub-title">
-            К оплате: {{salaryOperator.sum.value.value - computedCurrentSalariesOperator}} ₽
-          </p>
-          <p class="salaries__text">
-            <b>Штрафов: </b> {{salaryOperator.penaltiesList.value.length}}
-          </p>
-          <p class="salaries__text">
-            <b>Сумма штрафов: </b> {{computedCurrentSalariesOperator}} ₽
-          </p>
-        </u-card>
-        <u-input
-            title="Минимальная дата"
-            type="date"
-            :min="getSalaries.salaries.length ? new Date(getSalaries.salaries[0].date_end).toISOString().split('T')[0] : ''"
-            :max="new Date().toISOString().split('T')[0]"
-            :start-value="salaryOperator.dateStart.value.value"
-            v-model="salaryOperator.dateStart.value.value"
-            :error="salaryOperator.dateStart.value.error"
-            @change="salaryOperator.dateStart.value.tacked = true"
-        />
-        <u-input
-            title="Максимальная дата"
-            type="date"
-            :min="salaryOperator.dateStart.value.value ? salaryOperator.dateStart.value.value : getSalaries.salaries.length ? new Date(getSalaries.salaries[0].date_end).toISOString().split('T')[0] : ''"
-            :start-value="salaryOperator.dateEnd.value.value"
-            v-model="salaryOperator.dateEnd.value.value"
-            :error="salaryOperator.dateEnd.value.error"
-            @change="salaryOperator.dateEnd.value.tacked = true"
-        />
-        <u-input
-            title="Сумма"
-            type="number"
-            :error="salaryOperator.sum.value.error"
-            :start-value="salaryOperator.sum.value.value"
-            v-model="salaryOperator.sum.value.value"
-            @change="salaryOperator.sum.value.tacked = true"
-        />
-        <u-input
-            title="Описание"
-            type="textarea"
-            :error="salaryOperator.description.value.error"
-            :start-value="salaryOperator.description.value.value"
-            v-model="salaryOperator.description.value.value"
-            @change="salaryOperator.description.value.tacked = true"
-        />
-        <u-card
-            v-if="getSalaries.penalties.filter(item => !item.ready).length"
-        >
-          <p class="salaries__sub-title">
-            Штрафы:
-          </p>
-          <u-checkbox
-              class="salaries__checkbox"
-              title="Выбрать все штрафы"
-              name="penalty"
-              value="all"
-              :checked="salaryAssembler.penaltiesList.value.length === getSalaries.penalties.filter(item => !item.ready).length"
-              @checked="e => salaryAssembler.penaltiesList.value = e.checked ? getSalaries.penalties.filter(item => !item.ready).map(item => item.id) : []"
-          />
-          <u-card class="salaries__item" v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
-            <u-checkbox
-                :title="`${penalty.sum} ${penalty.description}`"
-                name="penalty"
-                :value="penalty.id"
-                :checked="!!salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id)"
-                @checked="salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id) ? salaryAssembler.penaltiesList.value =salaryAssembler.penaltiesList.value.filter(item => +item !== +penalty.id) : salaryAssembler.penaltiesList.value.push(penalty.id)"
-            />
+        <div class="list">
+
+          <u-card class="salaries__card">
+            <p class="sub-title">
+              К оплате: {{ salaryOperator.sum.value.value - computedCurrentSalariesOperator }} ₽
+            </p>
+            <p class="text">
+              <b>Штрафов: </b> {{ salaryOperator.penaltiesList.value.length }}
+            </p>
+            <p class="text">
+              <b>Сумма штрафов: </b> {{ computedCurrentSalariesOperator }} ₽
+            </p>
           </u-card>
-        </u-card>
+          <u-input
+              title="Минимальная дата"
+              type="date"
+              :min="getSalaries.salaries.length ? new Date(getSalaries.salaries[0].date_end).toISOString().split('T')[0] : ''"
+              :max="new Date().toISOString().split('T')[0]"
+              :start-value="salaryOperator.dateStart.value.value"
+              v-model="salaryOperator.dateStart.value.value"
+              :error="salaryOperator.dateStart.value.error"
+              @change="salaryOperator.dateStart.value.tacked = true"
+          />
+          <u-input
+              title="Максимальная дата"
+              type="date"
+              :min="salaryOperator.dateStart.value.value ? salaryOperator.dateStart.value.value : getSalaries.salaries.length ? new Date(getSalaries.salaries[0].date_end).toISOString().split('T')[0] : ''"
+              :start-value="salaryOperator.dateEnd.value.value"
+              v-model="salaryOperator.dateEnd.value.value"
+              :error="salaryOperator.dateEnd.value.error"
+              @change="salaryOperator.dateEnd.value.tacked = true"
+          />
+          <u-input
+              title="Сумма"
+              type="number"
+              :error="salaryOperator.sum.value.error"
+              :start-value="salaryOperator.sum.value.value"
+              v-model="salaryOperator.sum.value.value"
+              @change="salaryOperator.sum.value.tacked = true"
+          />
+          <u-input
+              title="Описание"
+              type="textarea"
+              :error="salaryOperator.description.value.error"
+              :start-value="salaryOperator.description.value.value"
+              v-model="salaryOperator.description.value.value"
+              @change="salaryOperator.description.value.tacked = true"
+          />
+          <u-card
+              v-if="getSalaries.penalties.filter(item => !item.ready).length"
+          >
+            <p class="sub-title">
+              Штрафы:
+            </p>
+            <u-checkbox
+                class="salaries__checkbox"
+                title="Выбрать все штрафы"
+                name="penalty"
+                value="all"
+                :checked="salaryAssembler.penaltiesList.value.length === getSalaries.penalties.filter(item => !item.ready).length"
+                @checked="e => salaryAssembler.penaltiesList.value = e.checked ? getSalaries.penalties.filter(item => !item.ready).map(item => item.id) : []"
+            />
+            <div class="list">
+              <u-card v-for="penalty in getSalaries.penalties.filter(item => !item.ready)">
+                <u-checkbox
+                    :title="`${penalty.sum} ${penalty.description}`"
+                    name="penalty"
+                    :value="penalty.id"
+                    :checked="!!salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id)"
+                    @checked="salaryAssembler.penaltiesList.value.find(item => +item === +penalty.id) ? salaryAssembler.penaltiesList.value =salaryAssembler.penaltiesList.value.filter(item => +item !== +penalty.id) : salaryAssembler.penaltiesList.value.push(penalty.id)"
+                />
+              </u-card>
+            </div>
+          </u-card>
+        </div>
       </u-form>
     </u-popup>
   </div>

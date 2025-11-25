@@ -85,7 +85,7 @@ export default {
           return
         }
         const findClient = getClients.value.find(client => +client.id === +route.params.client)
-        if(!findClient) {
+        if (!findClient) {
           await findClientId(route.params.client)
           changeRoute(to)
           return
@@ -167,41 +167,45 @@ export default {
           @update="changeFilter"
       />
     </div>
-    <div class="clients__list" v-if="getClients.length">
+    <div class="clients__list list" v-if="getClients.length">
       <u-card class="clients__item" v-for="clientItem in getClients" :key="`client-item-${clientItem.id}`">
-        <p class="clients__title">{{ clientItem.full_name }}</p>
-        <p class="clients__text">
+        <p class="sub-title">{{ clientItem.full_name }}</p>
+        <p class="text">
           <b>E-mail: </b> {{ clientItem.email }}
         </p>
-        <p class="clients__text">
+        <p class="text">
           <b>Телефон: </b> {{ clientItem.phone }}
         </p>
-        <u-card class="clients__address-list">
-          <u-accordion
-              title="Адреса клиента"
-          >
-            <u-card class="clients__address" v-for="addressItem in clientItem.address">
-              <p class="clients__text">
-                <b>Служба доставки: </b> {{ addressItem.delivery }}
-              </p>
-              <p class="clients__text">
-                <b>Адрес доставки: </b> {{ addressItem.address }}
-              </p>
-            </u-card>
-          </u-accordion>
-        </u-card>
-        <u-card class="clients__orders-list">
-          <u-accordion
-              title="Заказы"
-          >
-            <orders-list
-                :orders="clientItem.orders"
-                :actions="actionsOrders"
-                :check-blank="false"
-                @preview="e => router.push({name: 'ClientsPreviewOrder', params: {id: e}})"
-            />
-          </u-accordion>
-        </u-card>
+        <div class="list">
+          <u-card>
+            <u-accordion
+                title="Адреса клиента"
+            >
+              <div class="list">
+                <u-card class="clients__address" v-for="addressItem in clientItem.address">
+                  <p class="text">
+                    <b>Служба доставки: </b> {{ addressItem.delivery }}
+                  </p>
+                  <p class="text">
+                    <b>Адрес доставки: </b> {{ addressItem.address }}
+                  </p>
+                </u-card>
+              </div>
+            </u-accordion>
+          </u-card>
+          <u-card class="clients__orders-list">
+            <u-accordion
+                title="Заказы"
+            >
+              <orders-list
+                  :orders="clientItem.orders"
+                  :actions="actionsOrders"
+                  :check-blank="false"
+                  @preview="e => router.push({name: 'ClientsPreviewOrder', params: {id: e}})"
+              />
+            </u-accordion>
+          </u-card>
+        </div>
         <u-actions
             class="clients__actions"
             :actions="actionsClients"
@@ -227,30 +231,32 @@ export default {
           text="Изменить клиента"
           @submit.prevent="submitUpdateClients('Clients')"
       >
-        <u-input
-            title="ФИО"
-            v-model="name.value"
-            :start-value="name.value"
-            :error="name.error"
-            @change="name.tacked = true"
-            @blur="name.tacked = true"
-        />
-        <u-input
-            title="Телефон"
-            v-model="phone.value"
-            :start-value="phone.value"
-            :error="phone.error"
-            @change="phone.tacked = true"
-            @blur="phone.tacked = true"
-        />
-        <u-input
-            title="E-mail"
-            v-model="email.value"
-            :start-value="email.value"
-            :error="email.error"
-            @change="email.tacked = true"
-            @blur="email.tacked = true"
-        />
+        <div class="list">
+          <u-input
+              title="ФИО"
+              v-model="name.value"
+              :start-value="name.value"
+              :error="name.error"
+              @change="name.tacked = true"
+              @blur="name.tacked = true"
+          />
+          <u-input
+              title="Телефон"
+              v-model="phone.value"
+              :start-value="phone.value"
+              :error="phone.error"
+              @change="phone.tacked = true"
+              @blur="phone.tacked = true"
+          />
+          <u-input
+              title="E-mail"
+              v-model="email.value"
+              :start-value="email.value"
+              :error="email.error"
+              @change="email.tacked = true"
+              @blur="email.tacked = true"
+          />
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -262,57 +268,58 @@ export default {
           text="Объдинить клиентов"
           @submit.prevent="submitJoinClients('Clients')"
       >
-        <p class="clients__text">
+        <p class="text">
           <b>ФИО: </b>{{ name.value }}
         </p>
-        <p class="clients__text">
+        <p class="text">
           <b>E-mail: </b> {{ email.value }}
         </p>
-        <p class="clients__text">
+        <p class="text">
           <b>Телефон: </b> {{ phone.value }}
         </p>
-
-        <u-input
-            title="Поиск клиентов"
-            v-model="full_name.value"
-            :start-value="full_name.value"
-            @blur="full_name.tacked = true"
-            @input="() => {
+        <div class="list">
+          <u-input
+              title="Поиск клиентов"
+              v-model="full_name.value"
+              :start-value="full_name.value"
+              @blur="full_name.tacked = true"
+              @input="() => {
               full_name.tacked = true
               submitFindClientsFullNameList()
             }"
-            @change="full_name.tacked = true"
-        />
-        <u-card class="clients__clients-list">
-          <p class="clients__title">Список найденных клиентов</p>
-          <u-button
-              v-for="client in getClientsFullNameList.filter(item => +item.id !== +route.params.client).filter(item => !joinClientsList.find(child => +child.id === +item.id))"
-              type="button"
-              @click="joinClientsList.push(client)"
-              :key="`client-address-${address.id}`"
-              class="clients__select-button"
-          >
-            {{ client.full_name }} {{ client.phone }} {{ client.email }}
-          </u-button>
-        </u-card>
-        <u-card class="clients__join-list">
-          <p class="clients__title">Список клиентов для объединения</p>
-          <u-card class="clients__join-item" v-for="client in joinClientsList" :key="`client-join-${client.id}`">
-            <p>{{client.full_name}}</p>
+              @change="full_name.tacked = true"
+          />
+          <u-card class="clients__clients-list">
+            <p class="sub-title">Список найденных клиентов</p>
             <u-button
+                v-for="client in getClientsFullNameList.filter(item => +item.id !== +route.params.client).filter(item => !joinClientsList.find(child => +child.id === +item.id))"
                 type="button"
-                modifier="red"
-                class="clients__delete-client"
-                @click="joinClientsList = joinClientsList.filter(item => +item.id !== +client.id)"
-            />
+                @click="joinClientsList.push(client)"
+                :key="`client-address-${address.id}`"
+                class="clients__select-button"
+            >
+              {{ client.full_name }} {{ client.phone }} {{ client.email }}
+            </u-button>
           </u-card>
-          <p
-              class="clients__alarm"
-              v-if="joinClientsList.length === 0"
-          >
-            Должен быть выбран хотя бы 1 клиент
-          </p>
-        </u-card>
+          <u-card class="clients__join-list">
+            <p class="sub-title">Список клиентов для объединения</p>
+            <u-card class="clients__join-item" v-for="client in joinClientsList" :key="`client-join-${client.id}`">
+              <p>{{ client.full_name }}</p>
+              <u-button
+                  type="button"
+                  modifier="red"
+                  class="clients__delete-client"
+                  @click="joinClientsList = joinClientsList.filter(item => +item.id !== +client.id)"
+              />
+            </u-card>
+            <p
+                class="text text--few-very text--bold"
+                v-if="joinClientsList.length === 0"
+            >
+              Должен быть выбран хотя бы 1 клиент
+            </p>
+          </u-card>
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -321,56 +328,57 @@ export default {
         @close="router.push({name: 'Clients'})"
     >
       <u-form
-          text="Объдинить адреса"
+          text="Объединить адреса"
           @submit.prevent="submitJoinAddress('Clients')"
       >
-        <p class="clients__text">
+        <p class="text">
           <b>ФИО: </b>{{ name.value }}
         </p>
-        <p class="clients__text">
+        <p class="text">
           <b>E-mail: </b> {{ email.value }}
         </p>
-        <p class="clients__text">
+        <p class="text">
           <b>Телефон: </b> {{ phone.value }}
         </p>
+        <div class="list">
+          <u-select
+              title="Адрес, с которым объединить"
+              v-model="address.value"
+              :start-value="address.value"
+              :error="address.error"
+              @change="address.tacked = true"
+              :values="computedAddress"
+              class="clients__select"
+          />
 
-        <u-select
-            title="Адрес, с которым объединить"
-            v-model="address.value"
-            :start-value="address.value"
-            :error="address.error"
-            @change="address.tacked = true"
-            :values="computedAddress"
-            class="clients__select"
-        />
-
-        <u-select
-            title="Адрес для объединения"
-            :values="computedAddress.filter(item => +item.value !== +address.value).filter(item => !joinAddressList.find(child => +child.id === +item.value))"
-            @select="e => {
+          <u-select
+              title="Адрес для объединения"
+              :values="computedAddress.filter(item => +item.value !== +address.value).filter(item => !joinAddressList.find(child => +child.id === +item.value))"
+              @select="e => {
               joinAddressList.push(computedAddress.find(item => +item.value === +e).item)
             }"
-            class="clients__select clients__select--two"
-        />
+              class="clients__select clients__select--two"
+          />
 
-        <u-card class="clients__join-list">
-          <p class="clients__title">Список клиентов для объединения</p>
-          <u-card class="clients__join-item" v-for="join in joinAddressList" :key="`client-join-${join.id}`">
-            <p>{{join.address}} {{join.delivery}}</p>
-            <u-button
-                type="button"
-                modifier="red"
-                class="clients__delete-client"
-                @click="joinAddressList = joinAddressList.filter(item => +item.id !== +join.item.id)"
-            />
+          <u-card class="clients__join-list">
+            <p class="sub-title">Список адресов для объединения</p>
+            <u-card class="clients__join-item" v-for="join in joinAddressList" :key="`client-join-${join.id}`">
+              <p>{{ join.address }} {{ join.delivery }}</p>
+              <u-button
+                  type="button"
+                  modifier="red"
+                  class="clients__delete-client"
+                  @click="joinAddressList = joinAddressList.filter(item => +item.id !== +join.item.id)"
+              />
+            </u-card>
+            <p
+                class="text text--few-very text--bold"
+                v-if="joinAddressList.length === 0"
+            >
+              Должен быть выбран хотя бы 1 адрес
+            </p>
           </u-card>
-          <p
-              class="clients__alarm"
-              v-if="joinAddressList.length === 0"
-          >
-            Должен быть выбран хотя бы 1 адрес
-          </p>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
     <orders-preview

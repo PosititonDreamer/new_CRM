@@ -89,9 +89,14 @@ export default {
       if (to.name === 'SuppliesWarehousesUpdate' || to.name === 'SuppliesWarehousePreview' || to.name === 'SuppliesWarehouseCollect' || to.name === 'SuppliesWarehouseAccept') {
         if (!getSuppliesDetail.value) {
           await findSuppliesWarehouseDetail()
+          setTimeout(() => {
+            changeRoute(to)
+          })
+          return
         }
       }
       if (to.name === 'SuppliesWarehouseUpdate') {
+        console.log(getSuppliesDetail)
         loading.value = false
         supply.value.value = getSuppliesDetail.value.supply.supply_warehouse
         supply.value.tacked = true
@@ -168,27 +173,13 @@ export default {
     >
       Заказать поставку
     </u-button>
-    <div class="supplies__card-list">
+    <div class="list supplies__card-list">
       <u-card
           class="supplies__card"
           v-for="(item, id) in computedSupplyList"
           :key="`supplies-${item.id}`"
           :style="[{'--z-index': computedSupplyList.length - id}]"
       >
-        <div class="supplies__content">
-          <p class="supplies__title">
-            {{ item.warehouse }}
-          </p>
-          <p class="supplies__text">
-            <b>Статус: </b> {{ item.status }}
-          </p>
-          <p class="supplies__text">
-            <b>Дата создания: </b> {{ new Date(item.date).toLocaleDateString('ru-RU') }}
-          </p>
-          <p class="supplies__text">
-            <b>Количество товаров: </b> {{ item.length }}
-          </p>
-        </div>
         <u-actions
             class="supplies__actions"
             :actions="item.actions.value"
@@ -198,6 +189,18 @@ export default {
             @delete="router.push({name: 'SuppliesWarehouseDelete', params: {id: item.id}})"
             @accept="router.push({name: 'SuppliesWarehouseAccept', params: {id: item.id}})"
         />
+        <p class="sub-title">
+          {{ item.warehouse }}
+        </p>
+        <p class="text">
+          <b>Статус: </b> {{ item.status }}
+        </p>
+        <p class="text">
+          <b>Дата создания: </b> {{ new Date(item.date).toLocaleDateString('ru-RU') }}
+        </p>
+        <p class="text">
+          <b>Количество товаров: </b> {{ item.length }}
+        </p>
       </u-card>
     </div>
     <u-popup
@@ -209,213 +212,225 @@ export default {
           text="Заказать поставку"
           @submit.prevent="submitCreateSuppliesWarehouse()"
       >
-        <u-select
-            v-if="computedWarehouse.length > 1"
-            title="Поставка из"
-            :values="computedWarehouse"
-            :start-value="supply.value"
-            v-model="supply.value"
-            @change="supply.tacked = true"
-            @update="changeSupply"
-            :error="supply.error"
-        />
-        <u-select
-            v-else
-            title="Поставка из"
-            :values="computedWarehouse"
-            :start-value="supply.value"
-            v-model="supply.value"
-            disabled
-            empty
-        />
-        <u-card class="supplies__list">
-          <p class="supplies__title">Фасованные товары</p>
-          <div class="supplies__item" v-for="item in computedList.goods" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }} {{ item.quantity }} {{ item.measure }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
+        <div class="list">
+          <u-select
+              v-if="computedWarehouse.length > 1"
+              title="Поставка из"
+              :values="computedWarehouse"
+              :start-value="supply.value"
+              v-model="supply.value"
+              @change="supply.tacked = true"
+              @update="changeSupply"
+              :error="supply.error"
+          />
+          <u-select
+              v-else
+              title="Поставка из"
+              :values="computedWarehouse"
+              :start-value="supply.value"
+              v-model="supply.value"
+              disabled
+              empty
+          />
+          <div class="list">
+            <u-card>
+              <p class="title">Фасованные товары</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.goods" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }} {{ item.quantity }} {{ item.measure }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
                   item.value.value.value--
                   changeInput(item)
                 }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value++
                     changeInput(item)
                   }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value = item.max.value ? item.max.value : item.max
                 }"
-              >
-                МАКС
-              </u-button>
-            </div>
-          </div>
-        </u-card>
-        <u-card class="supplies__list">
-          <p class="supplies__title">Весовые товары</p>
-          <div class="supplies__item" v-for="item in computedList.weight" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }} {{ item.measure }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
+            <u-card>
+              <p class="title">Весовые товары</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.weight" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }} {{ item.measure }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
                   item.value.value.value--
                   changeInput(item)
                 }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value++
                     changeInput(item)
                   }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value = item.max.value ? item.max.value : item.max
                 }"
-              >
-                МАКС
-              </u-button>
-            </div>
-          </div>
-        </u-card>
-        <u-card class="supplies__list">
-          <p class="supplies__title">Расходники</p>
-          <div class="supplies__item" v-for="item in computedList.consumable" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
+            <u-card>
+              <p class="title">Расходники</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.consumable" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
                   item.value.value.value--
                   changeInput(item)
                 }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value++
                     changeInput(item)
                   }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value = item.max.value ? item.max.value : item.max
                 }"
-              >
-                МАКС
-              </u-button>
-            </div>
-          </div>
-        </u-card>
-        <u-card class="supplies__list">
-          <p class="supplies__title">Коробки и магниты</p>
-          <div class="supplies__item" v-for="item in computedList.other" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
+            <u-card>
+              <p class="title">Коробки и магниты</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.other" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
                   item.value.value.value--
                   changeInput(item)
                 }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value++
                     changeInput(item)
                   }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
                     item.value.value.value = item.max.value ? item.max.value : item.max
                 }"
-              >
-                МАКС
-              </u-button>
-            </div>
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
           </div>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
     <u-popup
@@ -427,202 +442,214 @@ export default {
           text="Изменить поставку"
           @submit.prevent="submitUpdateSuppliesWarehouse()"
       >
-        <u-select
-            title="Поставка из"
-            :values="computedWarehouse"
-            :start-value="supply.value"
-            v-model="supply.value"
-            disabled
-            empty
-        />
-        <u-card class="supplies__list">
-          <p class="supplies__title">Фасованные товары</p>
-          <div class="supplies__item" v-for="item in computedList.goods" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }} {{ item.quantity }} {{ item.measure }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
-                  item.value.value.value--
-                  changeInput(item)
-                }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value++
-                    changeInput(item)
-                  }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value = item.max.value ? item.max.value : item.max
-                }"
-              >
-                МАКС
-              </u-button>
-            </div>
+        <div class="list">
+          <u-select
+              title="Поставка из"
+              :values="computedWarehouse"
+              :start-value="supply.value"
+              v-model="supply.value"
+              disabled
+              empty
+          />
+          <div class="list">
+            <u-card>
+              <p class="title">Фасованные товары</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.goods" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }} {{ item.quantity }} {{ item.measure }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
+                      item.value.value.value--
+                      changeInput(item)
+                    }"
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value++
+                        changeInput(item)
+                      }"
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value = item.max.value ? item.max.value : item.max
+                    }"
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
+            <u-card >
+              <p class="title">Весовые товары</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.weight" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }} {{ item.measure }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
+                      item.value.value.value--
+                      changeInput(item)
+                    }"
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value++
+                        changeInput(item)
+                      }"
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value = item.max.value ? item.max.value : item.max
+                    }"
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
+            <u-card >
+              <p class="title">Расходники</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.consumable" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
+                      item.value.value.value--
+                      changeInput(item)
+                    }"
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value++
+                        changeInput(item)
+                      }"
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value = item.max.value ? item.max.value : item.max
+                    }"
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
+            <u-card >
+              <p class="title">Коробки и магниты</p>
+              <div class="list">
+                <div class="supplies__item" v-for="item in computedList.other" :key="`supplies-item-${item.id}`">
+                  <p class="text text--bold text--big">{{ item.title }}</p>
+                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
+                    <b>Остаток: </b> {{ +item.balance }}
+                  </p>
+                  <p class="text">
+                    <b>Максимальная поставка: </b> {{ item.max }}
+                  </p>
+                  <div class="supplies__input">
+                    <u-button
+                        type="button"
+                        @click="() => {
+                      item.value.value.value--
+                      changeInput(item)
+                    }"
+                    >
+                      -
+                    </u-button>
+                    <input
+                        type="number"
+                        :max="item.max.value"
+                        :min="0"
+                        v-model="item.value.value.value"
+                        @input="changeInput(item)"
+                    >
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value++
+                        changeInput(item)
+                      }"
+                    >
+                      +
+                    </u-button>
+                    <u-button
+                        type="button"
+                        @click="() => {
+                        item.value.value.value = item.max.value ? item.max.value : item.max
+                    }"
+                    >
+                      МАКС
+                    </u-button>
+                  </div>
+                </div>
+              </div>
+            </u-card>
           </div>
-        </u-card>
-        <u-card class="supplies__list">
-          <p class="supplies__title">Весовые товары</p>
-          <div class="supplies__item" v-for="item in computedList.weight" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }} {{ item.measure }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
-                  item.value.value.value--
-                  changeInput(item)
-                }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value++
-                    changeInput(item)
-                  }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value = item.max.value ? item.max.value : item.max
-                }"
-              >
-                МАКС
-              </u-button>
-            </div>
-          </div>
-        </u-card>
-        <u-card class="supplies__list">
-          <p class="supplies__title">Расходники</p>
-          <div class="supplies__item" v-for="item in computedList.consumable" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
-                  item.value.value.value--
-                  changeInput(item)
-                }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value++
-                    changeInput(item)
-                  }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value = item.max.value ? item.max.value : item.max
-                }"
-              >
-                МАКС
-              </u-button>
-            </div>
-          </div>
-        </u-card>
-        <u-card class="supplies__list">
-          <p class="supplies__title">Коробки и магниты</p>
-          <div class="supplies__item" v-for="item in computedList.other" :key="`supplies-item-${item.id}`">
-            <p class="supplies__sub-title">{{ item.title }}</p>
-            <p :class="['supplies__text', {'supplies__text--few': item.balance <= item.few && item.balance > item.few_very}, {'supplies__text--few-very': item.balance <= item.few_very}]">
-              <b>Остаток: </b> {{ item.balance }}
-            </p>
-            <p class="supplies__text">
-              <b>Максимальная поставка: </b> {{ item.max }}
-            </p>
-            <div class="supplies__input">
-              <u-button
-                  type="button"
-                  @click="() => {
-                  item.value.value.value--
-                  changeInput(item)
-                }"
-              >
-                -
-              </u-button>
-              <input
-                  type="number"
-                  :max="item.max.value"
-                  :min="0"
-                  v-model="item.value.value.value"
-                  @input="changeInput(item)"
-              >
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value++
-                    changeInput(item)
-                  }"
-              >
-                +
-              </u-button>
-              <u-button
-                  type="button"
-                  @click="() => {
-                    item.value.value.value = item.max.value ? item.max.value : item.max
-                }"
-              >
-                МАКС
-              </u-button>
-            </div>
-          </div>
-        </u-card>
+        </div>
       </u-form>
     </u-popup>
     <u-alert
@@ -652,29 +679,29 @@ export default {
       >
         Принять
       </u-button>
-      <p class="supplies-preview__title">
+      <p class="title">
         {{ computedDetailSupply.title }}
       </p>
-      <p class="supplies-preview__text">
+      <p class="text">
         <b>Текущий статус поставки: </b> {{ computedDetailSupply.status }}
       </p>
-      <p class="supplies-preview__text">
+      <p class="text">
         <b>Дата создания поставки: </b> {{ new Date(computedDetailSupply.date).toLocaleDateString('ru-RU') }}
       </p>
       <u-card class="supplies-preview__status-list">
-        <p class="supplies-preview__title">История поставки:</p>
+        <p class="sub-title">История поставки:</p>
         <div class="supplies-preview__status-item" v-for="(status, id) in computedDetailSupply.statusList"
              :key="`order-status-${id}`">
-          <p class="supplies-preview__text">
+          <p class="text">
             <b>Статус поставки: </b>
             {{ status.title }} {{ new Date(status.date).toLocaleDateString('ru-RU') }}
           </p>
         </div>
       </u-card>
       <u-card class="supplies-preview__list">
-        <p class="supplies-preview__title">Позиции в поставке:</p>
+        <p class="sub-title">Позиции в поставке:</p>
         <p
-            class="supplies-preview__text supplies-preview__list-item"
+            class="text supplies-preview__list-item"
             v-for="(item, id) in computedDetailSupply.list"
             :key="`supply-preview-item-${item.id}`"
         >
@@ -693,40 +720,42 @@ export default {
           @submit.prevent="submitSendSuppliesWarehouse()"
       >
         <div class="supplies-collect__content">
-          <p class="supplies-collect__title">
+          <p class="title">
             {{ computedDetailSupply.title }}
           </p>
-          <p class="supplies-collect__text">
+          <p class="text">
             <b>Текущий статус поставки: </b> {{ computedDetailSupply.status }}
           </p>
-          <p class="supplies-collect__text">
+          <p class="text">
             <b>Дата создания поставки: </b> {{ new Date(computedDetailSupply.date).toLocaleDateString('ru-RU') }}
           </p>
-          <p class="supplies-collect__text">Состав заказа:</p>
-          <u-card
-              v-for="good in computedDetailSupply.list"
-              :key="`order-good-item-${good.id}-${good.type}`"
-              :class="['supplies-collect__card', {'supplies-collect__card--collect': collectedList.find(item => +item === +good.id)}]">
-            <div class="supplies-collect__info">
-              <u-checkbox
-                  title=""
-                  name="order-collect-good-item"
-                  :value="good.id"
-                  :checked="!!collectedList.find(item => +item === +good.id)"
-                  @checked="!!collectedList.find(item => +item === +good.id) ? collectedList = collectedList.filter(item => +item !== +good.id) : collectedList.push(good.id)"
-                  :key="`order-good-check-item-${good.id}-${good.type}`"
-              />
-              <p class="supplies-collect__name">
-                {{ good.title }}
-                <span
-                    v-if="+good.quantity > 1"
-                    class="supplies-collect__over"
-                >
+          <p class="supplies-collect__sub-title sub-title ">Состав заказа:</p>
+          <div class="list">
+            <u-card
+                v-for="good in computedDetailSupply.list"
+                :key="`order-good-item-${good.id}-${good.type}`"
+                :class="[{'supplies-collect__card--collect': collectedList.find(item => +item === +good.id)}]">
+              <div class="supplies-collect__info">
+                <u-checkbox
+                    title=""
+                    name="order-collect-good-item"
+                    :value="good.id"
+                    :checked="!!collectedList.find(item => +item === +good.id)"
+                    @checked="!!collectedList.find(item => +item === +good.id) ? collectedList = collectedList.filter(item => +item !== +good.id) : collectedList.push(good.id)"
+                    :key="`order-good-check-item-${good.id}-${good.type}`"
+                />
+                <p class="supplies-collect__name">
+                  {{ good.title }}
+                  <span
+                      v-if="+good.quantity > 1"
+                      class="text--few text--bold"
+                  >
                   &nbsp;-&nbsp;{{ good.quantity }} {{ good.measure }}
                 </span>
-              </p>
-            </div>
-          </u-card>
+                </p>
+              </div>
+            </u-card>
+          </div>
         </div>
       </u-form>
     </u-popup>
@@ -741,19 +770,19 @@ export default {
           @submit.prevent="submitAcceptSuppliesWarehouse()"
       >
         <div class="supplies-preview">
-          <p class="supplies-preview__title">
+          <p class="sub-title">
             {{ computedDetailSupply.title }}
           </p>
-          <p class="supplies-preview__text">
+          <p class="text">
             <b>Текущий статус поставки: </b> {{ computedDetailSupply.status }}
           </p>
-          <p class="supplies-preview__text">
+          <p class="text">
             <b>Дата создания поставки: </b> {{ new Date(computedDetailSupply.date).toLocaleDateString('ru-RU') }}
           </p>
           <u-card class="supplies-preview__list">
-            <p class="supplies-preview__title">Позиции в поставке:</p>
+            <p class="sub-title">Позиции в поставке:</p>
             <p
-                class="supplies-preview__text supplies-preview__list-item"
+                class="text supplies-preview__list-item"
                 v-for="(item, id) in computedDetailSupply.list"
                 :key="`supply-preview-item-${item.id}`"
             >

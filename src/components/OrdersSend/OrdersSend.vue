@@ -29,34 +29,36 @@ export default {
         text="Отправить заказы"
         @submit.prevent="$emit('submit')"
     >
-      <u-checkbox
-          title="Выбрать все"
-          name="order-collect-good-item"
-          value="all"
-          :checked="tackedOrders.length === orders.length"
-          @checked="tackedOrders = tackedOrders.length === orders.length ? [] : orders.map(item => item.id)"
-          :key="`order-check-item-all`"
-          class="orders-send__take-all"
-      />
-      <u-card
-          v-for="order in orders"
-          :key="`order-item-${order.id}`"
-          :class="['orders-send__card', {'orders-send__card--collect': tackedOrders.find(item => +item === +order.id)}]">
-        <div class="orders-send__info">
-          <u-checkbox
-              title=""
-              name="order-collect-good-item"
-              :value="order.id"
-              :checked="!!tackedOrders.find(item => +item === +order.id)"
-              @checked="!!tackedOrders.find(item => +item === +order.id) ? tackedOrders = tackedOrders.filter(item => +item !== +order.id) : tackedOrders.push(order.id)"
-              :key="`order-check-item-${order.id}`"
-          />
-          <p class="orders-send__name">
-            {{ order.delivery }} {{ order.track }} {{ order.client }}
-          </p>
-        </div>
-      </u-card>
+      <div class="list">
+        <u-checkbox
+            title="Выбрать все"
+            name="order-collect-good-item"
+            value="all"
+            :checked="tackedOrders.length === orders.length"
+            @checked="$emit('takeAll')"
+            :key="`order-check-item-all`"
+            class="orders-send__take-all"
+        />
+        <u-card
+            v-for="order in orders"
+            :key="`order-item-${order.id}`"
+            :class="['orders-send__card', {'orders-send__card--collect': tackedOrders.find(item => +item === +order.id)}]">
+          <div class="orders-send__info">
+            <u-checkbox
+                title=""
+                name="order-collect-good-item"
+                :value="order.id"
+                :checked="!!tackedOrders.find(item => +item === +order.id)"
+                @checked="$emit('takeOrder', order)"
+                :key="`order-check-item-${order.id}`"
+            />
+            <p class="text orders-send__name">
+              {{ order.delivery }} {{ order.track }} {{ order.client }}
+            </p>
+          </div>
+        </u-card>
+      </div>
     </u-form>
   </u-popup>
 </template>
-<style lang="scss" src="./OrdersSend.scss" scoped />
+<style lang="scss" src="./OrdersSend.scss" scoped/>

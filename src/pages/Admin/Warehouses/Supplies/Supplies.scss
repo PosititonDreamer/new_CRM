@@ -1,25 +1,6 @@
 .supplies {
-
   &__create {
     margin-bottom: 20px;
-  }
-
-  &__text {
-    &--few, &--few-very {
-      font-weight: 700;
-    }
-
-    &--few {
-      color: var(--yellow);
-    }
-
-    &--few-very {
-      color: var(--red);
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
   }
 
   &__input {
@@ -39,34 +20,15 @@
     }
   }
 
-  &__title {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  &__sub-title {
-    font-size: 20px;
-  }
-
   &__item {
     &:not(:last-child) {
       border-bottom: 1px solid var(--primary);
       padding-bottom: 10px;
-      margin-bottom: 10px;
-    }
-  }
-
-  &__list {
-    &:not(:last-child) {
-      margin-bottom: 10px;
     }
   }
 
   &__card-list {
     max-width: 600px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
   }
 
   &__card {
@@ -92,16 +54,6 @@
     margin-bottom: 10px;
   }
 
-  &__title {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  &__text {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-
   &__status-item, &__list-item {
     padding-left: 10px;
   }
@@ -112,30 +64,12 @@
 }
 
 .supplies-collect {
-  &__title {
-    margin-bottom: 10px;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  &__text {
-    font-size: 18px;
-    margin-bottom: 5px;
+  &__sub-title {
+    margin-top: 10px;
   }
 
   &__item {
     padding-left: 10px;
-
-    .orders-collect {
-      &__text {
-        font-size: 16px;
-      }
-    }
-  }
-
-  &__over {
-    color: var(--yellow);
-    font-weight: 700;
   }
 
   &__info {
@@ -146,9 +80,6 @@
   }
 
   &__card {
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
     &--collect {
       opacity: 0.7;
 

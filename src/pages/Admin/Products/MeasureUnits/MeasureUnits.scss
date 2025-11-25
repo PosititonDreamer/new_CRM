@@ -2,20 +2,12 @@
 
   &__list {
     max-width: 600px;
-    grid-template-columns: 1fr;
-    display: grid;
-    grid-gap: 20px;
   }
 
   &__item {
     position: relative;
     background: var(--white);
     z-index: var(--z-index)
-  }
-
-  &__title {
-    color: var(--primary);
-    font-size: 18px;
   }
 
   &__actions {

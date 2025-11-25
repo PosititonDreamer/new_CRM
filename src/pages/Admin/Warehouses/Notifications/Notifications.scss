@@ -1,29 +1,5 @@
 .notifications {
   &__list {
     max-width: 600px;
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  &__item {
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
-  }
-  &__text {
-    &--few, &--few-very {
-      font-weight: 700;
-    }
-
-    &--few {
-      color: var(--yellow);
-    }
-
-    &--few-very {
-      color: var(--red);
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
   }
 }

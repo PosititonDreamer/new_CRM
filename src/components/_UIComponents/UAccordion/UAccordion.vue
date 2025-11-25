@@ -24,9 +24,9 @@ export default {
 </script>
 
 <template>
-  <div :class="['u-accordion', {'u-accordion--open': open}, {'u-accordion--small': small}]">
-    <p class="u-accordion__header" @click="open = !open">
-      <span>{{title}}</span>
+  <div :class="['u-accordion', {'u-accordion--small': small}]">
+    <p :class="['u-accordion__header', {'u-accordion__header--open': open}]" @click="open = !open">
+      <span :class="`${small ? 'text text--bold' : 'sub-title'}`">{{title}}</span>
       <svg width="7" height="13" viewBox="0 0 7 13" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1.32002 11.2L5.52002 6.58001L1.32002 1.96002" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
       </svg>

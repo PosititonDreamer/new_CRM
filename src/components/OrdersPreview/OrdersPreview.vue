@@ -56,59 +56,60 @@ export default {
       >
         Собрать заказ
       </u-button>
-      <p class="orders-preview__track">{{ order.track ? order.track : 'Не присвоен' }}</p>
-      <div class="orders-preview__client">
-        <p class="orders-preview__text">
-          <b>ФИО: </b> {{ order.client.full_name }}
-        </p>
+      <p class="title">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="text">
+        <b>ФИО: </b> {{ order.client.full_name }}
+      </p>
 
-        <p class="orders-preview__text">
-          <b>Телефон: </b> {{ order.client.phone }}
+      <p class="text">
+        <b>Телефон: </b> {{ order.client.phone }}
+      </p>
+      <p class="text">
+        <b>E-mail: </b> {{ order.client.email }}
+      </p>
+      <p class="text">
+        <b>Служба доставки: </b> {{ order.address.delivery }}
+      </p>
+      <p class="text">
+        <b>Адрес доставки: </b> {{ order.address.address }}
+      </p>
+      <p class="text">
+        <b>Количество заказов клиента: </b> {{ order.client.orders_length }}
+      </p>
+      <p class="text">
+        <b>Заказ создал: </b>
+        {{ order.creator }}
+      </p>
+      <p class="text" v-if="+order.status !== 1 && +order.status !== 3">
+        <b>Заказ собрал: </b>
+        {{ order.assembler ? order.assembler : 'Админ' }}
+      </p>
+      <p class="text">
+        <b>Текущий статус заказа: </b>
+        {{ computedStatus(order.status) }}
+      </p>
+      <u-card
+        class="orders-preview__status-list"
+      >
+        <p class="title">История заказа:</p>
+        <p
+            class="text"
+            v-for="(status, id) in order.status_list"
+            :key="`order-status-${id}`"
+        >
+          <b>Статус заказ: </b>
+          {{ computedStatus(status.status) }} {{ new Date(status.date).toLocaleDateString('ru-RU') }}
         </p>
-        <p class="orders-preview__text">
-          <b>E-mail: </b> {{ order.client.email }}
-        </p>
-        <p class="orders-preview__text">
-          <b>Служба доставки: </b> {{ order.address.delivery }}
-        </p>
-        <p class="orders-preview__text">
-          <b>Адрес доставки: </b> {{ order.address.address }}
-        </p>
-        <p class="orders-preview__text">
-          <b>Количество заказов клиента: </b> {{ order.client.orders_length }}
-        </p>
-        <p class="orders-preview__text">
-          <b>Заказ создал: </b>
-          {{ order.creator }}
-        </p>
-        <p class="orders-preview__text" v-if="+order.status !== 1 && +order.status !== 3">
-          <b>Заказ собрал: </b>
-          {{ order.assembler ? order.assembler : 'Админ' }}
-        </p>
-        <p class="orders-preview__text">
-          <b>Текущий статус заказа: </b>
-          {{ computedStatus(order.status) }}
-        </p>
-      </div>
-      <u-card class="orders-preview__status-list">
-        <p class="orders-preview__title">История заказа:</p>
-        <div class="orders-preview__status-item" v-for="(status, id) in order.status_list"
-             :key="`order-status-${id}`">
-          <p class="orders-preview__text">
-            <b>Статус заказ: </b>
-            {{ computedStatus(status.status) }} {{ new Date(status.date).toLocaleDateString('ru-RU') }}
-          </p>
-        </div>
       </u-card>
       <template v-if="onlyGoods">
         <div class="orders-preview__tabs">
           <div class="orders-preview__content">
             <div class="orders-preview__item">
-              <p class="orders-preview__text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
+              <p class="text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
                 {{ id + 1 }}. {{ good.title }}
                 <span
                     v-if="+good.quantity > 1"
-                    class="orders-preview__over"
+                    class="text--few text--bold"
                 >
                   &nbsp;-&nbsp;{{ good.quantity }} шт.
                 </span>
@@ -129,17 +130,17 @@ export default {
           </div>
           <div class="orders-preview__content">
             <div class="orders-preview__item" v-if="openTab === 'composition'">
-              <p class="orders-preview__text" v-for="(composition, id) in computedDetailOrdersComposition"
+              <p class="text" v-for="(composition, id) in computedDetailOrdersComposition"
                  :key="`composition-${id}`">
                 {{ id + 1 }}. {{ composition }}
               </p>
             </div>
             <div class="orders-preview__item" v-if="openTab === 'goods'">
-              <p class="orders-preview__text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
+              <p class="text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
                 {{ id + 1 }}. {{ good.title }}
                 <span
                     v-if="+good.quantity > 1"
-                    class="orders-preview__over"
+                    class="text--few text--bold"
                 >
                   &nbsp;-&nbsp;{{ good.quantity }} шт.
                 </span>

@@ -11,7 +11,7 @@
 
   &__input {
     width: 100%;
-    font-size: 18px;
+    font-size: 16px;
     border: 1px solid var(--primary);
     background: var(--white);
     border-radius: 5px;
@@ -30,17 +30,5 @@
   &--disabled {
     pointer-events: none;
     opacity: 0.5;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .u-input {
-
-    &__input {
-      font-size: 14px;
-    }
-    &__title, &__error {
-      font-size: 12px;
-    }
   }
 }

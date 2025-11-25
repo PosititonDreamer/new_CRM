@@ -171,17 +171,17 @@ export default {
 
 <template>
   <div class="other">
-    <div class="other__list">
+    <div class="list other__list">
       <u-card
           v-for="(other, id) in getOthers.filter(getOther => !getOther.packing)"
           class="other__item"
           :style="[{'--z-index': getOthers.filter(getOther => !getOther.packing).length - id}]"
       >
         <div class="other__content">
-          <p class="other__text">
+          <p class="text other__text">
             <b>Кривое название: </b> {{ other.title }}<br>
           </p>
-          <p class="other__text">
+          <p class="text other__text">
             <b>Привязанная упаковка: </b> Отсутствует
           </p>
         </div>
@@ -198,17 +198,17 @@ export default {
         <u-accordion
             :title="product.show_title ? product.show_title : product.title"
         >
-          <div class="other__wrapper">
+          <div class="list">
             <u-card
                 v-for="(other, id) in product.other"
                 class="other__item"
                 :style="[{'--z-index': product.other.length - id}]"
             >
               <div class="other__content">
-                <p class="other__text">
+                <p class="text other__text">
                   <b>Кривое название: </b> {{ other.title }}<br>
                 </p>
-                <p class="other__text">
+                <p class="text other__text">
                   <b>Привязанная упаковка: </b> {{ product.packing.find(pack => pack.id === other.packing)?.packing }}
                   {{ product.measure_unit }}
                 </p>
@@ -233,28 +233,30 @@ export default {
           @submit.prevent="submitUpdate"
           text="Изменить кривой товар"
       >
-        <p class="other__text">
-          <b>{{getOthers.find(getOther => getOther.id === route.params.id).title}}</b>
+        <p class="sub-title">
+          {{getOthers.find(getOther => getOther.id === route.params.id).title}}
         </p>
-        <u-select
-            title="Продукт"
-            :values="products"
-            :error="product.error"
-            :start-value="product.value"
-            v-model="product.value"
-            @change="changeProduct"
-            class="other__select-product"
-        />
-        <u-select
-            v-if="!!product.value && !update"
-            title="Упаковка"
-            :values="packings"
-            :error="packing.error"
-            :start-value="packing.value"
-            v-model="packing.value"
-            @change="packing.tacked = true"
-            class="other__select-packing"
-        />
+        <div class="list">
+          <u-select
+              title="Продукт"
+              :values="products"
+              :error="product.error"
+              :start-value="product.value"
+              v-model="product.value"
+              @change="changeProduct"
+              class="other__select-product"
+          />
+          <u-select
+              v-if="!!product.value && !update"
+              title="Упаковка"
+              :values="packings"
+              :error="packing.error"
+              :start-value="packing.value"
+              v-model="packing.value"
+              @change="packing.tacked = true"
+              class="other__select-packing"
+          />
+        </div>
       </u-form>
     </u-popup>
   </div>

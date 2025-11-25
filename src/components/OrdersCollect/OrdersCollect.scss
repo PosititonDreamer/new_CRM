@@ -1,19 +1,8 @@
 .orders-collect {
-  &__title {
-    margin-bottom: 10px;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
   &__track {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 10px;
-  }
-
-  &__text {
-    font-size: 18px;
-    margin-bottom: 5px;
   }
 
   &__item {
@@ -38,7 +27,6 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
 
     &--division {
       padding-right: 50px;
@@ -113,5 +101,9 @@
         color: var(--primary);
       }
     }
+  }
+
+  &__boxes {
+    margin: 10px 0;
   }
 }

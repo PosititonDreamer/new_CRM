@@ -145,37 +145,18 @@ export default {
       Добавить фасованный товар
     </u-button>
 
-    <div class="goods__list">
+    <div class="list goods__list">
       <u-card class="goods__item" v-for="product in computedProducts" :key="`goods-item-product${product.id}`">
         <u-accordion
             :title="product.show_title ? product.show_title : product.title"
         >
-          <div class="goods__list">
+          <div class="list">
             <u-card
                 v-for="(good, id) in getGoods.filter(item => item.product === product.id)"
                 :style="[{'--z-index': getGoods.filter(item => item.product === product.id).length - id}]"
                 class="goods__item"
                 :key="`good-item-${good.id}`"
             >
-              <div class="goods__wrapper">
-                <p class="goods__text">
-                  <b>Упаковка: </b> {{ good.quantity }}
-                  {{ getMeasureUnits.find(measure => measure.id === product.measure_unit)?.title }}
-                </p>
-                <p class="goods__text">
-                  <b>Артикль: </b> {{ good.article }}
-                </p>
-                <p v-if="!good.weight"
-                   :class="['goods__text', {'goods__text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'goods__text--few-very': +good.balance <= +good.few_very}]">
-                  <b>Остаток: </b> {{ good.balance }}
-                  <span v-if="+good.balance <= +good.few && +good.balance > +good.few_very">мало товара</span>
-                  <span v-if="+good.balance <= +good.few_very">очень мало товара</span>
-                </p>
-                <p v-else class="goods__text">
-                  <b>Весовой товар</b>
-                </p>
-
-              </div>
               <u-actions
                   class="goods__actions"
                   :actions="actions"
@@ -183,6 +164,23 @@ export default {
                   @updateBalance="router.push({name: 'GoodsUpdateBalance', params: {id: good.id}})"
                   @delete="router.push({name: 'GoodsDelete', params: {id: good.id}})"
               />
+              <p class="text">
+                <b>Упаковка: </b> {{ good.quantity }}
+                {{ getMeasureUnits.find(measure => measure.id === product.measure_unit)?.title }}
+              </p>
+              <p class="text">
+                <b>Артикль: </b> {{ good.article }}
+              </p>
+              <p v-if="!good.weight"
+                 :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--bold text--null': +good.balance === 0}]">
+                <b>Остаток: </b> {{ good.balance }}
+                <span v-if="+good.balance === 0">не осталось товара</span>
+                <span v-else-if="+good.balance <= +good.few && +good.balance > +good.few_very">мало товара</span>
+                <span v-else-if="+good.balance <= +good.few_very">очень мало товара</span>
+              </p>
+              <p v-else class="text">
+                <b>Весовой товар</b>
+              </p>
             </u-card>
           </div>
         </u-accordion>
@@ -206,46 +204,49 @@ export default {
           text="Добавить фасованный товар"
           @submit.prevent="submitCreateGoods"
       >
-        <u-select
-            title="Продукт"
-            :values="products"
-            :start-value="good.product.value.value"
-            :error="good.product.value.error"
-            v-model="good.product.value.value"
-            @change="good.product.value.tacked = true"
-        />
-        <u-input
-            :title="`Количество ${getMeasureUnits.find(measure => measure.id === good.product.value.value)?.title ?? ''} в упаковке`"
-            type="number"
-            :start-value="good.quantity.value.value"
-            :error="good.quantity.value.error"
-            v-model="good.quantity.value.value"
-            @change="good.quantity.value.tacked = true"
-            @blur="good.quantity.value.tacked = true"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="good.balance.value.value"
-            v-model="good.balance.value.value"
-        />
-        <u-input
-            title="Артикль"
-            :start-value="good.article.value.value"
-            v-model="good.article.value.value"
-        />
-        <u-input
-            title="Малое количество товара"
-            type="number"
-            :start-value="good.few.value.value"
-            v-model="good.few.value.value"
-        />
-        <u-input
-            title="Очень малое количество товара"
-            type="number"
-            :start-value="good.few_very.value.value"
-            v-model="good.few_very.value.value"
-        />
+        <div class="list">
+
+          <u-select
+              title="Продукт"
+              :values="products"
+              :start-value="good.product.value.value"
+              :error="good.product.value.error"
+              v-model="good.product.value.value"
+              @change="good.product.value.tacked = true"
+          />
+          <u-input
+              :title="`Количество ${getMeasureUnits.find(measure => measure.id === good.product.value.value)?.title ?? ''} в упаковке`"
+              type="number"
+              :start-value="good.quantity.value.value"
+              :error="good.quantity.value.error"
+              v-model="good.quantity.value.value"
+              @change="good.quantity.value.tacked = true"
+              @blur="good.quantity.value.tacked = true"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="good.balance.value.value"
+              v-model="good.balance.value.value"
+          />
+          <u-input
+              title="Артикль"
+              :start-value="good.article.value.value"
+              v-model="good.article.value.value"
+          />
+          <u-input
+              title="Малое количество товара"
+              type="number"
+              :start-value="good.few.value.value"
+              v-model="good.few.value.value"
+          />
+          <u-input
+              title="Очень малое количество товара"
+              type="number"
+              :start-value="good.few_very.value.value"
+              v-model="good.few_very.value.value"
+          />
+        </div>
       </u-form>
     </u-popup>
 
@@ -258,51 +259,53 @@ export default {
           :text="route.name === 'GoodsUpdateBalance' ? 'Изменить остаток фасованного товара' : 'Изменить фасованный товар'"
           @submit.prevent="route.name === 'GoodsUpdateBalance' ? submitUpdateBalanceGoods()  : submitUpdateGoods()"
       >
-        <u-select
-            title="Продукт"
-            :values="products"
-            :start-value="good.product.value.value"
-            :error="good.product.value.error"
-            v-model="good.product.value.value"
-            @change="good.product.value.tacked = true"
-            :disabled="route.name === 'GoodsUpdateBalance'"
-        />
-        <u-input
-            :title="`Количество ${getMeasureUnits.find(measure => measure.id === good.product.value.value)?.title ?? ''} в упаковке`"
-            type="number"
-            :start-value="good.quantity.value.value"
-            :error="good.quantity.value.error"
-            v-model="good.quantity.value.value"
-            @change="good.quantity.value.tacked = true"
-            @blur="good.quantity.value.tacked = true"
-            :disabled="route.name === 'GoodsUpdateBalance'"
-        />
-        <u-input
-            title="Остаток"
-            type="number"
-            :start-value="good.balance.value.value"
-            v-model="good.balance.value.value"
-        />
-        <u-input
-            title="Артикль"
-            :start-value="good.article.value.value"
-            v-model="good.article.value.value"
-            :disabled="route.name === 'GoodsUpdateBalance'"
-        />
-        <u-input
-            title="Малое количество товара"
-            type="number"
-            :start-value="good.few.value.value"
-            v-model="good.few.value.value"
-            :disabled="route.name === 'GoodsUpdateBalance'"
-        />
-        <u-input
-            title="Очень малое количество товара"
-            type="number"
-            :start-value="good.few_very.value.value"
-            v-model="good.few_very.value.value"
-            :disabled="route.name === 'GoodsUpdateBalance'"
-        />
+        <div class="list">
+          <u-select
+              title="Продукт"
+              :values="products"
+              :start-value="good.product.value.value"
+              :error="good.product.value.error"
+              v-model="good.product.value.value"
+              @change="good.product.value.tacked = true"
+              :disabled="route.name === 'GoodsUpdateBalance'"
+          />
+          <u-input
+              :title="`Количество ${getMeasureUnits.find(measure => measure.id === good.product.value.value)?.title ?? ''} в упаковке`"
+              type="number"
+              :start-value="good.quantity.value.value"
+              :error="good.quantity.value.error"
+              v-model="good.quantity.value.value"
+              @change="good.quantity.value.tacked = true"
+              @blur="good.quantity.value.tacked = true"
+              :disabled="route.name === 'GoodsUpdateBalance'"
+          />
+          <u-input
+              title="Остаток"
+              type="number"
+              :start-value="good.balance.value.value"
+              v-model="good.balance.value.value"
+          />
+          <u-input
+              title="Артикль"
+              :start-value="good.article.value.value"
+              v-model="good.article.value.value"
+              :disabled="route.name === 'GoodsUpdateBalance'"
+          />
+          <u-input
+              title="Малое количество товара"
+              type="number"
+              :start-value="good.few.value.value"
+              v-model="good.few.value.value"
+              :disabled="route.name === 'GoodsUpdateBalance'"
+          />
+          <u-input
+              title="Очень малое количество товара"
+              type="number"
+              :start-value="good.few_very.value.value"
+              v-model="good.few_very.value.value"
+              :disabled="route.name === 'GoodsUpdateBalance'"
+          />
+        </div>
       </u-form>
     </u-popup>
   </div>

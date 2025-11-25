@@ -6,36 +6,7 @@
     margin-bottom: 20px;
   }
 
-  &__text {
-    &:not(:last-child) {
-      margin-bottom: 5px;
-    }
-
-    &--bold {
-      font-weight: 700;
-    }
-
-    &--big {
-      font-size: 18px;
-    }
-  }
-
-  &__item {
-    width: 100%;
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
-  }
-
-  &__title {
-    font-weight: 700;
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
   &__sub-title {
-    font-weight: 700;
-    font-size: 20px;
     margin: 10px 0;
   }
 

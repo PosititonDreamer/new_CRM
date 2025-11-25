@@ -55,38 +55,37 @@ export default {
 </script>
 <template>
   <div class="goods-weight">
-    <div class="goods-weight__list">
+    <div class="list goods-weight__list">
       <u-card
           v-for="(product, id) in computedProducts"
           class="goods-weight__item"
           :key="`good-weight-product-${product.id}`"
           :style="[{'--z-index': computedProducts.length - id}]"
       >
-        <p class="goods-weight__title">{{ product.show_title ? product.show_title : product.title }}</p>
-        <div class="goods-weight__content">
-          <p
-              :class="['goods-weight__text', {'goods-weight__text--few': +product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very}, {'goods-weight__text--few-very': +product.weight.balance <= +product.weight.few_very}]"
-              v-if="!+product.weight.composite"
+        <p class="sub-title">{{ product.show_title ? product.show_title : product.title }}</p>
+        <p
+            :class="['text', {'text--bold text--few': +product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very}, {'text--bold text--few-very': +product.weight.balance <= +product.weight.few_very}, {'text--null': +product.weight.balance === 0}]"
+            v-if="!+product.weight.composite"
+        >
+          <b>Остаток: </b> {{ product.weight.balance }} {{ product.measure?.title }}
+          <span v-if="+product.weight.balance === 0">не осталось товара</span>
+          <span v-else-if="+product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very">мало товара</span>
+          <span v-else-if="+product.weight.balance <= +product.weight.few_very">очень мало товара</span>
+        </p>
+        <p class="text" v-else>
+          <span><b>Составной товар:</b></span>
+          <span
+              v-for="composite in product.weight.composite_list"
+              class="goods-weight__sub-text"
+              :key="`good-weight-composite-${composite.id}`"
           >
-            <b>Остаток: </b> {{ product.weight.balance }} {{ product.measure?.title }}
-            <span
-                v-if="+product.weight.balance <= +product.weight.few && +product.weight.balance > +product.weight.few_very">мало товара</span>
-            <span v-if="+product.weight.balance <= +product.weight.few_very">очень мало товара</span>
-          </p>
-          <p class="goods-weight__text goods-weight__text--composite" v-else>
-            <span><b>Составной товар:</b></span>
-            <span
-                v-for="composite in product.weight.composite_list"
-                class="goods-weight__sub-text"
-                :key="`good-weight-composite-${composite.id}`"
-            >
-                <b>{{ composite.product.show_title ? composite.product.show_title : composite.product.title }}: </b> {{ composite.proportion }}%
-              </span>
-          </p>
-        </div>
+              <b>{{
+                  composite.product.show_title ? composite.product.show_title : composite.product.title
+                }}: </b> {{ composite.proportion }}%
+            </span>
+        </p>
       </u-card>
     </div>
-
   </div>
 </template>
 <style lang="scss" src="./Weight.scss" scoped />

@@ -2,16 +2,6 @@
   width: 100%;
   color: var(--primary);
 
-  &--open {
-    .u-accordion {
-      &__header {
-        svg {
-          transform: translateY(-50%) rotate(-90deg);
-        }
-      }
-    }
-  }
-
   &--small {
     .u-accordion {
       &__header {
@@ -33,17 +23,19 @@
       width: 8px;
       height: auto;
     }
+
+    span {
+      margin-bottom: 0;
+    }
+
+    &--open {
+      svg {
+        transform: translateY(-50%) rotate(-90deg);
+      }
+    }
   }
 
   &__content {
     margin-top: 10px;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .u-accordion {
-    &__header {
-      font-size: 18px;
-    }
   }
 }

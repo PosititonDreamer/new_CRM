@@ -1,5 +1,5 @@
 .u-button {
-  font-size: 18px;
+  font-size: 16px;
   display: block;
   border: 1px solid var(--primary);
   background: var(--white);
@@ -28,7 +28,7 @@
   }
 
   &--big {
-    font-size: 24px;
+    font-size: 19px;
   }
 
   &--yellow {
@@ -37,15 +37,5 @@
 
   &--red {
     --primary: var(--red);
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .u-button {
-    font-size: 14px;
-
-    &--big {
-      font-size: 18px;
-    }
   }
 }

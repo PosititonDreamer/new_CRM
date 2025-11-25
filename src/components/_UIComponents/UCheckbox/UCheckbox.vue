@@ -36,7 +36,7 @@ export default {
   <label class="u-checkbox">
     <input class="u-checkbox__input" type="checkbox" :checked="checked" :value="value" :name="name" @change="change($event.target.checked)" />
     <span class="u-checkbox__marker"></span>
-    <span class="u-checkbox__text">{{title}}</span>
+    <span class="text">{{title}}</span>
   </label>
 </template>
 <style lang="scss" src="./UCheckbox.scss" scoped />
