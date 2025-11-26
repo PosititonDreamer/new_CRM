@@ -96,7 +96,6 @@ export default {
         }
       }
       if (to.name === 'SuppliesWarehouseUpdate') {
-        console.log(getSuppliesDetail)
         loading.value = false
         supply.value.value = getSuppliesDetail.value.supply.supply_warehouse
         supply.value.tacked = true

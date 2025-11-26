@@ -2,8 +2,7 @@ import {defineStore} from 'pinia';
 import {ref, computed} from 'vue';
 import axios from "axios";
 import {Messages} from "@/store/Messages.js";
-import {useRoute} from "vue-router";
-import router from "@/router/router.js";
+import {useRoute, useRouter} from "vue-router";
 import {Loader} from "@/store/Loader.js";
 
 export const Auth = defineStore('Auth', () => {
@@ -13,6 +12,8 @@ export const Auth = defineStore('Auth', () => {
     const route = useRoute();
     const {updateLoader} = Loader()
     const {addMessages} = Messages();
+
+    const router = useRouter();
 
     const auth = async (token) => {
         updateLoader({method: 'auth', status: false})
@@ -60,7 +61,13 @@ export const Auth = defineStore('Auth', () => {
         updateLoader({method: 'checkAuth', status: true})
     }
 
+    const logout = () => {
+        localStorage.removeItem('token');
+        worker.value = {}
+        router.push({name: 'Auth'});
+    }
+
     return {
-        getWorker, auth, checkAuth
+        getWorker, auth, checkAuth, logout
     }
 });

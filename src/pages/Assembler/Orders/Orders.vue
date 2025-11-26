@@ -242,7 +242,7 @@ export default {
         @takeAll="tackedOrders = tackedOrders.length === getOrders.length ? [] : getOrders.map(item => item.id)"
     />
     <orders-collect
-        v-if="route.name === 'AssemblerOrdersCollect' & getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
+        v-if="route.name === 'AssemblerOrdersCollect' && getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
         :collect-goods="collectGoods"
         :computed-detail-orders-goods="computedDetailOrdersGoods"
         :computed-boxes-list="computedBoxesList"

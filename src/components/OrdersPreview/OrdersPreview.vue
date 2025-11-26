@@ -98,7 +98,7 @@ export default {
             :key="`order-status-${id}`"
         >
           <b>Статус заказ: </b>
-          {{ computedStatus(status.status) }} {{ new Date(status.date).toLocaleDateString('ru-RU') }}
+          {{ computedStatus(status.status) }} {{ new Date(status.date).toLocaleDateString('ru-RU') }} {{status.time}}
         </p>
       </u-card>
       <template v-if="onlyGoods">

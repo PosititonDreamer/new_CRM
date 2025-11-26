@@ -73,6 +73,7 @@ export default {
     <div class="sidebar__content">
       <button class="sidebar__close" @click="closeSidebar"></button>
       <div class="sidebar__list list" v-if="getWorker.rule === 'Админ'">
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Admin'}">Главная</router-link>
         <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind' || route.matched.find(item => item.name === 'Orders')}] ">
             Заказы</p>
@@ -216,6 +217,7 @@ export default {
         </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Assembler'}">Главная</router-link>
         <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerOrders' || route.matched.find(item => item.name === 'AssemblerOrders')}] ">
             Заказы</p>
@@ -291,6 +293,7 @@ export default {
         </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Оператор'">
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Operator'}">Главная</router-link>
         <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'OperatorOrders' || route.name === 'OperatorOrdersFind' || route.matched.find(item => item.name === 'OperatorOrders')}] ">
             Заказы</p>

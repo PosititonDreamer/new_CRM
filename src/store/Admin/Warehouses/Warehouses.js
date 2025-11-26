@@ -98,7 +98,6 @@ export const Warehouses = defineStore('Warehouses', () => {
         updateLoader({method: 'findNotifications', status: false})
         await axios.get(`/admin/goods/notifications.php?check`)
             .then(res => {
-                console.log(res.data.check)
                 notifications.value = res.data.check
                 addMessages(res.data.messages, 'success')
             })
