@@ -75,9 +75,14 @@ export default {
       <div class="sidebar__list list" v-if="getWorker.rule === 'Админ'">
         <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Admin'}">Главная</router-link>
         <div class="list">
-          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind' || route.matched.find(item => item.name === 'Orders')}] ">
+          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind' || route.name === 'OrderGoods' || route.matched.find(item => item.name === 'Orders')}] ">
             Заказы</p>
           <div class="sidebar__sub-list list">
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'OrderGoods'}">Товары в заказе
+              </router-link>
+            </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 3}}">В обработке
@@ -218,10 +223,15 @@ export default {
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">
         <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Assembler'}">Главная</router-link>
-        <div class="list">
-          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerOrders' || route.matched.find(item => item.name === 'AssemblerOrders')}] ">
+        <div class="list" v-if="warehousesAssembler.length && !!warehousesAssembler.find(warehouse => +warehouse.id === 1)">
+          <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerOrderGoods' || route.name === 'AssemblerOrders' || route.matched.find(item => item.name === 'AssemblerOrders')}] ">
             Заказы</p>
           <div class="sidebar__sub-list list">
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'AssemblerOrderGoods'}">Товары в заказе
+              </router-link>
+            </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 3}}">В обработке
@@ -286,7 +296,6 @@ export default {
             </div>
           </div>
         </div>
-
         <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'AssemblerSalaries'}">Зарплаты
           </router-link>

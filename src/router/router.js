@@ -27,6 +27,7 @@ import PromosPage from "@/pages/Admin/Promos/Promos.vue";
 import OrdersFindPage from "@/pages/Admin/Orders/Find/Find.vue";
 import ClientsFindPage from "@/pages/Admin/Clients/Find/Find.vue";
 import NotificationsPage from "@/pages/Admin/Warehouses/Notifications/Notifications.vue";
+import OrderGoodsPage from "@/pages/OrdersGoods/OrdersGoods.vue";
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -553,6 +554,28 @@ const routes = [
                 path: "send-several"
             }
         ]
+    },
+    {
+        name: 'OrderGoods',
+        path: '/admin/orders/order-goods',
+        component: OrderGoodsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Список товаров в заказах"
+        },
+    },
+    {
+        name: 'AssemblerOrderGoods',
+        path: '/assembler/orders/order-goods',
+        component: OrderGoodsPage,
+        meta: {
+            isAuth: true,
+            isAssembler: true,
+            layout: 'Sidebar',
+            title: "Список товаров в заказах"
+        },
     },
     {
         name: "OrdersFind",
