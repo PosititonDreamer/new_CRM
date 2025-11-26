@@ -152,7 +152,7 @@ export default {
 
     <u-alert
         v-if="route.name === 'ProductsDelete' && route.params.id"
-        title="Удалить единицу измеренеия?"
+        title="Удалить продукт?"
         type="confirm"
         @close="router.push({name: 'Products'})"
         @accept="submitDeleteProduct()"
