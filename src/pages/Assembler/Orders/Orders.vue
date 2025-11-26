@@ -138,7 +138,7 @@ export default {
           v-if="+route.params.status === 2 || +route.params.status === 6"
           class="orders__create"
           @click="router.push({name: 'AssemblerOrdersSendSeveral'})"
-          :disabled="!getOrders.length || !getOrders.find(item => item.delivery === 'CDEK') || !getOrders.find(item => +item.status === 7)"
+          :disabled="!getOrders.length || !getOrders.find(item => item.delivery === 'CDEK')  || (+route.params.status === 6 && !getOrders.find(item => +item.status === 7))"
       >
         Отправить заказы
       </u-button>
