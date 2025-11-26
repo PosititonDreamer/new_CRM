@@ -3,7 +3,13 @@
     margin-bottom: 20px;
   }
 
-  &__card {
+  &__list {
     max-width: 600px;
+  }
+
+  .sub-title {
+    &:not(:first-child) {
+      margin-top: 20px;
+    }
   }
 }
