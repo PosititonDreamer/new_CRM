@@ -33,6 +33,10 @@ export default {
     max: {
       type: String,
       default: '',
+    },
+    rows: {
+      type: Number,
+      default: 4,
     }
   },
   setup({startValue, type}, {emit}) {
@@ -68,7 +72,8 @@ export default {
   <label :class="['u-input', {'u-input--error': error.trim().length > 0}, {'u-input--disabled': disabled}]">
     <span class="u-input__title">{{ title }}</span>
     <textarea
-        v-if="type === 'textarea'" rows="4"
+        v-if="type === 'textarea'"
+        :rows="rows"
         class="u-input__input"
         v-model="model"
         @input="changeModel"
