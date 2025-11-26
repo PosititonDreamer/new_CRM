@@ -222,7 +222,7 @@ export const HookOrders = () => {
     }
 
     const submitAddTrack = async (afterPage = 'Orders') => {
-        if(getOrderDetail.value.address.delivery === 'CDEK') {
+        if (getOrderDetail.value.address.delivery === 'CDEK') {
             track.value.tacked = true
             if (track.value.valid) {
                 await addTrack({
@@ -256,7 +256,7 @@ export const HookOrders = () => {
     }
 
     const submitSendOrders = async (afterPage = 'Orders') => {
-        if(tackedOrders.value.length) {
+        if (tackedOrders.value.length) {
             await sendOrders(tackedOrders.value, afterPage)
         }
     }
@@ -365,6 +365,10 @@ export const HookOrders = () => {
                         text: "Добавить трек-номер"
                     },
                     {
+                        name: "collect",
+                        text: "Собрать"
+                    },
+                    {
                         name: "delete",
                         text: "Удалить"
                     },
@@ -399,6 +403,44 @@ export const HookOrders = () => {
                         text: "Получить в ТГ"
                     },
                     {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
+                ]
+            } else if (+route.params.status === 6) {
+                return [
+                    {
+                        status: [6, 7],
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        status: [6],
+                        name: "addTrack",
+                        text: "Добавить трек-номер"
+                    },
+                    {
+                        status: [7],
+                        name: "send",
+                        text: "Отправить"
+                    },
+                    {
+                        status: [7],
+                        name: "addBlank",
+                        text: "Добавить бланк"
+                    },
+                    {
+                        status: [7],
+                        name: "openBlank",
+                        text: "Открыть бланк"
+                    },
+                    {
+                        status: [7],
+                        name: "sendMessage",
+                        text: "Получить в ТГ"
+                    },
+                    {
+                        status: [7],
                         name: "copyTrack",
                         text: "Скопировать трек-номер"
                     },
@@ -504,8 +546,36 @@ export const HookOrders = () => {
                         text: "Скопировать трек-номер"
                     },
                 ]
+            } else if (+route.params.status === 6) {
+                return [
+                    {
+                        status: [6, 7],
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        status: [6],
+                        name: "addTrack",
+                        text: "Добавить трек-номер"
+                    },
+                    {
+                        status: [7],
+                        name: "addBlank",
+                        text: "Добавить бланк"
+                    },
+                    {
+                        status: [7],
+                        name: "sendMessage",
+                        text: "Получить в ТГ"
+                    },
+                    {
+                        status: [7],
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
+                ]
             }
-        } else if(getWorker.value.rule === 'Сборщик') {
+        } else if (getWorker.value.rule === 'Сборщик') {
             if (+route.params.status === 1) {
                 return [
                     {
@@ -550,6 +620,10 @@ export const HookOrders = () => {
                         name: "preview",
                         text: "Посмотреть"
                     },
+                    {
+                        name: "collect",
+                        text: "Собрать"
+                    },
                 ]
             } else if (+route.params.status === 4) {
                 return [
@@ -569,6 +643,29 @@ export const HookOrders = () => {
                         text: "Посмотреть"
                     },
                     {
+                        name: "copyTrack",
+                        text: "Скопировать трек-номер"
+                    },
+                ]
+            } else if (+route.params.status === 6) {
+                return [
+                    {
+                        status: [6, 7],
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        status: [7],
+                        name: "send",
+                        text: "Отправить"
+                    },
+                    {
+                        status: [7],
+                        name: "openBlank",
+                        text: "Открыть бланк"
+                    },
+                    {
+                        status: [7],
                         name: "copyTrack",
                         text: "Скопировать трек-номер"
                     },
@@ -639,7 +736,15 @@ export const HookOrders = () => {
         if (+status === 4) {
             return 'Отправлен'
         }
-        return 'Возвращен'
+        if (+status === 5) {
+            return 'Возвращен'
+        }
+        if (+status === 6) {
+            return 'Собран без трека'
+        }
+        if (+status === 7) {
+            return 'Добавлен трек'
+        }
     }
 
     const computedGoods = computed(() => {
@@ -698,25 +803,25 @@ export const HookOrders = () => {
     })
 
     const computedDetailOrdersComposition = computed(() => {
-        if(!getOrderDetail.value) {
+        if (!getOrderDetail.value) {
             return []
         }
 
         return getOrderDetail.value.composition_list.map(item => {
-            if(item.type === 'good') {
+            if (item.type === 'good') {
                 const findGood = getGoodsList.value.find(good => +good.id === +item.good)
                 const findProduct = getProductsList.value.find(product => +product.id === +findGood.product)
 
-                return `${!!+item.present ? 'Подарок: ' : ''}${findProduct.show_title ? findProduct.show_title : findProduct.title}, ${findGood.packing} ${findProduct.measure} ${+item.quantity > 1 ? ' - ' + item.quantity + ' шт.': ''}`
+                return `${!!+item.present ? 'Подарок: ' : ''}${findProduct.show_title ? findProduct.show_title : findProduct.title}, ${findGood.packing} ${findProduct.measure} ${+item.quantity > 1 ? ' - ' + item.quantity + ' шт.' : ''}`
             }
 
-            if(item.type === 'kit') {
+            if (item.type === 'kit') {
                 const findKit = getKitsList.value.find(kit => +kit.id === +item.good)
 
-                return `${findKit.title} ${+item.quantity > 1 ? ' - ' + item.quantity + ' шт.': ''}`
+                return `${findKit.title} ${+item.quantity > 1 ? ' - ' + item.quantity + ' шт.' : ''}`
             }
 
-            if(item.type === 'other') {
+            if (item.type === 'other') {
                 const findPresent = getPresentsList.value.find(present => +present.id === +item.good && present.type === 'other')
                 return `Подарок: ${findPresent.title}`
             }
@@ -726,11 +831,11 @@ export const HookOrders = () => {
     })
 
     const computedDetailOrdersGoods = computed(() => {
-        if(!getOrderDetail.value) {
+        if (!getOrderDetail.value) {
             return []
         }
         const newArray = getOrderDetail.value.goods_list.map(item => {
-            if(item.type === 'good') {
+            if (item.type === 'good') {
                 const findProduct = getProductsList.value.find(product => +product.id === +item.product)
 
                 return {
@@ -742,7 +847,7 @@ export const HookOrders = () => {
                 }
             }
 
-            if(item.type === 'other') {
+            if (item.type === 'other') {
                 return {
                     title: item.title,
                     quantity: item.quantity,

@@ -38,7 +38,15 @@ export default {
       if (+status === 4) {
         return 'Отправлен'
       }
-      return 'Возвращен'
+      if(+status === 5) {
+        return 'Возвращен'
+      }
+      if(+status === 6) {
+        return 'Собран без трека'
+      }
+      if(+status === 7) {
+        return 'Добавлен трек'
+      }
     }
 
     return {
@@ -75,12 +83,33 @@ export default {
         <b>Комментарий: </b> {{ order.comment }}
       </p>
       <p :class="['text', {'text--few text--bold': !order.blank}]"
-         v-if="order.delivery !== 'CDEK' && (+order.status === 1 || +order.status === 2) && checkBlank">
+         v-if="order.delivery !== 'CDEK' && (+order.status === 1 || +order.status === 2 || +order.status === 7) && checkBlank">
         <b>Бланк для печати: </b> {{ order.blank ? "Загружен" : "Не загружен" }}
       </p>
       <u-actions
           class="orders-list__actions"
-          :actions="checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : actions.map(action => {
+          :actions="checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)).map(action => {
+              if (action.name === 'addBlank') {
+                if (order.delivery !== 'CDEK') {
+                  return {
+                    text: order.blank ? 'Изменить бланк' : 'Добавить бланк',
+                    name: 'addBlank'
+                  }
+                } else {
+                  return null
+                }
+              } else if (action.name === 'openBlank') {
+                if (order.delivery === 'CDEK') {
+                  return null
+                } else if (!order.blank) {
+                  return null
+                } else {
+                  return action
+                }
+              } else {
+                return action
+              }
+            }).filter(action => action) : actions.map(action => {
               if (action.name === 'addBlank') {
                 if (order.delivery !== 'CDEK') {
                   return {

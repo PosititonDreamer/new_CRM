@@ -52,12 +52,12 @@ export const HookOrdersFind = () => {
 
     const actionsList = [
         {
-            status: [1, 2, 3, 4, 5],
+            status: [1, 2, 3, 4, 5, 6, 7],
             name: "preview",
             text: "Посмотреть"
         },
         {
-            status: [1, 2, 3, 4, 5],
+            status: [1, 2, 3, 4, 5, 6, 7],
             name: "sendMessage",
             text: "Получить в ТГ"
         },

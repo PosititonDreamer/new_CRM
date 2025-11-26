@@ -100,6 +100,11 @@ export default {
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'Orders', params: {status: 6}}">Собранные без трека
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 4}}">Отправленные
               </router-link>
             </div>
@@ -249,6 +254,11 @@ export default {
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'AssemblerOrders', params: {status: 6}}">Собранные без трека
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 4}}">Отправленные
               </router-link>
             </div>
@@ -320,6 +330,11 @@ export default {
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 2}}">Собранные
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'OperatorOrders', params: {status: 6}}">Собранные без трека
               </router-link>
             </div>
             <div class="list">

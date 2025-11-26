@@ -268,6 +268,7 @@ export default {
         @addTrack="e => router.push({name: 'OperatorOrdersAddTrack', params: {id: e}})"
         @return="e => router.push({name: 'OperatorOrdersReturn', params: {id: e}})"
         @copyTrack="e => copyTrack(e)"
+        :check-status="+route.params.status === 6"
     />
     <u-button
         class="orders__find"

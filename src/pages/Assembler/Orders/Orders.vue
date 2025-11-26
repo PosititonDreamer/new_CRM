@@ -135,10 +135,10 @@ export default {
   <div class="orders">
     <div class="orders__actions">
       <u-button
-          v-if="+route.params.status === 2"
+          v-if="+route.params.status === 2 || +route.params.status === 6"
           class="orders__create"
           @click="router.push({name: 'AssemblerOrdersSendSeveral'})"
-          :disabled="!getOrders.length || !getOrders.find(item => item.delivery === 'CDEK')"
+          :disabled="!getOrders.length || !getOrders.find(item => item.delivery === 'CDEK') || !getOrders.find(item => +item.status === 7)"
       >
         Отправить заказы
       </u-button>
@@ -151,7 +151,7 @@ export default {
         Скопировать трек-номера
       </u-button>
       <u-button
-          v-if="(+route.params.status === 1 || +route.params.status === 2) && getOrders.find(item => item.blank)"
+          v-if="(+route.params.status === 1 || +route.params.status === 2 || +route.params.status === 6) && getOrders.find(item => item.blank)"
           class="orders__create"
           @click="openBlankList"
       >
@@ -198,7 +198,7 @@ export default {
     <orders-list
         class="orders__list"
         v-if="getOrders.length"
-        :orders="getOrders"
+        :orders="+route.params.status === 6 ? getOrders : getOrders.filter(item => +item.status !== 6)"
         :actions="actionsOrders"
         @collect="e => router.push({name: 'AssemblerOrdersCollect', params: {id: e}})"
         @preview="e => router.push({name: 'AssemblerOrdersPreview', params: {id: e}})"
@@ -206,6 +206,7 @@ export default {
         @openBlank="openBlank"
         @send="e => router.push({name: 'AssemblerOrdersSend', params: {id: e}})"
         @copyTrack="e => copyTrack(e)"
+        :check-status="+route.params.status === 6"
     />
     <u-button
         class="orders__find"
@@ -219,7 +220,7 @@ export default {
         title="Отправить заказ?"
         type="confirm"
         @close="router.push({name: 'AssemblerOrders', params: {status: route.params.status}})"
-        @accept="submitSendOrders()"
+        @accept="submitSendOrders('AssemblerOrders')"
     />
     <orders-preview
         v-if="route.name === 'AssemblerOrdersPreview' && getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
@@ -235,11 +236,11 @@ export default {
     <orders-send
         v-if="route.name === 'AssemblerOrdersSendSeveral' && getOrders.length"
         :tacked-orders="tackedOrders"
-        :orders="getOrders"
-        @submit="submitSendOrders()"
+        :orders="getOrders.filter(item => +item.status !== 6)"
+        @submit="submitSendOrders('AssemblerOrders')"
         @close="router.push({name: 'AssemblerOrders'})"
         @takeOrder="e=> !!tackedOrders.find(item => +item === +e.id) ? tackedOrders = tackedOrders.filter(item => +item !== +e.id) : tackedOrders.push(e.id)"
-        @takeAll="tackedOrders = tackedOrders.length === getOrders.length ? [] : getOrders.map(item => item.id)"
+        @takeAll="tackedOrders = tackedOrders.length === getOrders.filter(item => +item.status !== 6).length ? [] : getOrders.filter(item => +item.status !== 6).map(item => item.id)"
     />
     <orders-collect
         v-if="route.name === 'AssemblerOrdersCollect' && getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
@@ -250,7 +251,7 @@ export default {
         :boxes="order.boxes"
         @addBox="addBox()"
         @removeBox="e=>removeBox(e)"
-        @submit="submitCollectOrders()"
+        @submit="submitCollectOrders('AssemblerOrders')"
         @close="router.push({name: 'AssemblerOrders'})"
         @collectGoods="e => !!collectGoods.find(item => +item === +e.id) ? collectGoods = collectGoods.filter(item => +item !== +e.id) : collectGoods.push(e.id)"
     />

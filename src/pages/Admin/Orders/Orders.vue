@@ -253,10 +253,10 @@ export default {
         Добавить заказ
       </u-button>
       <u-button
-          v-if="+route.params.status === 2"
+          v-if="+route.params.status === 2  || +route.params.status === 6"
           class="orders__create"
           @click="router.push({name: 'OrdersSendSeveral'})"
-          :disabled="!getOrders.length || !getOrders.find(item => item.delivery === 'CDEK')"
+          :disabled="!getOrders.length || !getOrders.find(item => item.delivery === 'CDEK') || !getOrders.find(item => +item.status === 7)"
       >
         Отправить заказы
       </u-button>
@@ -269,7 +269,7 @@ export default {
         Скопировать трек-номера
       </u-button>
       <u-button
-          v-if="(+route.params.status === 1 || +route.params.status === 2) && getOrders.find(item => item.blank)"
+          v-if="(+route.params.status === 1 || +route.params.status === 2  || +route.params.status === 6) && getOrders.find(item => item.blank)"
           class="orders__create"
           @click="openBlankList"
       >
@@ -329,6 +329,7 @@ export default {
         @return="e => router.push({name: 'OrdersReturn', params: {id: e}})"
         @send="e => router.push({name: 'OrdersSend', params: {id: e}})"
         @copyTrack="e => copyTrack(e)"
+        :check-status="+route.params.status === 6"
     />
     <u-button
         class="orders__find"
@@ -873,11 +874,11 @@ export default {
     <orders-send
         v-if="route.name === 'OrdersSendSeveral' && getOrders.length"
         :tacked-orders="tackedOrders"
-        :orders="getOrders"
+        :orders="getOrders.filter(item => +item.status !== 6)"
         @submit="submitSendOrders()"
         @close="router.push({name: 'Orders'})"
         @takeOrder="e=> !!tackedOrders.find(item => +item === +e.id) ? tackedOrders = tackedOrders.filter(item => +item !== +e.id) : tackedOrders.push(e.id)"
-        @takeAll="tackedOrders = tackedOrders.length === getOrders.length ? [] : getOrders.map(item => item.id)"
+        @takeAll="tackedOrders = tackedOrders.length === getOrders.filter(item => +item.status !== 6).length ? [] : getOrders.filter(item => +item.status !== 6).map(item => item.id)"
     />
     <orders-collect
         v-if="route.name === 'OrdersCollect' && getGoodsList.length && getProductsList.length && getKitsList.length && getPresentsList.length && getOrderDetail"
