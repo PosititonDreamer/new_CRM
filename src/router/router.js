@@ -28,6 +28,7 @@ import OrdersFindPage from "@/pages/Admin/Orders/Find/Find.vue";
 import ClientsFindPage from "@/pages/Admin/Clients/Find/Find.vue";
 import NotificationsPage from "@/pages/Admin/Warehouses/Notifications/Notifications.vue";
 import OrderGoodsPage from "@/pages/OrdersGoods/OrdersGoods.vue";
+import MailingsPage from "@/pages/Admin/Mailings/Mailings.vue";
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -117,6 +118,47 @@ const routes = [
             {
                 name: "ProductsDelete",
                 path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "Mailings",
+        path: '/admin/mailings',
+        component: MailingsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Рассылки"
+        },
+        children: [
+            {
+                name: "MailingsCreate",
+                path: 'create',
+            },
+            {
+                name: "MailingsUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "MailingsDelete",
+                path: 'delete/:id',
+            },
+            {
+                name: "MailingsTestTelegram",
+                path: 'test-telegram/:id'
+            },
+            {
+                name: "MailingsTelegram",
+                path: 'telegram/:id'
+            },
+            {
+                name: "MailingsTestEmail",
+                path: 'test-email/:id'
+            },
+            {
+                name: "MailingsEmail",
+                path: 'email/:id'
             }
         ]
     },

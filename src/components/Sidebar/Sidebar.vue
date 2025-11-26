@@ -225,6 +225,10 @@ export default {
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Promos'}">Промокоды
           </router-link>
         </div>
+        <div class="list">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Mailings'}">Рассылки
+          </router-link>
+        </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">
         <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Assembler'}">Главная</router-link>
