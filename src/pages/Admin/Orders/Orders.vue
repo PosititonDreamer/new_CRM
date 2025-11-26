@@ -795,7 +795,7 @@ export default {
     />
     <u-alert
         v-if="route.name === 'OrdersReturn' && route.params.id"
-        title="Вернуть заказ?"
+        title="Вернуть?"
         type="confirm"
         @close="router.push({name: 'Orders', params: {status: route.params.status}})"
         @accept="submitReturnOrders()"

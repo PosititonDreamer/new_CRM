@@ -381,7 +381,7 @@ export const HookOrders = () => {
                     },
                     {
                         name: "return",
-                        text: "Вернуть заказ"
+                        text: "Вернуть"
                     },
                     {
                         name: "sendMessage",
@@ -520,7 +520,7 @@ export const HookOrders = () => {
                     },
                     {
                         name: "return",
-                        text: "Вернуть заказ"
+                        text: "Вернуть"
                     },
                     {
                         name: "sendMessage",

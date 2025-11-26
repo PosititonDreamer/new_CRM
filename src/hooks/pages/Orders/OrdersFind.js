@@ -69,7 +69,7 @@ export const HookOrdersFind = () => {
         {
             status: [4],
             name: "return",
-            text: "Вернуть заказ"
+            text: "Вернуть"
         },
     ]
 
