@@ -225,18 +225,22 @@ export const Orders = defineStore('Orders', () => {
 
     const sendOrders = async (id_list, afterPage) => {
         updateLoader({method: 'sendOrders', status: false})
-        const formData = new FormData();
-        formData.append('orders', JSON.stringify(id_list))
-        await axios.post('/orders/send.php', formData)
-            .then((res) => {
-                orders.value = orders.value.filter(order => !id_list.find(id_item => +id_item === +order.id))
-                router.push({name: afterPage, params: {status: route.params.status}});
-                addMessages(res.data.messages, 'success')
-            })
-            .catch(err => {
-                addMessages(err.response.data.messages, 'error')
-            })
+        let send = 0
+        for(let id of id_list) {
+            const formData = new FormData();
+            formData.append('orders', JSON.stringify([id]))
+            await axios.post('/orders/send.php', formData)
+                .then(() => {
+                    send++
+                    addMessages([`Отправлено ${send} из ${id_list.length}`], 'success')
+                })
+                .catch(err => {
+                    addMessages(err.response.data.messages, 'error')
+                })
+        }
         updateLoader({method: 'sendOrders', status: true})
+        orders.value = orders.value.filter(order => !id_list.find(id_item => +id_item === +order.id))
+        router.push({name: afterPage, params: {status: route.params.status}});
     }
 
     const addTrack = async ({id, track, blank}, afterPage) => {
