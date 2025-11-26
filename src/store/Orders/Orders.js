@@ -246,7 +246,14 @@ export const Orders = defineStore('Orders', () => {
         formData.append('track', track)
         await axios.post('/orders/add_track.php', formData)
             .then((res) => {
-                orders.value = orders.value.filter(order => +order.id !== +id)
+                if(+route.params.status === 6) {
+                    orders.value = orders.value.map(order => {
+                        order.status = 7
+                        return order
+                    })
+                } else {
+                    orders.value = orders.value.filter(order => +order.id !== +id)
+                }
                 addMessages(res.data.messages, 'success')
                 if(blank) {
                     addBlank({
