@@ -1,5 +1,6 @@
 .u-checkbox {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
   grid-gap: 5px;
   font-size: 18px;

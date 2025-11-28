@@ -55,7 +55,7 @@ export default {
       <p class="text">
         <b>Количество заказов клиента: </b> {{ order.client.orders_length }}
       </p>
-      <u-card
+      <div
           class="orders-collect__boxes"
       >
         <p class="sub-title">Выбор коробок</p>
@@ -92,14 +92,14 @@ export default {
             Добавить коробку
           </u-button>
         </div>
-      </u-card>
+      </div>
       <p class="sub-title">Состав заказа:</p>
       <div class="list">
         <u-card
             v-for="good in computedDetailOrdersGoods"
             :key="`order-good-item-${good.id}-${good.type}`"
             :class="['orders-collect__card', {'orders-collect__card--collect': collectGoods.find(item => +item === +good.id)}]">
-          <div class="orders-collect__info">
+          <label class="orders-collect__info">
             <u-checkbox
                 title=""
                 name="order-collect-good-item"
@@ -117,7 +117,7 @@ export default {
                   &nbsp;-&nbsp;{{ good.quantity }} шт.
                 </span>
             </p>
-          </div>
+          </label>
           <p
               v-if="good.quantity > 1"
               class="orders-collect__alarm"

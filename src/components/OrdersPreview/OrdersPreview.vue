@@ -34,7 +34,7 @@ export default {
     }
   },
   setup() {
-    const openTab = ref('composition')
+    const openTab = ref('goods')
 
     return {
       openTab,
@@ -57,6 +57,54 @@ export default {
         Собрать заказ
       </u-button>
       <p class="title">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <template v-if="onlyGoods">
+        <div class="orders-preview__tabs">
+          <u-card class="orders-preview__content">
+            <div class="orders-preview__item">
+              <p class="text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
+                {{ id + 1 }}. {{ good.title }}
+                <span
+                    v-if="+good.quantity > 1"
+                    class="text--few text--bold"
+                >
+                  &nbsp;-&nbsp;{{ good.quantity }} шт.
+                </span>
+              </p>
+            </div>
+          </u-card>
+        </div>
+      </template>
+      <template v-else>
+        <div class="orders-preview__tabs">
+          <div class="orders-preview__button-list">
+            <u-button class="orders-preview__button" @click="openTab='goods'" :disabled="openTab === 'goods'">Товары в
+              заказе
+            </u-button>
+            <u-button class="orders-preview__button" @click="openTab='composition'"
+                      :disabled="openTab === 'composition'">Изначальный вид заказа
+            </u-button>
+          </div>
+          <u-card class="orders-preview__content">
+            <div class="orders-preview__item" v-if="openTab === 'composition'">
+              <p class="text" v-for="(composition, id) in computedDetailOrdersComposition"
+                 :key="`composition-${id}`">
+                {{ id + 1 }}. {{ composition }}
+              </p>
+            </div>
+            <div class="orders-preview__item" v-if="openTab === 'goods'">
+              <p class="text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
+                {{ id + 1 }}. {{ good.title }}
+                <span
+                    v-if="+good.quantity > 1"
+                    class="text--few text--bold"
+                >
+                  &nbsp;-&nbsp;{{ good.quantity }} шт.
+                </span>
+              </p>
+            </div>
+          </u-card>
+        </div>
+      </template>
       <p class="text">
         <b>ФИО: </b> {{ order.client.full_name }}
       </p>
@@ -101,54 +149,6 @@ export default {
           {{ computedStatus(status.status) }} {{ new Date(status.date).toLocaleDateString('ru-RU') }} {{status.time}}
         </p>
       </u-card>
-      <template v-if="onlyGoods">
-        <div class="orders-preview__tabs">
-          <div class="orders-preview__content">
-            <div class="orders-preview__item">
-              <p class="text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
-                {{ id + 1 }}. {{ good.title }}
-                <span
-                    v-if="+good.quantity > 1"
-                    class="text--few text--bold"
-                >
-                  &nbsp;-&nbsp;{{ good.quantity }} шт.
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-else>
-        <div class="orders-preview__tabs">
-          <div class="orders-preview__button-list">
-            <u-button class="orders-preview__button" @click="openTab='composition'"
-                      :disabled="openTab === 'composition'">Изначальный вид заказа
-            </u-button>
-            <u-button class="orders-preview__button" @click="openTab='goods'" :disabled="openTab === 'goods'">Товары в
-              заказе
-            </u-button>
-          </div>
-          <div class="orders-preview__content">
-            <div class="orders-preview__item" v-if="openTab === 'composition'">
-              <p class="text" v-for="(composition, id) in computedDetailOrdersComposition"
-                 :key="`composition-${id}`">
-                {{ id + 1 }}. {{ composition }}
-              </p>
-            </div>
-            <div class="orders-preview__item" v-if="openTab === 'goods'">
-              <p class="text" v-for="(good, id) in computedDetailOrdersGoods" :key="`goods-${id}`">
-                {{ id + 1 }}. {{ good.title }}
-                <span
-                    v-if="+good.quantity > 1"
-                    class="text--few text--bold"
-                >
-                  &nbsp;-&nbsp;{{ good.quantity }} шт.
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </template>
     </div>
   </u-popup>
 </template>

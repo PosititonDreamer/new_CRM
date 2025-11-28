@@ -24,7 +24,7 @@ export default {
   <div class="list goods-list">
     <u-checkbox
         v-for="good in getGoodsOrders"
-        :title="`${good.show_title ? good.show_title : good.title}, ${good.good_quantity} ${good.measure} - ${good.quantity} шт. (на складе: ${good.balance}; останется ${+good.balance - +good.quantity})`"
+        :title="`${good.show_title ? good.show_title : good.title}, ${good.good_quantity} ${good.measure} - ${good.quantity} шт.<br>(на складе: ${good.balance}; останется ${+good.balance - +good.quantity})`"
         name="goods"
         :value="good.quantity"
         :checked="!!good.complete"

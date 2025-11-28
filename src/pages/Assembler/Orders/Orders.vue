@@ -10,10 +10,12 @@ import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
 import OrdersSend from "@/components/OrdersSend/OrdersSend.vue";
 import OrdersCollect from "@/components/OrdersCollect/OrdersCollect.vue";
 import OrdersPreview from "@/components/OrdersPreview/OrdersPreview.vue";
+import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
+import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 
 export default {
   name: "AssemblerOrders",
-  components: {OrdersPreview, OrdersCollect, OrdersSend, UAlert, USelect, OrdersList, UInput, UButton},
+  components: {UCard, UAccordion, OrdersPreview, OrdersCollect, OrdersSend, UAlert, USelect, OrdersList, UInput, UButton},
   async beforeCreate() {
     const {filter} = HookOrders()
     const {findTrack, checkOld, findOrders} = Orders()
@@ -193,6 +195,51 @@ export default {
           :start-value="filter.sort"
           :empty="false"
           @update="changeFilter"
+      />
+    </div>
+    <div class="orders__filters orders__filters--mobile list">
+      <u-card>
+        <u-accordion
+            title="Фильтры"
+        >
+          <div class="list">
+            <u-input
+                title="Минимальная дата создания"
+                type="date"
+                min="2025-03-10"
+                :max="new Date().toISOString().split('T')[0]"
+                v-model="filter.date_start"
+                :start-value="filter.date_start"
+                @change="changeFilter"
+            />
+            <u-input
+                title="Максимальная дата создания"
+                type="date"
+                :min="filter.date_start"
+                :max="new Date().toISOString().split('T')[0]"
+                v-model="filter.date_end"
+                :start-value="filter.date_end"
+                @change="changeFilter"
+            />
+            <u-select
+                title="Сортировка"
+                :values="filterSort"
+                v-model="filter.sort"
+                :start-value="filter.sort"
+                :empty="false"
+                @update="changeFilter"
+            />
+          </div>
+        </u-accordion>
+      </u-card>
+      <u-select
+          title="Доставка"
+          :values="filterDelivery"
+          v-model="filter.delivery"
+          :start-value="filter.delivery"
+          :empty="false"
+          @update="changeFilter"
+          class="orders__filter-delivery"
       />
     </div>
     <orders-list

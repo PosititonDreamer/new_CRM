@@ -883,7 +883,7 @@ export const HookOrders = () => {
     }
 
     const openBlankList = () => {
-        window.open(`http://crm.system/api/orders/blank.php?status=${route.params.status}`, '_blank')
+        window.open(`/api/orders/blank.php?status=${route.params.status}`, '_blank')
     }
 
     const copyTracksAll = () => {

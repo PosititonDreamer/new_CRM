@@ -11,6 +11,10 @@
     margin-bottom: 20px;
     position: relative;
     z-index: 1;
+
+    &--mobile {
+      display: none;
+    }
   }
 
   &__list {
@@ -150,3 +154,18 @@
   }
 }
 
+
+@media screen and (max-width: 1000px) {
+  .orders {
+    &__filters {
+      display: none;
+
+      &--mobile {
+        grid-template-columns: 1fr;
+        display: grid;
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+}

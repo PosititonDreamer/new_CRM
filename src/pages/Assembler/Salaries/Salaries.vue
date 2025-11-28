@@ -176,7 +176,7 @@ export default {
           >
             <div class="list">
               <u-card v-for="salary in getSalaries.salaries.filter(item => !item.ready)">
-                <p class="salaries__title">
+                <p class="sub-title">
                   {{ salary.track }}
                 </p>
                 <p class="text">

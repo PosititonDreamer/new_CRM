@@ -21,9 +21,9 @@ export const Auth = defineStore('Auth', () => {
         formData.append('token', token);
         await axios.post('/workers/authorization.php', formData)
             .then(res => {
-                worker.value = res.data.worker;
-                localStorage.setItem('token', token);
                 axios.defaults.headers.common['Authorization'] = `${token}`;
+                localStorage.setItem('token', token);
+                worker.value = res.data.worker;
                 addMessages(res.data.messages, 'success')
                 if(route.name === 'Auth') {
                     if(worker.value.rule === 'Админ') {
@@ -51,8 +51,8 @@ export const Auth = defineStore('Auth', () => {
         formData.append('token', token);
         await axios.post('/workers/authorization.php', formData)
             .then(res => {
-                worker.value = res.data.worker;
                 axios.defaults.headers.common['Authorization'] = `${token}`;
+                worker.value = res.data.worker;
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
