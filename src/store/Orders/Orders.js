@@ -10,6 +10,7 @@ export const Orders = defineStore('Orders', () => {
     const nextPage = ref(null);
     const orderDetail = ref(null);
     const clientsList = ref([]);
+    const unprocessedOrders = ref(0)
 
     const productsList = ref([]);
     const goodsList = ref([]);
@@ -21,6 +22,7 @@ export const Orders = defineStore('Orders', () => {
     const getNextPage = computed(() => nextPage)
     const getOrderDetail = computed(() => orderDetail)
     const getClientsList = computed(() => clientsList)
+    const getUnprocessedOrders = computed(() => unprocessedOrders)
 
     const getGoodsList = computed(() => goodsList)
     const getProductsList = computed(() => productsList)
@@ -37,22 +39,22 @@ export const Orders = defineStore('Orders', () => {
     const findOrders = async ({date_start, date_end, delivery, sort}, page = 0) => {
         updateLoader({method: 'findOrders', status: false})
         let params = '';
-        if(date_start) {
+        if (date_start) {
             params += `&date_start=${date_start}`;
         }
-        if(date_end) {
+        if (date_end) {
             params += `&date_end=${date_end}`;
         }
-        if(delivery) {
+        if (delivery) {
             params += `&delivery=${delivery}`;
         }
-        if(sort) {
+        if (sort) {
             params += `&sort=${sort}`;
         }
         params += '&page=' + page;
         await axios.get(`/orders/list.php?status=${route.params.status}${params}`)
             .then((res) => {
-                if(page === 0) {
+                if (page === 0) {
                     orders.value = res.data.orders
                 } else {
                     orders.value = [...orders.value, ...res.data.orders]
@@ -83,6 +85,19 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'findGoods', status: true})
     }
 
+    const findUnprocessedOrders = async () => {
+        updateLoader({method: 'findUnprocessedOrders', status: false})
+        await axios.get('/orders/check_orders_unprocessed.php')
+            .then((res) => {
+                unprocessedOrders.value = res.data.orders_length
+                addMessages(res.data.messages, 'success')
+            })
+            .catch(err => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'findUnprocessedOrders', status: true})
+    }
+
     const findOrdersDetail = async () => {
         updateLoader({method: 'findOrdersDetail', status: false})
         await axios.get(`/orders/item.php?id=${route.params.id}`)
@@ -97,7 +112,19 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'findOrdersDetail', status: true})
     }
 
-    const createOrders = async ({client, address, track, comment, phone, delivery, email, composition, payed, blank, worker}, afterPage, warehouse = 1) => {
+    const createOrders = async ({
+                                    client,
+                                    address,
+                                    track,
+                                    comment,
+                                    phone,
+                                    delivery,
+                                    email,
+                                    composition,
+                                    payed,
+                                    blank,
+                                    worker
+                                }, afterPage, warehouse = 1) => {
         updateLoader({method: 'createOrders', status: false})
         const formData = new FormData();
         formData.append('client', client)
@@ -115,7 +142,7 @@ export const Orders = defineStore('Orders', () => {
             .then((res) => {
                 orders.value.push(res.data.order)
                 addMessages(res.data.messages, 'success')
-                if(blank && delivery !== 'CDEK') {
+                if (blank && delivery !== 'CDEK') {
                     addBlank({
                         id: res.data.order.id,
                         blank
@@ -130,7 +157,19 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'createOrders', status: true})
     }
 
-    const updateOrders = async ({id, client, address, track, comment, phone, delivery, email, composition, blank, payed},afterPage, warehouse = 1) => {
+    const updateOrders = async ({
+                                    id,
+                                    client,
+                                    address,
+                                    track,
+                                    comment,
+                                    phone,
+                                    delivery,
+                                    email,
+                                    composition,
+                                    blank,
+                                    payed
+                                }, afterPage, warehouse = 1) => {
         updateLoader({method: 'updateOrders', status: false})
         const formData = new FormData();
         formData.append('id', id)
@@ -146,18 +185,18 @@ export const Orders = defineStore('Orders', () => {
         formData.append('composition', JSON.stringify(composition))
         await axios.post('/orders/update.php', formData)
             .then((res) => {
-                if(res.data.change_status) {
+                if (res.data.change_status) {
                     orders.value = orders.value.filter(order => +order.id !== +id)
                 } else {
                     orders.value = orders.value.map(order => {
-                        if(+order.id === +id) {
+                        if (+order.id === +id) {
                             return res.data.order
                         }
                         return order
                     })
                 }
                 addMessages(res.data.messages, 'success')
-                if(blank && delivery !== 'CDEK') {
+                if (blank && delivery !== 'CDEK') {
                     addBlank({
                         id: res.data.order.id,
                         blank
@@ -226,7 +265,7 @@ export const Orders = defineStore('Orders', () => {
     const sendOrders = async (id_list, afterPage) => {
         updateLoader({method: 'sendOrders', status: false})
         let send = 0
-        for(let id of id_list) {
+        for (let id of id_list) {
             const formData = new FormData();
             formData.append('orders', JSON.stringify([id]))
             await axios.post('/orders/send.php', formData)
@@ -250,7 +289,7 @@ export const Orders = defineStore('Orders', () => {
         formData.append('track', track)
         await axios.post('/orders/add_track.php', formData)
             .then((res) => {
-                if(+route.params.status === 6) {
+                if (+route.params.status === 6) {
                     orders.value = orders.value.map(order => {
                         order.status = 7
                         return order
@@ -259,7 +298,7 @@ export const Orders = defineStore('Orders', () => {
                     orders.value = orders.value.filter(order => +order.id !== +id)
                 }
                 addMessages(res.data.messages, 'success')
-                if(blank) {
+                if (blank) {
                     addBlank({
                         id,
                         blank
@@ -282,7 +321,7 @@ export const Orders = defineStore('Orders', () => {
         await axios.post('/orders/add_blank.php', formData)
             .then((res) => {
                 orders.value.forEach(order => {
-                    if(+order.id === +id) {
+                    if (+order.id === +id) {
                         order.blank = true
                     }
                 })
@@ -318,6 +357,7 @@ export const Orders = defineStore('Orders', () => {
     const checkOld = async () => {
         updateLoader({method: 'checkOld', status: false})
         await axios.get('/tilda_api.php?check_old')
+        await findUnprocessedOrders()
         updateLoader({method: 'checkOld', status: true})
     }
 
@@ -365,6 +405,8 @@ export const Orders = defineStore('Orders', () => {
         findTrack,
         checkOld,
         findClientsList,
-        clearClientsList
+        clearClientsList,
+        findUnprocessedOrders,
+        getUnprocessedOrders,
     }
 });

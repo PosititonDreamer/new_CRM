@@ -10,6 +10,7 @@ export const HookProducts = () => {
     const {data: showTitle} = validateInput("String", "", 0)
     const {data: sort} = validateInput("Number", 0, 0)
     const {data: measureUnit} = validateInput("String", "", 0)
+    const {data: clientTitle} = validateInput("String", "", 0)
     const router = useRouter()
     const route = useRoute()
 
@@ -18,16 +19,19 @@ export const HookProducts = () => {
         showTitle,
         sort,
         measureUnit,
+        clientTitle
     }
 
     const submitCreateProduct = async () => {
         title.value.tacked = true
         measureUnit.value.tacked = true
-        if(title.value.valid && measureUnit.value.valid){
+        clientTitle.value.tacked = true
+        if(title.value.valid && measureUnit.value.valid && clientTitle.value.valid){
             await createProduct({
                 title: title.value.value,
                 show_title: showTitle.value.value,
                 measure_unit: measureUnit.value.value,
+                client_title: clientTitle.value.value,
             })
         }
     }
@@ -36,12 +40,14 @@ export const HookProducts = () => {
         title.value.tacked = true
         measureUnit.value.tacked = true
         sort.value.tacked = true
-        if(title.value.valid && measureUnit.value.valid && sort.value.valid){
+        clientTitle.value.tacked = true
+        if(title.value.valid && measureUnit.value.valid && sort.value.valid && clientTitle.value.valid){
             await updateProduct({
                 title: title.value.value,
                 show_title: showTitle.value.value,
                 measure_unit: measureUnit.value.value,
                 sort: sort.value.value,
+                client_title: clientTitle.value.value,
                 id: route.params.id
             })
         }

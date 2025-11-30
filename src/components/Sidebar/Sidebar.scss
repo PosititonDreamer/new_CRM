@@ -4,11 +4,17 @@
   border-right: 1px solid var(--primary);
   box-shadow: var(--shadow-sidebar);
   height: var(--window-height);
-  overflow: hidden auto;
   position: sticky;
   top: 0;
   background: var(--white);
   z-index: 10;
+  margin-left: -350px;
+  overflow: hidden;
+
+  &:hover {
+    overflow: hidden auto;
+    margin-left: 0;
+  }
 
   &__close {
     display: none;
@@ -121,6 +127,8 @@
 
   .sidebar {
     display: none;
+    overflow: hidden auto;
+    margin-left: 0;
 
     &__list {
       max-width: calc(100% - 50px);

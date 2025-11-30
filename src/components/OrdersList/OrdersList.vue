@@ -24,7 +24,7 @@ export default {
       default: true
     }
   },
-  setup() {
+  setup({checkStatus, actions}, {emit}) {
     const computedStatus = (status) => {
       if (+status === 1) {
         return 'Создан'
@@ -38,19 +38,35 @@ export default {
       if (+status === 4) {
         return 'Отправлен'
       }
-      if(+status === 5) {
+      if (+status === 5) {
         return 'Возвращен'
       }
-      if(+status === 6) {
+      if (+status === 6) {
         return 'Собран без трека'
       }
-      if(+status === 7) {
+      if (+status === 7) {
         return 'Добавлен трек'
       }
     }
 
+    const clickOrder = (order, actions) => {
+      if (checkStatus) {
+        if(actions.filter(action => !!action.status.find(status => +status === +order.status)).find(action => action.name === 'collect')) {
+          emit('collect', order.id)
+        } else {
+          emit('preview', order.id)
+        }
+      } else {
+        if(actions.find(action => action.name === 'collect')) {
+          emit('collect', order.id)
+        } else {
+          emit('preview', order.id)
+        }
+      }
+    }
+
     return {
-      computedStatus
+      computedStatus, clickOrder
     }
   }
 }
@@ -62,12 +78,9 @@ export default {
             v-for="(order, id) in orders"
             :key="`order-item-${order.id}`"
             :style="[{'--z-index': orders.length - id}]"
-            @click="$emit('preview', order.id)"
+            @click="clickOrder(order, checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : actions)"
     >
       <p class="title">{{ order.track ? order.track : 'Не присвоен' }}</p>
-      <p class="text">
-        <b>Статус: </b> {{ computedStatus(order.status) }}
-      </p>
       <p class="text">
         <b>Клиент: </b> {{ order.client }}
       </p>
@@ -78,7 +91,13 @@ export default {
         <b>Дата создания: </b> {{ new Date(order.date).toLocaleDateString('ru-RU') }}
       </p>
       <p class="text">
-        <b>Количество товаров: </b> {{ order.goods }}
+        <b>Количество товаров: </b> {{ order.goods }} <b class="text--few" v-if="+order.quantity !== +order.goods">({{order.quantity}})</b>
+      </p>
+      <p class="text">
+        <b>Статус: </b> {{ computedStatus(order.status) }}
+      </p>
+      <p class="text">
+        <b>Количество заказов клиента: </b> {{ order.orders }}
       </p>
       <p class="text" v-if="order.comment.trim().length">
         <b>Комментарий: </b> {{ order.comment }}

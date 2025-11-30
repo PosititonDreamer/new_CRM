@@ -102,6 +102,16 @@
       opacity: 0.5;
     }
 
+    &--few {
+      color: var(--yellow);
+      font-weight: 700;
+    }
+
+    &--few-very {
+      color: var(--red);
+      font-weight: 700;
+    }
+
     &:not(:last-child) {
       border-bottom: 1px solid var(--primary);
     }

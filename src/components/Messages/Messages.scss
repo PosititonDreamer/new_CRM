@@ -12,6 +12,7 @@
     color: var(--white);
     padding: 5px 10px;
     pointer-events: all;
+    opacity: 0.6;
 
     &--error {
       background: var(--red);

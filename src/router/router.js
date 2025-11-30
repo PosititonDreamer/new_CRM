@@ -1025,7 +1025,7 @@ router.beforeEach(async (to, from, next) => {
 
         if (getWorker.value.rule && to.name === 'Auth') {
             if (getWorker.value.rule === 'Админ') {
-                next({name: 'Admin'})
+                next({name: 'Orders', params: {status: 1}})
             } else if (getWorker.value.rule === 'Сборщик') {
                 next({name: "Assembler"})
             } else if (getWorker.value.rule === 'Оператор') {
@@ -1053,7 +1053,7 @@ router.beforeEach(async (to, from, next) => {
             } else if (getWorker.value.rule && getWorker.value.rule === 'Сборщик') {
                 next({name: "Assembler"})
             } else if (getWorker.value.rule && getWorker.value.rule === 'Админ') {
-                next({name: "Admin"})
+                next({name: 'Orders', params: {status: 1}})
             } else {
                 localStorage.removeItem('token')
                 next({name: "Auth"})
@@ -1064,7 +1064,7 @@ router.beforeEach(async (to, from, next) => {
             } else if (getWorker.value.rule && getWorker.value.rule === 'Оператор') {
                 next({name: "Operator"})
             } else if (getWorker.value.rule && getWorker.value.rule === 'Админ') {
-                next({name: "Admin"})
+                next({name: 'Orders', params: {status: 1}})
             } else {
                 localStorage.removeItem('token')
                 next({name: "Auth"})

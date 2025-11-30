@@ -68,7 +68,7 @@ export default {
       <button class="u-select__item" type="button" v-if="empty" @click.stop="changeValue('')"></button>
       <button
           v-for="item in values"
-          :class="['u-select__item', {'u-select__item--active': model === item.value}]"
+          :class="['u-select__item', {'u-select__item--active': model === item.value}, {'u-select__item--few': !!item.few}, {'u-select__item--few-very': !!item.few_very}]"
           @click.stop="changeValue(item.value)" type="button"
           :key="`select-item-value-${item.value}`"
       >

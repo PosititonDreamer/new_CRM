@@ -5,6 +5,7 @@ import {useRoute} from "vue-router";
 import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
 import {Auth} from "@/store/Workers/Auth.js";
 import {Assembler} from "@/store/Assembler/Assembler.js";
+import {Orders} from "@/store/Orders/Orders.js";
 
 export default {
   name: "Sidebar",
@@ -56,7 +57,7 @@ export default {
       getWarehousesTypes,
       getWorker,
       getNotifications,
-      warehousesAssembler
+      warehousesAssembler,
     }
   }
 }
@@ -83,6 +84,7 @@ export default {
                            :to="{name: 'OrderGoods'}">Товары в заказе
               </router-link>
             </div>
+
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 3}}">В обработке

@@ -5,6 +5,7 @@ import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
+import {Messages} from "@/store/Messages.js";
 
 export default {
   name: "OrdersCollect",
@@ -31,6 +32,23 @@ export default {
       required: true,
     }
   },
+  setup() {
+    const {addMessages} = Messages()
+
+    const copyTrack = (track, delivery) => {
+      if (!track) return
+      if (delivery === 'CDEK') {
+        navigator.clipboard.writeText(track.replace(/\s/g, ""))
+      } else {
+        navigator.clipboard.writeText(track)
+      }
+      addMessages(['Трек-номер скопированы'], 'success')
+    }
+
+    return {
+      copyTrack
+    }
+  }
 }
 </script>
 <template>
@@ -42,19 +60,34 @@ export default {
         text="Собрать заказ"
         @submit.prevent="$emit('submit')"
     >
-      <p class="title">{{ order.track }}</p>
-      <p class="text">
-        <b>ФИО: </b> {{ order.client.full_name }}
-      </p>
-      <p class="text">
-        <b>Служба доставки: </b> {{ order.address.delivery }}
-      </p>
-      <p class="text">
-        <b>Адрес доставки: </b> {{ order.address.address }}
-      </p>
-      <p class="text">
-        <b>Количество заказов клиента: </b> {{ order.client.orders_length }}
-      </p>
+      <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track }}</p>
+      <p class="sub-title">Состав заказа:</p>
+      <div class="list">
+        <u-card
+            v-for="good in computedDetailOrdersGoods"
+            :key="`order-good-item-${good.id}-${good.type}`"
+            :class="['orders-collect__card', {'orders-collect__card--collect': collectGoods.find(item => +item === +good.id)}]">
+          <label class="orders-collect__info">
+            <u-checkbox
+                title=""
+                name="order-collect-good-item"
+                :value="good.id"
+                :checked="!!collectGoods.find(item => +item === +good.id)"
+                @checked="$emit('collectGoods', good)"
+                :key="`order-good-check-item-${good.id}-${good.type}`"
+            />
+            <p class="orders-collect__name">
+              {{ good.title }}
+              <span
+                  v-if="+good.quantity > 1"
+                  class="orders-collect__over"
+              >
+                  &nbsp;-&nbsp;{{ good.quantity }} шт.
+                </span>
+            </p>
+          </label>
+        </u-card>
+      </div>
       <div
           class="orders-collect__boxes"
       >
@@ -93,39 +126,15 @@ export default {
           </u-button>
         </div>
       </div>
-      <p class="sub-title">Состав заказа:</p>
-      <div class="list">
-        <u-card
-            v-for="good in computedDetailOrdersGoods"
-            :key="`order-good-item-${good.id}-${good.type}`"
-            :class="['orders-collect__card', {'orders-collect__card--collect': collectGoods.find(item => +item === +good.id)}]">
-          <label class="orders-collect__info">
-            <u-checkbox
-                title=""
-                name="order-collect-good-item"
-                :value="good.id"
-                :checked="!!collectGoods.find(item => +item === +good.id)"
-                @checked="$emit('collectGoods', good)"
-                :key="`order-good-check-item-${good.id}-${good.type}`"
-            />
-            <p class="orders-collect__name">
-              {{ good.title }}
-              <span
-                  v-if="+good.quantity > 1"
-                  class="orders-collect__over"
-              >
-                  &nbsp;-&nbsp;{{ good.quantity }} шт.
-                </span>
-            </p>
-          </label>
-          <p
-              v-if="good.quantity > 1"
-              class="orders-collect__alarm"
-          >
-            Обрати внимание на количество товара
-          </p>
-        </u-card>
-      </div>
+      <p class="text">
+        <b>ФИО: </b> {{ order.client.full_name }}
+      </p>
+      <p class="text">
+        <b>Служба доставки: </b> {{ order.address.delivery }}
+      </p>
+      <p class="text text--few" v-if="order.comment.length">
+        <b>Комментарий: </b> {{ order.comment }}
+      </p>
     </u-form>
   </u-popup>
 

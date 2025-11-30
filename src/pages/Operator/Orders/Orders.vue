@@ -74,6 +74,7 @@ export default {
     } = Orders()
 
     const loading = ref(true)
+    const filterUpdate = ref(true)
 
     const changeRoute = async (to) => {
       if (to.name === 'OperatorOrders') {
@@ -127,6 +128,13 @@ export default {
     }
 
     watch(() => route.params.status, async () => {
+      if(filter.value.delivery === 'Boxberry' && +route.params.status !== 4 || +route.params.status !== 5) {
+        filterUpdate.value = false
+        filter.value.delivery = null
+        setTimeout(() => {
+          filterUpdate.value = true
+        })
+      }
       await findOrders({...filter.value})
     })
     findOrders({...filter.value})
@@ -204,7 +212,8 @@ export default {
       computedStatus,
       submitAddBlank,
       selectClient,
-      findClients
+      findClients,
+      filterUpdate
     }
   }
 }
@@ -219,7 +228,10 @@ export default {
     >
       Добавить заказ
     </u-button>
-    <div class="orders__filters">
+    <div
+        v-if="filterUpdate"
+        class="orders__filters"
+    >
       <u-input
           title="Минимальная дата создания"
           type="date"
@@ -256,8 +268,13 @@ export default {
           @update="changeFilter"
       />
     </div>
-    <div class="orders__filters orders__filters--mobile list">
-      <u-card>
+    <div
+        v-if="filterUpdate"
+        class="orders__filters orders__filters--mobile list"
+    >
+      <u-card
+        class="orders__card-mobile"
+      >
         <u-accordion
             title="Фильтры"
         >

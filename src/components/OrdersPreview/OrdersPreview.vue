@@ -3,6 +3,7 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import {ref} from "vue";
+import {Messages} from "@/store/Messages.js";
 
 export default {
   components: {UButton, UCard, UPopup},
@@ -36,8 +37,21 @@ export default {
   setup() {
     const openTab = ref('goods')
 
+    const {addMessages} = Messages()
+
+    const copyTrack = (track, delivery) => {
+      if (!track) return
+      if (delivery === 'CDEK') {
+        navigator.clipboard.writeText(track.replace(/\s/g, ""))
+      } else {
+        navigator.clipboard.writeText(track)
+      }
+      addMessages(['Трек-номер скопированы'], 'success')
+    }
+
     return {
       openTab,
+      copyTrack
     }
   }
 }
@@ -56,7 +70,7 @@ export default {
       >
         Собрать заказ
       </u-button>
-      <p class="title">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track ? order.track : 'Не присвоен' }}</p>
       <template v-if="onlyGoods">
         <div class="orders-preview__tabs">
           <u-card class="orders-preview__content">
@@ -137,7 +151,7 @@ export default {
         {{ computedStatus(order.status) }}
       </p>
       <u-card
-        class="orders-preview__status-list"
+          class="orders-preview__status-list"
       >
         <p class="title">История заказа:</p>
         <p
@@ -146,11 +160,11 @@ export default {
             :key="`order-status-${id}`"
         >
           <b>Статус заказ: </b>
-          {{ computedStatus(status.status) }} {{ new Date(status.date).toLocaleDateString('ru-RU') }} {{status.time}}
+          {{ computedStatus(status.status) }} {{ new Date(status.date).toLocaleDateString('ru-RU') }} {{ status.time }}
         </p>
       </u-card>
     </div>
   </u-popup>
 </template>
 
-<style lang="scss" src="./OrdersPreview.scss" scoped />
+<style lang="scss" src="./OrdersPreview.scss" scoped/>

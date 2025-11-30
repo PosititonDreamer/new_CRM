@@ -674,28 +674,51 @@ export const HookOrders = () => {
         }
     })
 
-    const filterDelivery = [
-        {
-            name: "Все",
-            value: null
-        },
-        {
-            name: "CDEK",
-            value: "CDEK"
-        },
-        {
-            name: "Яндекс Доставка",
-            value: "Яндекс Доставка"
-        },
-        {
-            name: "Почта России",
-            value: "Почта России"
-        },
-        {
-            name: "Boxberry",
-            value: "Boxberry"
-        },
-    ]
+    const filterDelivery = computed(() => {
+        if(+route.params.status === 4 || +route.params.status === 5){
+            return [
+                {
+                    name: "Все",
+                    value: null
+                },
+                {
+                    name: "CDEK",
+                    value: "CDEK"
+                },
+                {
+                    name: "Яндекс Доставка",
+                    value: "Яндекс Доставка"
+                },
+                {
+                    name: "Почта России",
+                    value: "Почта России"
+                },
+                {
+                    name: "Boxberry",
+                    value: "Boxberry"
+                },
+            ]
+        } else {
+            return [
+                {
+                    name: "Все",
+                    value: null
+                },
+                {
+                    name: "CDEK",
+                    value: "CDEK"
+                },
+                {
+                    name: "Яндекс Доставка",
+                    value: "Яндекс Доставка"
+                },
+                {
+                    name: "Почта России",
+                    value: "Почта России"
+                },
+            ]
+        }
+    })
 
     const filterSort = [
         {
@@ -836,6 +859,7 @@ export const HookOrders = () => {
         }
         const newArray = getOrderDetail.value.goods_list.map(item => {
             if (item.type === 'good') {
+                console.log(item)
                 const findProduct = getProductsList.value.find(product => +product.id === +item.product)
 
                 return {
@@ -843,6 +867,8 @@ export const HookOrders = () => {
                     quantity: item.quantity,
                     ready: !!+item.ready,
                     type: 'good',
+                    sort: findProduct.sort,
+                    packing: item.packing,
                     id: item.id
                 }
             }
@@ -857,15 +883,33 @@ export const HookOrders = () => {
                 }
             }
         })
+        const goodsArray = newArray.filter(item => item.type === 'good').sort((a,b) => {
+            if(+a.sort === +b.sort) {
+                return +a.packing - +b.packing
+            }
 
-        return [...newArray.filter(item => item.type === 'good'), ...newArray.filter(item => item.type === 'other')]
+            return +a.sort - +b.sort
+        }).map(item => {
+            return {
+                title: item.title,
+                quantity: item.quantity,
+                ready: item.ready,
+                type: 'good',
+                id: item.id
+            }
+        })
+
+
+        return [...goodsArray, ...newArray.filter(item => item.type === 'other')]
     })
 
     const computedBoxesList = computed(() => {
         return getBoxesList.value.map(box => {
             return {
                 name: box.title,
-                value: box.id
+                value: box.id,
+                few: box.few,
+                few_very: box.few_very,
             }
         })
     })

@@ -50,11 +50,11 @@ export default {
       <div class="u-alert__content" @click.stop>
         <p class="sub-title">{{ title }}</p>
         <div v-if="type === 'alert'" class="u-alert__actions">
-          <u-button @click="close">Принять</u-button>
+          <u-button @click="close">Да</u-button>
         </div>
         <div v-else class="u-alert__actions">
-          <u-button @click="close" modifier="red">Отменить</u-button>
-          <u-button @click="accept">Принять</u-button>
+          <u-button @click="close" modifier="red">Нет</u-button>
+          <u-button @click="accept">Да</u-button>
         </div>
       </div>
     </div>

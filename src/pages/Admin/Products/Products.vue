@@ -86,11 +86,13 @@ export default {
         product.sort.value.value = +findProduct.sort
         product.title.value.value = findProduct.title
         product.showTitle.value.value = findProduct.show_title
+        product.clientTitle.value.value = findProduct.client_title
 
         product.measureUnit.value.tacked = true
         product.sort.value.tacked = true
         product.title.value.tacked = true
         product.showTitle.value.tacked = true
+        product.clientTitle.value.tacked = true
       }
     }
 
@@ -135,6 +137,9 @@ export default {
           </p>
           <p class="text">
             <b>Короткое название: </b>{{ product.show_title }}
+          </p>
+          <p class="text">
+            <b>Название для клиентов: </b>{{ product.client_title }}
           </p>
           <p class="text">
             <b>Единица измеренеия: </b>{{ getMeasureUnits.find(measureUnit => measureUnit.id === product.measure_unit)?.title }}
@@ -183,6 +188,14 @@ export default {
               @blur="product.showTitle.value.tacked = true"
               @change="product.showTitle.value.tacked = true"
           />
+          <u-input
+              title="Название для клиентов"
+              v-model="product.clientTitle.value.value"
+              :start-value="product.clientTitle.value.value"
+              @blur="product.clientTitle.value.tacked = true"
+              :error="product.clientTitle.value.error"
+              @change="product.clientTitle.value.tacked = true"
+          />
           <u-select
               title="Единица измеренеия"
               :values="measures"
@@ -219,6 +232,14 @@ export default {
               :start-value="product.showTitle.value.value"
               @blur="product.showTitle.value.tacked = true"
               @change="product.showTitle.value.tacked = true"
+          />
+          <u-input
+              title="Название для клиентов"
+              v-model="product.clientTitle.value.value"
+              :start-value="product.clientTitle.value.value"
+              :error="product.clientTitle.value.error"
+              @blur="product.clientTitle.value.tacked = true"
+              @change="product.clientTitle.value.tacked = true"
           />
           <u-select
               title="Единица измеренеия"
