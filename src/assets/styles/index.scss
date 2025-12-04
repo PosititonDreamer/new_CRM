@@ -33,6 +33,13 @@ body {
     }
   }
 
+  &--few-back {
+    background: var(--yellow-light);
+    padding: 2px 5px;
+    width: max-content;
+    max-width: 100%;
+  }
+
   &--few-very {
     color: var(--red);
 

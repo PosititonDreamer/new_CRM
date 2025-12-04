@@ -15,7 +15,7 @@ export default {
 
 <template>
   <div class="list messages" v-if="getMessages.length">
-    <p :class="`text messages__item messages__item--${message.type}`" v-for="message in getMessages" @click="removeMessages(message.id)">
+    <p :class="`text messages__item messages__item--${message.type}`" v-for="message in getMessages.filter(item => item.type !== 'success')" @click="removeMessages(message.id)">
       {{message.message}}
     </p>
   </div>

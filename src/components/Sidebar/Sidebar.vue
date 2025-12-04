@@ -41,6 +41,10 @@ export default {
       findWarehouses()
     }
 
+    const {checkOld, getUnprocessedOrders} = Orders()
+
+    checkOld()
+
     watch(route,
         () => {
           closeSidebar()
@@ -58,6 +62,7 @@ export default {
       getWorker,
       getNotifications,
       warehousesAssembler,
+      getUnprocessedOrders
     }
   }
 }
@@ -74,7 +79,8 @@ export default {
     <div class="sidebar__content">
       <button class="sidebar__close" @click="closeSidebar"></button>
       <div class="sidebar__list list" v-if="getWorker.rule === 'Админ'">
-        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Admin'}">Главная</router-link>
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Admin'}">Главная
+        </router-link>
         <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'Orders' || route.name === 'OrdersFind' || route.name === 'OrderGoods' || route.matched.find(item => item.name === 'Orders')}] ">
             Заказы</p>
@@ -85,34 +91,59 @@ export default {
               </router-link>
             </div>
 
-            <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active"
-                           :to="{name: 'Orders', params: {status: 3}}">В обработке
+            <div class="list"
+                 v-if="+getUnprocessedOrders.processed + +getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.unprocessed"
+            >
+              <router-link
+                  class="sidebar__link"
+                  active-class="sidebar__link--active"
+                  :to="{name: 'Orders', params: {status: 3}}"
+              >
+                В обработке
+                {{ +getUnprocessedOrders.processed + +getUnprocessedOrders.assembled_not_track }}
+                <span class="text--few-very text--bold" v-if="+getUnprocessedOrders.unprocessed">
+                  &nbsp;({{ getUnprocessedOrders.unprocessed }})
+                </span>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 1}}">Текущие
+                <template v-if="+getUnprocessedOrders.created">
+                  {{ getUnprocessedOrders.created }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 2}}">Собранные
+                <template v-if="+getUnprocessedOrders.assembled">
+                  {{ getUnprocessedOrders.assembled }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 6}}">Собранные без трека
+                <template v-if="+getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.assembled_add_track">
+                  {{ +getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.assembled_add_track }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 4}}">Отправленные
+                <template v-if="+getUnprocessedOrders.send">
+                  {{ getUnprocessedOrders.send }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'Orders', params: {status: 5}}">Возвращенные
+                <template v-if="+getUnprocessedOrders.returned">
+                  {{ getUnprocessedOrders.returned }}
+                </template>
               </router-link>
             </div>
             <div class="list">
@@ -233,8 +264,10 @@ export default {
         </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">
-        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Assembler'}">Главная</router-link>
-        <div class="list" v-if="warehousesAssembler.length && !!warehousesAssembler.find(warehouse => +warehouse.id === 1)">
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Assembler'}">Главная
+        </router-link>
+        <div class="list"
+             v-if="warehousesAssembler.length && !!warehousesAssembler.find(warehouse => +warehouse.id === 1)">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'AssemblerOrderGoods' || route.name === 'AssemblerOrders' || route.matched.find(item => item.name === 'AssemblerOrders')}] ">
             Заказы</p>
           <div class="sidebar__sub-list list">
@@ -243,34 +276,56 @@ export default {
                            :to="{name: 'AssemblerOrderGoods'}">Товары в заказе
               </router-link>
             </div>
-            <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active"
-                           :to="{name: 'AssemblerOrders', params: {status: 3}}">В обработке
+            <div class="list"
+                 v-if="+getUnprocessedOrders.processed"
+            >
+              <router-link
+                  class="sidebar__link"
+                  active-class="sidebar__link--active"
+                  :to="{name: 'AssemblerOrders', params: {status: 3}}"
+              >
+                В обработке
+                {{ +getUnprocessedOrders.processed }}
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 1}}">Текущие
+                <template v-if="+getUnprocessedOrders.created">
+                  {{ getUnprocessedOrders.created }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 2}}">Собранные
+                <template v-if="+getUnprocessedOrders.assembled">
+                  {{ getUnprocessedOrders.assembled }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 6}}">Собранные без трека
+                <template v-if="+getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.assembled_add_track">
+                  {{ +getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.assembled_add_track }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 4}}">Отправленные
+                <template v-if="+getUnprocessedOrders.send">
+                  {{ getUnprocessedOrders.send }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'AssemblerOrders', params: {status: 5}}">Возвращенные
+                <template v-if="+getUnprocessedOrders.returned">
+                  {{ getUnprocessedOrders.returned }}
+                </template>
               </router-link>
             </div>
           </div>
@@ -313,48 +368,76 @@ export default {
           </div>
         </div>
         <div class="list">
-          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'AssemblerSalaries'}">Зарплаты
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'AssemblerSalaries'}">
+            Зарплаты
           </router-link>
         </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Оператор'">
-        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Operator'}">Главная</router-link>
+        <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Operator'}">Главная
+        </router-link>
         <div class="list">
           <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.name === 'OperatorOrders' || route.name === 'OperatorOrdersFind' || route.matched.find(item => item.name === 'OperatorOrders')}] ">
             Заказы</p>
           <div class="sidebar__sub-list list">
-            <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active"
-                           :to="{name: 'OperatorOrders', params: {status: 3}}">В обработке
+            <div class="list"
+                 v-if="+getUnprocessedOrders.processed + +getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.unprocessed"
+            >
+              <router-link
+                  class="sidebar__link"
+                  active-class="sidebar__link--active"
+                  :to="{name: 'OperatorOrders', params: {status: 3}}"
+              >
+                В обработке
+                {{ +getUnprocessedOrders.processed + +getUnprocessedOrders.assembled_not_track }}
+                <span class="text--few-very text--bold" v-if="+getUnprocessedOrders.unprocessed">
+                  &nbsp;({{ getUnprocessedOrders.unprocessed }})
+                </span>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 1}}">Текущие
+                <template v-if="+getUnprocessedOrders.created">
+                  {{ getUnprocessedOrders.created }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 2}}">Собранные
+                <template v-if="+getUnprocessedOrders.assembled">
+                  {{ getUnprocessedOrders.assembled }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 6}}">Собранные без трека
+                <template v-if="+getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.assembled_add_track">
+                  {{ +getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.assembled_add_track }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 4}}">Отправленные
+                <template v-if="+getUnprocessedOrders.send">
+                  {{ getUnprocessedOrders.send }}
+                </template>
               </router-link>
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
                            :to="{name: 'OperatorOrders', params: {status: 5}}">Возвращенные
+                <template v-if="+getUnprocessedOrders.returned">
+                  {{ getUnprocessedOrders.returned }}
+                </template>
               </router-link>
             </div>
             <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorOrdersFind'}">Поиск
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'OperatorOrdersFind'}">Поиск
                 заказов
               </router-link>
             </div>
@@ -365,19 +448,22 @@ export default {
             Клиенты</p>
           <div class="sidebar__sub-list list">
             <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorClients'}">Список
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorClients'}">
+                Список
                 клиентов
               </router-link>
             </div>
             <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorClientsFind'}">Поиск
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'OperatorClientsFind'}">Поиск
                 клиентов
               </router-link>
             </div>
           </div>
         </div>
         <div class="list">
-          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorSalaries'}">Зарплаты
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OperatorSalaries'}">
+            Зарплаты
           </router-link>
         </div>
       </div>

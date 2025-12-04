@@ -284,6 +284,7 @@ export const HookOrders = () => {
         email.value.tacked = false
         delivery.value.tacked = false
         composition.value.tacked = false
+        file.value.tacked = false
     }
 
     const actionsOrders = computed(() => {

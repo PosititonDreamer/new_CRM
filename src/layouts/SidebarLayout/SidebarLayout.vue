@@ -42,9 +42,6 @@ export default {
       <h2 class="title">{{ route.meta.title }}
         <template v-if="computedText">{{computedText}}</template>
       </h2>
-      <p class="sub-title text--few-very" v-if="computedText !== null && getUnprocessedOrders && (getWorker.rule === 'Админ' || getWorker.rule === 'Оператор')">
-        <b>Зависших заказов: </b> {{getUnprocessedOrders}}
-      </p>
       <slot></slot>
     </div>
   </div>

@@ -71,6 +71,9 @@ export default {
         Собрать заказ
       </u-button>
       <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="text text--big text--few-back" v-if="order.comment.length">
+        <b>Комментарий: </b> {{ order.comment }}
+      </p>
       <template v-if="onlyGoods">
         <div class="orders-preview__tabs">
           <u-card class="orders-preview__content">
@@ -79,7 +82,7 @@ export default {
                 {{ id + 1 }}. {{ good.title }}
                 <span
                     v-if="+good.quantity > 1"
-                    class="text--few text--bold"
+                    class="text--bold"
                 >
                   &nbsp;-&nbsp;{{ good.quantity }} шт.
                 </span>
@@ -110,7 +113,7 @@ export default {
                 {{ id + 1 }}. {{ good.title }}
                 <span
                     v-if="+good.quantity > 1"
-                    class="text--few text--bold"
+                    class=" text--bold"
                 >
                   &nbsp;-&nbsp;{{ good.quantity }} шт.
                 </span>

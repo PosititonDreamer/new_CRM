@@ -25,9 +25,8 @@ export default {
   },
   async beforeCreate() {
     const {filter} = HookOrders()
-    const {findTrack, checkOld, findOrders} = Orders()
+    const {findTrack, findOrders} = Orders()
     await findTrack()
-    await checkOld()
     await findOrders({...filter.value})
   },
   setup() {
@@ -152,13 +151,26 @@ export default {
     }
 
     watch(() => route.params.status, async () => {
-      if(filter.value.delivery === 'Boxberry' && +route.params.status !== 4 || +route.params.status !== 5) {
-        filterUpdate.value = false
+      filterUpdate.value = false
+
+      if (filter.value.delivery === 'Boxberry' && +route.params.status !== 4 || +route.params.status !== 5) {
         filter.value.delivery = null
-        setTimeout(() => {
-          filterUpdate.value = true
-        })
       }
+
+      if (+route.params.status !== 4 && +route.params.status !== 5) {
+        filter.value.date_end = null
+        filter.value.date_start = null
+      }
+
+      if (+route.params.status === 4 || +route.params.status === 5) {
+        filter.value.sort = 'new'
+      } else {
+        filter.value.sort = 'old'
+      }
+
+      setTimeout(() => {
+        filterUpdate.value = true
+      })
       await findOrders({...filter.value})
     })
     findOrders({...filter.value})
@@ -267,7 +279,7 @@ export default {
           v-if="+route.params.status === 2  || +route.params.status === 6"
           class="orders__create"
           @click="router.push({name: 'OrdersSendSeveral'})"
-          :disabled="!getOrders.length && !getOrders.find(item => item.delivery === 'CDEK') || (+route.params.status === 6 && !getOrders.find(item => +item.status === 7))"
+          :disabled="!getOrders.length"
       >
         Отправить заказы
       </u-button>
@@ -289,6 +301,7 @@ export default {
     </div>
     <div
         class="orders__filters"
+        :key="`status-order-${route.params.status}`"
         v-if="filterUpdate"
     >
       <u-input
@@ -299,6 +312,7 @@ export default {
           v-model="filter.date_start"
           :start-value="filter.date_start"
           @change="changeFilter"
+          v-if="+route.params.status === 4 || +route.params.status === 5"
       />
       <u-input
           title="Максимальная дата создания"
@@ -308,6 +322,7 @@ export default {
           v-model="filter.date_end"
           :start-value="filter.date_end"
           @change="changeFilter"
+          v-if="+route.params.status === 4 || +route.params.status === 5"
       />
       <u-select
           title="Доставка"
@@ -325,56 +340,6 @@ export default {
           :start-value="filter.sort"
           :empty="false"
           @update="changeFilter"
-      />
-    </div>
-    <div
-        class="orders__filters orders__filters--mobile list"
-        v-if="filterUpdate"
-    >
-      <u-card
-          class="orders__card-mobile"
-      >
-        <u-accordion
-            title="Фильтры"
-        >
-          <div class="list">
-            <u-input
-                title="Минимальная дата создания"
-                type="date"
-                min="2025-03-10"
-                :max="new Date().toISOString().split('T')[0]"
-                v-model="filter.date_start"
-                :start-value="filter.date_start"
-                @change="changeFilter"
-            />
-            <u-input
-                title="Максимальная дата создания"
-                type="date"
-                :min="filter.date_start"
-                :max="new Date().toISOString().split('T')[0]"
-                v-model="filter.date_end"
-                :start-value="filter.date_end"
-                @change="changeFilter"
-            />
-            <u-select
-                title="Сортировка"
-                :values="filterSort"
-                v-model="filter.sort"
-                :start-value="filter.sort"
-                :empty="false"
-                @update="changeFilter"
-            />
-          </div>
-        </u-accordion>
-      </u-card>
-      <u-select
-          title="Доставка"
-          :values="filterDelivery"
-          v-model="filter.delivery"
-          :start-value="filter.delivery"
-          :empty="false"
-          @update="changeFilter"
-          class="orders__filter-delivery"
       />
     </div>
     <orders-list

@@ -61,9 +61,12 @@ export default {
         @submit.prevent="$emit('submit')"
     >
       <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track }}</p>
+      <p class="text text--big text--few-back" v-if="order.comment.length">
+        <b>Комментарий: </b> {{ order.comment }}
+      </p>
       <p class="sub-title">Состав заказа:</p>
-      <div class="list">
-        <u-card
+      <div class="list orders-collect__list">
+        <label
             v-for="good in computedDetailOrdersGoods"
             :key="`order-good-item-${good.id}-${good.type}`"
             :class="['orders-collect__card', {'orders-collect__card--collect': collectGoods.find(item => +item === +good.id)}]">
@@ -86,7 +89,7 @@ export default {
                 </span>
             </p>
           </label>
-        </u-card>
+        </label>
       </div>
       <div
           class="orders-collect__boxes"
@@ -131,9 +134,6 @@ export default {
       </p>
       <p class="text">
         <b>Служба доставки: </b> {{ order.address.delivery }}
-      </p>
-      <p class="text text--few" v-if="order.comment.length">
-        <b>Комментарий: </b> {{ order.comment }}
       </p>
     </u-form>
   </u-popup>

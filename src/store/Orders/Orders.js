@@ -89,7 +89,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'findUnprocessedOrders', status: false})
         await axios.get('/orders/check_orders_unprocessed.php')
             .then((res) => {
-                unprocessedOrders.value = res.data.orders_length
+                unprocessedOrders.value = res.data.orders_info
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
@@ -150,6 +150,7 @@ export const Orders = defineStore('Orders', () => {
                 } else {
                     router.push({name: afterPage, params: {status: route.params.status}});
                 }
+                findUnprocessedOrders()
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -204,6 +205,7 @@ export const Orders = defineStore('Orders', () => {
                 } else {
                     router.push({name: afterPage, params: {status: route.params.status}});
                 }
+                findUnprocessedOrders()
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -220,6 +222,7 @@ export const Orders = defineStore('Orders', () => {
                 orders.value = orders.value.filter(order => +order.id !== +id)
                 router.push({name: afterPage, params: {status: route.params.status}});
                 addMessages(res.data.messages, 'success')
+                findUnprocessedOrders()
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -236,6 +239,7 @@ export const Orders = defineStore('Orders', () => {
                 orders.value = orders.value.filter(order => +order.id !== +id)
                 router.push({name: afterPage, params: {status: route.params.status}});
                 addMessages(res.data.messages, 'success')
+                findUnprocessedOrders()
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -255,6 +259,7 @@ export const Orders = defineStore('Orders', () => {
                 orders.value = orders.value.filter(order => +order.id !== +id)
                 router.push({name: afterPage, params: {status: route.params.status}});
                 addMessages(res.data.messages, 'success')
+                findUnprocessedOrders()
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -279,6 +284,7 @@ export const Orders = defineStore('Orders', () => {
         }
         updateLoader({method: 'sendOrders', status: true})
         orders.value = orders.value.filter(order => !id_list.find(id_item => +id_item === +order.id))
+        await findUnprocessedOrders()
         router.push({name: afterPage, params: {status: route.params.status}});
     }
 
@@ -306,6 +312,7 @@ export const Orders = defineStore('Orders', () => {
                 } else {
                     router.push({name: afterPage, params: {status: route.params.status}});
                 }
+               findUnprocessedOrders()
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -327,6 +334,7 @@ export const Orders = defineStore('Orders', () => {
                 })
                 addMessages(res.data.messages, 'success')
                 router.push({name: afterPage, params: {status: route.params.status}});
+                findUnprocessedOrders()
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

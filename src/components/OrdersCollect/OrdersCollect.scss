@@ -9,6 +9,10 @@
     font-weight: 700;
   }
 
+  &__list {
+    grid-gap: 5px;
+  }
+
   &__form-item {
     position: relative;
     grid-gap: 10px;

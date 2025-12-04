@@ -1030,9 +1030,6 @@ router.beforeEach(async (to, from, next) => {
                 next({name: "Assembler"})
             } else if (getWorker.value.rule === 'Оператор') {
                 next({name: "Operator"})
-            } else {
-                localStorage.removeItem('token')
-                next({name: "Auth"})
             }
         }
 
@@ -1043,9 +1040,6 @@ router.beforeEach(async (to, from, next) => {
                 next({name: "Assembler"})
             } else if (getWorker.value.rule && getWorker.value.rule === 'Оператор') {
                 next({name: "Operator"})
-            } else {
-                localStorage.removeItem('token')
-                next({name: "Auth"})
             }
         } else if (to.meta.isAuth && to.meta.isOperator) {
             if (getWorker.value.rule && getWorker.value.rule === 'Оператор') {
@@ -1054,9 +1048,6 @@ router.beforeEach(async (to, from, next) => {
                 next({name: "Assembler"})
             } else if (getWorker.value.rule && getWorker.value.rule === 'Админ') {
                 next({name: 'Orders', params: {status: 1}})
-            } else {
-                localStorage.removeItem('token')
-                next({name: "Auth"})
             }
         } else if (to.meta.isAuth && to.meta.isAssembler) {
             if (getWorker.value.rule && getWorker.value.rule === 'Сборщик') {
@@ -1065,15 +1056,8 @@ router.beforeEach(async (to, from, next) => {
                 next({name: "Operator"})
             } else if (getWorker.value.rule && getWorker.value.rule === 'Админ') {
                 next({name: 'Orders', params: {status: 1}})
-            } else {
-                localStorage.removeItem('token')
-                next({name: "Auth"})
             }
         } else {
-            if (to.name !== 'Auth') {
-                localStorage.removeItem('token')
-                next({name: "Auth"})
-            }
             next();
         }
     }
