@@ -265,6 +265,13 @@ export default {
               v-model="other.few_very.value.value"
               :disabled="route.name === 'GoodsOtherUpdateBalance'"
           />
+          <u-input
+              title="Сортировка"
+              type="number"
+              :start-value="other.sort.value.value"
+              v-model="other.sort.value.value"
+              :disabled="route.name === 'GoodsOtherUpdateBalance'"
+          />
         </div>
       </u-form>
     </u-popup>

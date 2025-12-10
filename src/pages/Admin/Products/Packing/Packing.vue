@@ -177,23 +177,25 @@ export default {
           @submit.prevent="submitCreatePacking"
           text="Добавить упаковку"
       >
-        <u-select
-            title="Продукт"
-            :values="products"
-            :error="product.error"
-            :start-value="product.value"
-            v-model="product.value"
-            @change="product.tacked = true"
-        />
-        <u-input
-            v-model="packing.value"
-            :title="`Количество ${computedMeasure}`"
-            :start-value="packing.value"
-            :error="packing.error"
-            @blur="packing.tacked = true"
-            @change="packing.tacked = true"
-            type="number"
-        />
+        <div class="list">
+          <u-select
+              title="Продукт"
+              :values="products"
+              :error="product.error"
+              :start-value="product.value"
+              v-model="product.value"
+              @change="product.tacked = true"
+          />
+          <u-input
+              v-model="packing.value"
+              :title="`Количество ${computedMeasure}`"
+              :start-value="packing.value"
+              :error="packing.error"
+              @blur="packing.tacked = true"
+              @change="packing.tacked = true"
+              type="number"
+          />
+        </div>
       </u-form>
     </u-popup>
 
@@ -206,23 +208,25 @@ export default {
           @submit.prevent="submitUpdatePacking"
           text="Изменить упаковку"
       >
-        <u-select
-            title="Продукт"
-            :values="products"
-            :error="product.error"
-            :start-value="product.value"
-            v-model="product.value"
-            @change="product.tacked = true"
-        />
-        <u-input
-            v-model="packing.value"
-            :title="`Количество ${computedMeasure}`"
-            :start-value="packing.value"
-            :error="packing.error"
-            @blur="packing.tacked = true"
-            @change="packing.tacked = true"
-            type="number"
-        />
+        <div class="list">
+          <u-select
+              title="Продукт"
+              :values="products"
+              :error="product.error"
+              :start-value="product.value"
+              v-model="product.value"
+              @change="product.tacked = true"
+          />
+          <u-input
+              v-model="packing.value"
+              :title="`Количество ${computedMeasure}`"
+              :start-value="packing.value"
+              :error="packing.error"
+              @blur="packing.tacked = true"
+              @change="packing.tacked = true"
+              type="number"
+          />
+        </div>
       </u-form>
     </u-popup>
   </div>

@@ -6,7 +6,7 @@ import {useRouter, useRoute} from "vue-router";
 export const HookMeasureUnits = () => {
     const {getMeasureUnits, createMeasureUnits, removeMeasureUnits, updateMeasureUnits} = MeasureUnits()
 
-    const {data: title} = validateInput("String", "", 3)
+    const {data: title} = validateInput("String", "", 1)
     const router = useRouter()
     const route = useRoute()
 
