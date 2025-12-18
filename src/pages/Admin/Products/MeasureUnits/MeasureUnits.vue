@@ -34,6 +34,8 @@ export default {
       }
     ])
 
+    const loading = ref(true);
+
     const changeRoute = (to) => {
       if(to.name === "MeasureUnits") {
         title.value.value = ""
@@ -44,6 +46,7 @@ export default {
       }
 
       if(to.name === 'MeasureUnitsUpdate' && to.params.id){
+        loading.value = false
         if(!getMeasureUnits.value.length) {
           setTimeout(() => {
             changeRoute(to)
@@ -53,6 +56,9 @@ export default {
         const measureUnit = getMeasureUnits.value.find(measureUnit => measureUnit.id === to.params.id)
         title.value.value = measureUnit.title
         title.value.tacked = true
+        setTimeout(() => {
+          loading.value = true
+        })
       }
     }
 
@@ -71,6 +77,7 @@ export default {
       submitCreateMeasureUnit,
       submitUpdateMeasureUnit,
       submitDeleteMeasureUnits,
+      loading
     }
   }
 
@@ -130,7 +137,7 @@ export default {
   </u-popup>
 
   <u-popup
-      v-if="route.name === 'MeasureUnitsUpdate' && getMeasureUnits.find(measure => measure.id === route.params.id) && title.value"
+      v-if="route.name === 'MeasureUnitsUpdate' && loading"
       title="Изменение единицы измеренеия"
       @close="router.push({name: 'MeasureUnits'})"
   >
