@@ -44,7 +44,41 @@ export default {
 </script>
 <template>
   <div class="goods">
-    <div class="list goods__list">
+    <div class="goods__list">
+      <div class="goods__item"
+           v-for="(product, id) in computedProducts"
+           :key="`goods-item-product${product.id}`"
+           :style="[{'--z-index': computedProducts.length - id}]"
+      >
+        <p
+            class="text text--bold goods__product-title"
+            :style="[{'--rows': getGoods.filter(item => item.product === product.id).length}]"
+        >{{product.show_title ? product.show_title : product.title}}</p>
+        <template
+            v-for="(good, id) in getGoods.filter(item => item.product === product.id)"
+            class="goods__item"
+            :key="`good-item-${good.id}`"
+        >
+          <p class="text">
+            {{ good.article }}
+          </p>
+          <p class="text">
+            {{ good.quantity }}
+            {{ getMeasureUnits.find(measure => measure.id === product.measure_unit)?.title }}
+          </p>
+
+          <p v-if="!good.weight"
+             :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--bold text--null': +good.balance === 0}]">
+            {{ good.balance }}
+          </p>
+          <p v-else class="text">
+            <b>Весовой товар</b>
+          </p>
+        </template>
+      </div>
+    </div>
+
+    <div class="list goods__list--mobile">
       <u-card class="goods__item" v-for="product in computedProducts" :key="`goods-item-product${product.id}`">
         <u-accordion
             :title="product.show_title ? product.show_title : product.title"
