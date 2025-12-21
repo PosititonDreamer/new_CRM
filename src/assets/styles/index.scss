@@ -33,11 +33,18 @@ body {
     }
   }
 
-  &--few-back {
-    background: var(--yellow-light);
+  &--blue, &--few-back {
     padding: 2px 5px;
     width: max-content;
     max-width: 100%;
+  }
+
+  &--few-back {
+    background: var(--yellow-light);
+  }
+
+  &--blue {
+    background: var(--blue);
   }
 
   &--few-very {

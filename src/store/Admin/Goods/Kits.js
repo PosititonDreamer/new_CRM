@@ -28,12 +28,14 @@ export const GoodsKit = defineStore('GoodsKit', () => {
         updateLoader({method: 'findGoodsKit', status: true})
     }
 
-    const createGoodsKit = async ({title, number, list, warehouse}) => {
+    const createGoodsKit = async ({title, number, list, comment, view_comment, warehouse}) => {
         updateLoader({method: 'createGoodsKit', status: false})
         const formData = new FormData()
         formData.append('warehouse', warehouse)
         formData.append('title', title)
         formData.append('number', number)
+        formData.append('view_comment', view_comment)
+        formData.append('comment', comment)
         formData.append('list', JSON.stringify(list))
         await axios.post('/admin/goods/kit/create.php', formData)
             .then(res => {
@@ -47,13 +49,15 @@ export const GoodsKit = defineStore('GoodsKit', () => {
         updateLoader({method: 'createGoodsKit', status: true})
     }
 
-    const updateGoodsKit = async ({id, title, number, list, warehouse}) => {
+    const updateGoodsKit = async ({id, title, number, list, comment, view_comment, warehouse}) => {
         updateLoader({method: 'updateGoodsKit', status: false})
         const formData = new FormData()
         formData.append('warehouse', warehouse)
         formData.append('title', title)
         formData.append('number', number)
         formData.append('id', id)
+        formData.append('view_comment', view_comment)
+        formData.append('comment', comment)
         formData.append('list', JSON.stringify(list))
         await axios.post('/admin/goods/kit/update.php', formData)
             .then(res => {

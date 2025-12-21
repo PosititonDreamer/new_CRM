@@ -64,6 +64,10 @@ export default {
       <p class="text text--big text--few-back" v-if="order.comment.length">
         <b>Комментарий: </b> {{ order.comment }}
       </p>
+      <p class="text text--big text--blue" v-if="order.site_comment.trim().length">
+        <b>Системный комментарий: </b> <br>
+        <span v-html="order.site_comment"></span>
+      </p>
       <p class="sub-title">Состав заказа:</p>
       <div class="list orders-collect__list">
         <label

@@ -16,12 +16,16 @@ export const HookGoodsKit = () => {
 
     const {data: title} = validateInput("String", "", 3)
     const {data: number} = validateInput("Number", 0, 0)
+    const {data: comment} = validateInput("String", "", 3)
     const list = ref([])
+    const viewComment = ref(false)
 
     const kit = {
         title,
         number,
-        list
+        list,
+        viewComment,
+        comment,
     }
 
     const addItem = (item = {quantity: 0, product: "", good: ""}, id = Date.now()) => {
@@ -44,17 +48,23 @@ export const HookGoodsKit = () => {
     const submitCreateGoodsKit = async () => {
         title.value.tacked = true
         number.value.tacked = true
+        comment.value.tacked = true
+
         list.value.forEach(item => {
             item.quantity.tacked = true
             item.product.tacked = true
             item.good.tacked = true
         })
 
-        if(title.value.valid && number.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid)) {
+        const checkComment = viewComment.value ? comment.value.valid : true
+
+        if(title.value.valid && number.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid) && checkComment) {
             await createGoodsKit({
                 warehouse: route.params.warehouse,
                 title: title.value.value,
                 number: number.value.value,
+                comment: comment.value.value,
+                view_comment: viewComment.value,
                 list: list.value.map(item => {
                     return {
                         quantity: item.quantity.value,
@@ -68,18 +78,24 @@ export const HookGoodsKit = () => {
     const submitUpdateGoodsKit = async () => {
         title.value.tacked = true
         number.value.tacked = true
+        comment.value.tacked = true
+
         list.value.forEach(item => {
             item.quantity.tacked = true
             item.product.tacked = true
             item.good.tacked = true
         })
 
-        if(title.value.valid && number.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid)) {
+        const checkComment = viewComment.value ? comment.value.valid : true
+
+        if(title.value.valid && number.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid) && checkComment) {
             await updateGoodsKit({
                 id: route.params.id,
                 warehouse: route.params.warehouse,
                 title: title.value.value,
                 number: number.value.value,
+                comment: comment.value.value,
+                view_comment: viewComment.value,
                 list: list.value.map(item => {
                     return {
                         quantity: item.quantity.value,

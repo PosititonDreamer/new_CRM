@@ -14,10 +14,11 @@ import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import {HookGoodsKit} from "@/hooks/pages/Goods/Kits.js";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
+import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 
 export default {
   name: "GoodsKit",
-  components: {UAlert, USelect, UInput, UForm, UPopup, UAccordion, UActions, UCard, UButton},
+  components: {UCheckbox, UAlert, USelect, UInput, UForm, UPopup, UAccordion, UActions, UCard, UButton},
   async beforeCreate() {
     const {findGoodsKit} = GoodsKit()
     const {findGoods} = Goods()
@@ -94,6 +95,9 @@ export default {
         const findKit = getGoodsKit.value.find(item => +item.id === +to.params.id)
         kit.title.value.value = findKit.title
         kit.number.value.value = findKit.number
+        kit.comment.value.value = findKit.comment
+        kit.viewComment.value = findKit.view_comment
+
 
         findKit.list.forEach(item => {
           const good = getGoods.value.find(good => good.id === item.good)
@@ -106,6 +110,7 @@ export default {
 
         kit.title.value.tacked = true
         kit.number.value.tacked = true
+        kit.comment.value.tacked = true
         loading.value = true
       }
     }
@@ -204,6 +209,9 @@ export default {
         <p class="text">
           <b>Номер набора: </b> {{ kit.number }}
         </p>
+        <p class="text" v-if="kit.view_comment">
+          <b>Системный комментарий: </b> {{ kit.comment }}
+        </p>
         <u-actions
             class="goods-kit__actions"
             :actions="actions"
@@ -261,6 +269,23 @@ export default {
               v-model="kit.number.value.value"
               @change="kit.number.value.tacked = true"
               @blur="kit.number.value.tacked = true"
+          />
+          <u-checkbox
+              title="Добавить комментарий?"
+              name="comment"
+              value="1"
+              :checked="kit.viewComment.value"
+              @checked="kit.viewComment.value = !kit.viewComment.value"
+          />
+          <u-input
+              v-if="kit.viewComment.value"
+              title="Комментарий"
+              type="textarea"
+              :start-value="kit.comment.value.value"
+              :error="kit.comment.value.error"
+              v-model="kit.comment.value.value"
+              @change="kit.comment.value.tacked = true"
+              @blur="kit.comment.value.tacked = true"
           />
           <u-card>
             <p class="sub-title">Фасованные товары</p>
@@ -350,6 +375,23 @@ export default {
               v-model="kit.number.value.value"
               @change="kit.number.value.tacked = true"
               @blur="kit.number.value.tacked = true"
+          />
+          <u-checkbox
+              title="Добавить комментарий?"
+              name="comment"
+              value="1"
+              :checked="kit.viewComment.value"
+              @checked="kit.viewComment.value = !kit.viewComment.value"
+          />
+          <u-input
+              v-if="kit.viewComment.value"
+              title="Комментарий"
+              type="textarea"
+              :start-value="kit.comment.value.value"
+              :error="kit.comment.value.error"
+              v-model="kit.comment.value.value"
+              @change="kit.comment.value.tacked = true"
+              @blur="kit.comment.value.tacked = true"
           />
           <u-card>
             <p class="sub-title">Фасованные товары</p>
