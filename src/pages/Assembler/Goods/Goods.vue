@@ -105,7 +105,7 @@ export default {
                 {{ getMeasureUnits.find(measure => measure.id === product.measure_unit)?.title }}
               </p>
               <p class="text">
-                <b>артикул: </b> {{ good.article }}
+                <b>Артикул: </b> {{ good.article }}
               </p>
               <p v-if="!good.weight"
                  :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--bold text--null': +good.balance === 0}]">
