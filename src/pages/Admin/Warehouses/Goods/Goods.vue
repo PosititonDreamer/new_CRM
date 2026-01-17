@@ -216,7 +216,7 @@ export default {
                 {{ getMeasureUnits.find(measure => measure.id === product.measure_unit)?.title }}
               </p>
               <p class="text">
-                <b>Артикль: </b> {{ good.article }}
+                <b>артикул: </b> {{ good.article }}
               </p>
               <p v-if="!good.weight"
                  :class="['text', {'text--bold text--few': +good.balance <= +good.few && +good.balance > +good.few_very}, {'text--bold text--few-very': +good.balance <= +good.few_very}, {'text--bold text--null': +good.balance === 0}]">
@@ -280,7 +280,7 @@ export default {
               v-model="good.balance.value.value"
           />
           <u-input
-              title="Артикль"
+              title="артикул"
               :start-value="good.article.value.value"
               v-model="good.article.value.value"
           />
@@ -344,7 +344,7 @@ export default {
               v-model="good.balance.value.value"
           />
           <u-input
-              title="Артикль"
+              title="артикул"
               :start-value="good.article.value.value"
               v-model="good.article.value.value"
               :disabled="route.name === 'GoodsUpdateBalance'"
