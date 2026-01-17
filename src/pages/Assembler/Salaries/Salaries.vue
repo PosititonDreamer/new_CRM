@@ -32,8 +32,9 @@ export default {
     const computedPaySalaryWorker = computed(() => {
       const penalties = getSalaries.value.penalties.filter(item => item.ready)
       const salaries = getSalaries.value.salaries.filter(item => item.ready)
+      const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
-        salary: salaries.length ? salaries.length * computedSalaryWorker.value : 0,
+        salary: salaries.length ? (salaries.length * computedSalaryWorker.value) + price : 0,
         penalty: penalties?.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0
       }
     })
@@ -41,8 +42,9 @@ export default {
     const computedNotPaySalaryWorker = computed(() => {
       const penalties = getSalaries.value.penalties.filter(item => !item.ready)
       const salaries = getSalaries.value.salaries.filter(item => !item.ready)
+      const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
-        salary: salaries.length ? salaries.length * computedSalaryWorker.value : 0,
+        salary: salaries.length ? (salaries.length * computedSalaryWorker.value) + price : 0,
         penalty: penalties.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0
       }
     })
@@ -118,7 +120,7 @@ export default {
       </p>
 
       <p class="text">
-        <b>Формула расчета: </b> Сумма заказов * стоимость одного заказа - сумма штрафов
+        <b>Формула расчета: </b> Сумма заказов * стоимость одного заказа + сумма стоимости товаров в заказе - сумма штрафов
       </p>
       <p class="text">
         <b>Оплачено: </b> {{ computedPaySalaryWorker.salary - computedPaySalaryWorker.penalty }} ₽
@@ -190,6 +192,9 @@ export default {
                     {{ salary.send ? 'Отправлен' : 'Не отправлен' }}
                   </b>
                 </p>
+                <p class="text">
+                  <b>Стоимость: </b> {{salary.price}} ₽
+                </p>
               </u-card>
             </div>
           </u-accordion>
@@ -228,6 +233,9 @@ export default {
                 </p>
                 <p class="text">
                   <b>Дата создания заказа: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
+                </p>
+                <p class="text">
+                  <b>Стоимость: </b> {{salary.price}} ₽
                 </p>
               </u-card>
             </div>

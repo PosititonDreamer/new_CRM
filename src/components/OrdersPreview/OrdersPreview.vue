@@ -41,10 +41,11 @@ export default {
 
     const copyTrack = (track, delivery) => {
       if (!track) return
+
       if (delivery === 'CDEK') {
-        navigator.clipboard.writeText(track.replace(/\s/g, ""))
+        navigator.clipboard.writeText(track.replace(/ /g, '').replace(/\s/g, ""))
       } else {
-        navigator.clipboard.writeText(track)
+        navigator.clipboard.writeText(track.replace(/ /g, ''))
       }
       addMessages(['Трек-номер скопированы'], 'success')
     }
@@ -71,6 +72,9 @@ export default {
         Собрать заказ
       </u-button>
       <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="text text--big text--bold">
+        {{order.payed === 1 ? "Оплачен" : "Не оплачен"}}
+      </p>
       <p class="text text--big text--few-back" v-if="order.comment.length">
         <b>Комментарий: </b> {{ order.comment }}
       </p>

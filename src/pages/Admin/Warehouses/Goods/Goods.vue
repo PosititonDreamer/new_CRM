@@ -36,6 +36,7 @@ export default {
       submitUpdateGoods,
       submitUpdateBalanceGoods,
       submitDeleteGoods,
+      viewPrice
     } = HookGoods()
 
     const {findGoods} = Goods()
@@ -106,6 +107,7 @@ export default {
         good.few_very.value.value = +findGood.few_very
         good.product.value.value = findGood.product
         good.article.value.value = findGood.article
+        good.price.value.value = findGood.price
 
         good.quantity.value.tacked = true
         good.product.value.tacked = true
@@ -132,7 +134,8 @@ export default {
       submitDeleteGoods,
       computedProducts,
       actions,
-      products
+      products,
+      viewPrice
     }
   }
 }
@@ -145,17 +148,18 @@ export default {
       Добавить фасованный товар
     </u-button>
     <div class="goods__list">
-      <div class="goods__item"
-           v-for="(product, id) in computedProducts"
-           :key="`goods-item-product${product.id}`"
-           :style="[{'--z-index': computedProducts.length - id}]"
+      <div
+          :class="['goods__item', {'goods__item--commodity': viewPrice}]"
+          v-for="(product, id) in computedProducts"
+          :key="`goods-item-product${product.id}`"
+          :style="[{'--z-index': computedProducts.length - id}]"
       >
         <p
             class="text text--bold goods__product-title"
             :style="[{'--rows': getGoods.filter(item => item.product === product.id).length}]"
-        >{{product.show_title ? product.show_title : product.title}}</p>
+        >{{ product.show_title ? product.show_title : product.title }}</p>
         <template
-            v-for="(good, id) in getGoods.filter(item => item.product === product.id)"
+            v-for="(good, id) in getGoods.filter(item => item.product === product.id).sort((itemA, itemB) => itemA.quantity - itemB.quantity)"
             class="goods__item"
             :key="`good-item-${good.id}`"
         >
@@ -173,6 +177,9 @@ export default {
           </p>
           <p v-else class="text">
             <b>Весовой товар</b>
+          </p>
+          <p class="text">
+            {{ good.price }} ₽
           </p>
           <u-actions
               :style="[{'--z-index': getGoods.filter(item => item.product === product.id).length - id}]"
@@ -220,6 +227,9 @@ export default {
               </p>
               <p v-else class="text">
                 <b>Весовой товар</b>
+              </p>
+              <p class="text">
+                <b>Оплата сборщику: </b> {{ good.price }} ₽
               </p>
             </u-card>
           </div>
@@ -286,6 +296,14 @@ export default {
               :start-value="good.few_very.value.value"
               v-model="good.few_very.value.value"
           />
+          <u-input
+              v-if="viewPrice"
+              title="Оплата сборщику за единицу товара"
+              type="number"
+              :start-value="good.price.value.value"
+              v-model="good.price.value.value"
+              :disabled="route.name === 'GoodsUpdateBalance'"
+          />
         </div>
       </u-form>
     </u-popup>
@@ -343,6 +361,14 @@ export default {
               type="number"
               :start-value="good.few_very.value.value"
               v-model="good.few_very.value.value"
+              :disabled="route.name === 'GoodsUpdateBalance'"
+          />
+          <u-input
+              v-if="viewPrice"
+              title="Оплата сборщику за единицу товара"
+              type="number"
+              :start-value="good.price.value.value"
+              v-model="good.price.value.value"
               :disabled="route.name === 'GoodsUpdateBalance'"
           />
         </div>

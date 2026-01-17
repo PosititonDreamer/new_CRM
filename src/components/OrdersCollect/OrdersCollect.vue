@@ -37,10 +37,11 @@ export default {
 
     const copyTrack = (track, delivery) => {
       if (!track) return
+
       if (delivery === 'CDEK') {
-        navigator.clipboard.writeText(track.replace(/\s/g, ""))
+        navigator.clipboard.writeText(track.replace(/ /g, '').replace(/\s/g, ""))
       } else {
-        navigator.clipboard.writeText(track)
+        navigator.clipboard.writeText(track.replace(/ /g, ''))
       }
       addMessages(['Трек-номер скопированы'], 'success')
     }

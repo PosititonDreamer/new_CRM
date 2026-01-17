@@ -20,6 +20,7 @@ export default {
       getGoods,
       getMeasureUnits,
       findGoods,
+      getWarehouses
     } = Assembler()
 
     const route = useRoute()
@@ -34,10 +35,15 @@ export default {
       return getProducts.value.filter(product => !!getGoods.value.find(item => item.product === product.id))
     })
 
+    const viewPrice = computed(() => {
+      return +getWarehouses.value.find(item => item.id === route.params.warehouse)?.type === 1
+    })
+
     return {
       computedProducts,
       getMeasureUnits,
-      getGoods
+      getGoods,
+      viewPrice,
     }
   }
 }
@@ -45,15 +51,16 @@ export default {
 <template>
   <div class="goods">
     <div class="goods__list">
-      <div class="goods__item"
-           v-for="(product, id) in computedProducts"
-           :key="`goods-item-product${product.id}`"
-           :style="[{'--z-index': computedProducts.length - id}]"
+      <div
+          :class="['goods__item', {'goods__item--commodity': viewPrice}]"
+          v-for="(product, id) in computedProducts"
+          :key="`goods-item-product${product.id}`"
+          :style="[{'--z-index': computedProducts.length - id}]"
       >
         <p
             class="text text--bold goods__product-title"
             :style="[{'--rows': getGoods.filter(item => item.product === product.id).length}]"
-        >{{product.show_title ? product.show_title : product.title}}</p>
+        >{{ product.show_title ? product.show_title : product.title }}</p>
         <template
             v-for="(good, id) in getGoods.filter(item => item.product === product.id)"
             class="goods__item"
@@ -73,6 +80,9 @@ export default {
           </p>
           <p v-else class="text">
             <b>Весовой товар</b>
+          </p>
+          <p class="text">
+            {{ good.price }} ₽
           </p>
         </template>
       </div>
@@ -106,6 +116,9 @@ export default {
               </p>
               <p v-else class="text">
                 <b>Весовой товар</b>
+              </p>
+              <p class="text">
+                <b>Оплата сборщику: </b> {{ good.price }} ₽
               </p>
             </u-card>
           </div>

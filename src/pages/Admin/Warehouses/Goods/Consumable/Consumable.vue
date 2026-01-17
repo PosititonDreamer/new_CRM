@@ -138,6 +138,11 @@ export default {
 
     changeRoute(route)
 
+    const copyData = () => {
+      let copyText = ['Название\tКоличество', ...computedConsumable.value.map(item => `${item.title}\t${item.balance}`)].join('\n')
+      navigator.clipboard.writeText(copyText)
+    }
+
     return {
       getGoodsConsumable,
       route,
@@ -153,7 +158,8 @@ export default {
       computedConsumable,
       actions,
       products,
-      checkedGood
+      checkedGood,
+      copyData
     }
   }
 }
@@ -161,13 +167,22 @@ export default {
 
 <template>
   <div class="goods-consumable">
-    <u-button
-        @click="router.push({name: 'GoodsConsumableCreate', params: { warehouse: route.params.warehouse }})"
-        class="goods-consumable__create"
-    >
-      Добавить расходник
-    </u-button>
-    <div class="list goods-consumable__list">
+    <div class="goods-consumable__buttons">
+      <u-button
+          @click="router.push({name: 'GoodsConsumableCreate', params: { warehouse: route.params.warehouse }})"
+          class="goods-consumable__create"
+      >
+        Добавить расходник
+      </u-button>
+      <u-button
+          @click="copyData"
+          class="goods-consumable__button"
+      >
+        Скопировать таблицу
+      </u-button>
+    </div>
+
+    <div class="list goods-consumable__list--mobile">
       <u-card
           v-for="(consumable, id) in computedConsumable"
           class="goods-consumable__item"
@@ -205,6 +220,43 @@ export default {
             @delete="router.push({name: 'GoodsConsumableDelete', params: {id: consumable.id}})"
         />
       </u-card>
+    </div>
+
+    <div class="list goods-consumable__list">
+      <div
+          v-for="(consumable, id) in computedConsumable"
+          class="goods-consumable__item"
+          :key="`good-consumable-${consumable.id}`"
+          :style="[{'--z-index': computedConsumable.length - id}]"
+      >
+        <p class="goods-consumable__sub-title sub-title">{{ consumable.title }}</p>
+        <p :class="['text goods-consumable__text', {'text--bold text--few': +consumable.balance <= +consumable.few && +consumable.balance > +consumable.few_very}, {'text--bold text--few-very': +consumable.balance <= +consumable.few_very}, {'text--null': +consumable.balance === 0}]">
+          {{ consumable.balance }}
+        </p>
+        <u-accordion
+            class="goods-consumable__accordion"
+            title="Привязанные фасованные товары"
+            small
+        >
+          <div class="goods-consumable__wrapper">
+            <p
+                v-for="binding in consumable.binding"
+                class="text"
+                :key="`good-consumable-binding-${binding.id}`"
+            >
+              {{ binding.product_item?.show_title ? binding.product_item?.show_title : binding.product_item?.title }},
+              {{ binding.good_item?.quantity }} {{ binding.measure?.title }}
+            </p>
+          </div>
+        </u-accordion>
+        <u-actions
+            class="goods-consumable__actions"
+            :actions="actions"
+            @update="router.push({name: 'GoodsConsumableUpdate', params: {id: consumable.id}})"
+            @updateBalance="router.push({name: 'GoodsConsumableUpdateBalance', params: {id: consumable.id}})"
+            @delete="router.push({name: 'GoodsConsumableDelete', params: {id: consumable.id}})"
+        />
+      </div>
     </div>
     <u-alert
         v-if="route.name === 'GoodsConsumableDelete' && route.params.id"

@@ -58,7 +58,8 @@ export default {
 </script>
 <template>
   <div class="goods-consumable">
-    <div class="list goods-consumable__list">
+
+    <div class="list goods-consumable__list--mobile">
       <u-card
           v-for="(consumable, id) in computedConsumable"
           class="goods-consumable__item"
@@ -89,6 +90,36 @@ export default {
           </div>
         </u-accordion>
       </u-card>
+    </div>
+
+    <div class="list goods-consumable__list">
+      <div
+          v-for="(consumable, id) in computedConsumable"
+          class="goods-consumable__item"
+          :key="`good-consumable-${consumable.id}`"
+          :style="[{'--z-index': computedConsumable.length - id}]"
+      >
+        <p class="goods-consumable__sub-title sub-title">{{ consumable.title }}</p>
+        <p :class="['text goods-consumable__text', {'text--bold text--few': +consumable.balance <= +consumable.few && +consumable.balance > +consumable.few_very}, {'text--bold text--few-very': +consumable.balance <= +consumable.few_very}, {'text--null': +consumable.balance === 0}]">
+          {{ consumable.balance }}
+        </p>
+        <u-accordion
+            class="goods-consumable__accordion"
+            title="Привязанные фасованные товары"
+            small
+        >
+          <div class="goods-consumable__wrapper">
+            <p
+                v-for="binding in consumable.binding"
+                class="text"
+                :key="`good-consumable-binding-${binding.id}`"
+            >
+              {{ binding.product_item?.show_title ? binding.product_item?.show_title : binding.product_item?.title }},
+              {{ binding.good_item?.quantity }} {{ binding.measure?.title }}
+            </p>
+          </div>
+        </u-accordion>
+      </div>
     </div>
   </div>
 </template>

@@ -1,6 +1,8 @@
 import {Goods} from "@/store/Admin/Goods/Goods.js";
 import {useRoute, useRouter} from "vue-router";
 import {validateInput} from "@/hooks/validateInput.js";
+import {computed} from "vue";
+import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
 
 export const HookGoods = () => {
     const {getGoods, createGoods, updateGoods, updateBalanceGoods, deleteGoods} = Goods()
@@ -13,7 +15,14 @@ export const HookGoods = () => {
     const {data: balance} = validateInput("Number", 0, 0)
     const {data: few} = validateInput("Number", 0, 0)
     const {data: few_very} = validateInput("Number", 0, 0)
+    const {data: price} = validateInput("Number", 0, 0)
     const {data: article} = validateInput("String", "", 0)
+
+    const {getWarehouses} = Warehouses()
+
+    const viewPrice = computed(() => {
+        return +getWarehouses.value.find(item => item.id === route.params.warehouse)?.type === 1
+    })
 
     const good = {
         product,
@@ -22,6 +31,7 @@ export const HookGoods = () => {
         few,
         few_very,
         article,
+        price
     }
 
     const submitCreateGoods = async () => {
@@ -35,6 +45,7 @@ export const HookGoods = () => {
                 few: few.value.value,
                 few_very: few_very.value.value,
                 article: article.value.value,
+                price: price.value.value,
                 warehouse: route.params.warehouse
             })
         }
@@ -52,6 +63,7 @@ export const HookGoods = () => {
                 few: few.value.value,
                 few_very: few_very.value.value,
                 article: article.value.value,
+                price: price.value.value,
                 warehouse: route.params.warehouse
             })
         }
@@ -81,6 +93,7 @@ export const HookGoods = () => {
         submitUpdateGoods,
         submitUpdateBalanceGoods,
         submitDeleteGoods,
+        viewPrice
     }
 
 }

@@ -939,10 +939,11 @@ export const HookOrders = () => {
 
     const copyTrack = (order) => {
         if (order.delivery === 'CDEK') {
-            navigator.clipboard.writeText(order.track.replace(/\s/g, ""))
+            navigator.clipboard.writeText(order.track.replace(/ /g, '').replace(/\s/g, ""))
         } else {
-            navigator.clipboard.writeText(order.track)
+            navigator.clipboard.writeText(order.track.replace(/ /g, ''))
         }
+
         addMessages(['Трек-номер скопированы'], 'success')
     }
 

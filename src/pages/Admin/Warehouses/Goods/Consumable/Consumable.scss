@@ -1,27 +1,83 @@
 .goods-consumable {
   color: var(--primary);
 
-  &__create {
+  &__buttons {
     margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 10px;
   }
 
   &__list {
-    max-width: 600px;
+    border: 1px solid var(--primary);
+    width: max-content;
+    
+    &--mobile {
+      display: none;
+    }
   }
 
   &__item {
     position: relative;
     background: var(--white);
     z-index: var(--z-index);
+
+    @media screen and (min-width: 1000px) {
+      display: grid;
+      grid-template-columns: 470px 50px 300px 50px;
+      padding: 10px;
+      grid-gap: 5px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--primary);
+      }
+    }
   }
 
   &__actions {
     position: absolute;
     top: 10px;
     right: 10px;
+
+    @media screen and (min-width: 1000px) {
+      position: relative;
+      z-index: var(--z-index);
+      top: 0;
+      right: 0;
+    }
+
   }
 
   &__wrapper {
     padding-left: 10px;
+  }
+
+  &__sub-title, &__text {
+    margin-bottom: 0;
+    align-content: center;
+    height: max-content;
+  }
+
+  &__text {
+    text-align: center;
+  }
+
+  &__accordion {
+    @media screen and (min-width: 1000px) {
+      margin: auto 0;
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .goods-consumable {
+    &__list {
+      display: none;
+
+      &--mobile {
+        max-width: 600px;
+        display: grid;
+      }
+    }
   }
 }
