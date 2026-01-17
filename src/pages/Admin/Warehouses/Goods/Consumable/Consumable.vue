@@ -139,7 +139,7 @@ export default {
     changeRoute(route)
 
     const copyData = () => {
-      let copyText = ['Название\tКоличество', ...computedConsumable.value.map(item => `${item.title}\t${item.balance}`)].join('\n')
+      let copyText = ['Название\tКоличество', ...computedConsumable.value.map(item => `${item.title.replace("н-а ", "")}\t${item.balance}`)].join('\n')
       navigator.clipboard.writeText(copyText)
     }
 
