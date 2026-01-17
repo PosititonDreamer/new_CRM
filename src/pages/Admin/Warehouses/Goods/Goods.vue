@@ -179,7 +179,7 @@ export default {
             <b>Весовой товар</b>
           </p>
           <p class="text">
-            {{ good.price }} ₽
+            {{ +good.price > 0 ? `${good.price}₽` : '' }}
           </p>
           <u-actions
               :style="[{'--z-index': getGoods.filter(item => item.product === product.id).length - id}]"
@@ -228,7 +228,7 @@ export default {
               <p v-else class="text">
                 <b>Весовой товар</b>
               </p>
-              <p class="text">
+              <p class="text" v-if="+good.price > 0">
                 <b>Оплата сборщику: </b> {{ good.price }} ₽
               </p>
             </u-card>
