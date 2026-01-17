@@ -81,7 +81,7 @@ export default {
           <p v-else class="text">
             <b>Весовой товар</b>
           </p>
-          <p class="text">
+          <p class="text" v-if="viewPrice">
             {{ +good.price > 0 ? `${good.price}₽` : '' }}
           </p>
         </template>
