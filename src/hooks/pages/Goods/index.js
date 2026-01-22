@@ -11,7 +11,7 @@ export const HookGoods = () => {
     const router = useRouter()
 
     const {data: product} = validateInput("String", "", 1)
-    const {data: quantity} = validateInput("Number", 0, 1)
+    const {data: quantity} = validateInput("Number", 0, 0)
     const {data: balance} = validateInput("Number", 0, 0)
     const {data: few} = validateInput("Number", 0, 0)
     const {data: few_very} = validateInput("Number", 0, 0)
