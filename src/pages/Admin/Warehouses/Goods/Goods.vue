@@ -199,7 +199,7 @@ export default {
         >
           <div class="list">
             <u-card
-                v-for="(good, id) in getGoods.filter(item => item.product === product.id)"
+                v-for="(good, id) in getGoods.filter(item => item.product === product.id).sort((itemA, itemB) => itemA.quantity - itemB.quantity)"
                 :style="[{'--z-index': getGoods.filter(item => item.product === product.id).length - id}]"
                 class="goods__item"
                 :key="`good-item-${good.id}`"
