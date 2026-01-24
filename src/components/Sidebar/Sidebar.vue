@@ -201,16 +201,6 @@ export default {
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Warehouses'}">Склады
           </router-link>
           <div class="sidebar__sub-list list" v-if="getWarehouses.length">
-            <div class="list" v-if="getNotifications">
-              <router-link class="sidebar__link sidebar__link--yellow" active-class="sidebar__link--active"
-                           :to="{name: 'Notifications'}">Малое количество товаров
-              </router-link>
-            </div>
-            <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Supplies'}">Связь
-                складов
-              </router-link>
-            </div>
             <div class="list" v-for="warehouse in getWarehouses">
               <p :class="['sidebar__link sidebar__link--disabled', {'sidebar__link--active': route.params.warehouse === warehouse.id}] ">
                 {{ warehouse.title }}</p>
@@ -247,6 +237,16 @@ export default {
                   </router-link>
                 </div>
               </div>
+            </div>
+            <div class="list" v-if="getNotifications">
+              <router-link class="sidebar__link sidebar__link--yellow" active-class="sidebar__link--active"
+                           :to="{name: 'Notifications'}">Малое количество товаров
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Supplies'}">Связь
+                складов
+              </router-link>
             </div>
           </div>
         </div>

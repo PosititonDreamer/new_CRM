@@ -68,7 +68,7 @@ export default {
         }
         if (getSuppliesWarehouse.value.length === 1) {
           loading.value = false
-          supply.value.value = getSuppliesWarehouse.value[0].warehouse_give
+          supply.value.value = getSuppliesWarehouse.value[0].id
           supply.value.tacked = true
           changeSupply()
           if (!suppliesList.value.length) {
