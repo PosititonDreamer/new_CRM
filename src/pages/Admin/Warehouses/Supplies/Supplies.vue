@@ -96,6 +96,13 @@ export default {
         }
       }
       if (to.name === 'SuppliesWarehouseUpdate') {
+        if (!getSuppliesDetail.value) {
+          await findSuppliesWarehouseDetail()
+          setTimeout(() => {
+            changeRoute(to)
+          })
+          return
+        }
         loading.value = false
         supply.value.value = getSuppliesDetail.value.supply.supply_warehouse
         supply.value.tacked = true

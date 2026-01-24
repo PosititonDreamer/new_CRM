@@ -280,7 +280,7 @@ export const HookSuppliesWarehouse = () => {
                 warehouse: +route.params.warehouse === +item.supply_warehouse ? `Поставка в: ${warehouse?.warehouse_receive_title}` : `Поставка из: ${warehouse?.warehouse_give_title}`,
                 status: status.title,
                 actions: computed(() => {
-                    if (+route.params.warehouse === +item.supply_warehouse) {
+                    if (+route.params.warehouse !== +item.supply_warehouse) {
                         if (+item.supply_status === 1) {
                             return [
                                 {
@@ -344,7 +344,7 @@ export const HookSuppliesWarehouse = () => {
 
     const computedDetailSupply = computed(() => {
         if (getSuppliesDetail.value && getSuppliesWarehouse.value.length && getSuppliesTypes.value.length) {
-            const warehouse = getSuppliesWarehouse.value.find(supplyWarehouse => +supplyWarehouse.warehouse_give === +getSuppliesDetail.value.supply.supply_warehouse)
+            const warehouse = getSuppliesWarehouse.value.find(supplyWarehouse => +supplyWarehouse.id === +getSuppliesDetail.value.supply.supply_warehouse)
             const status = getSuppliesTypes.value.find(supplyType => +supplyType.id === +getSuppliesDetail.value.supply.supply_status)
             const newList = {
                 goods: [],
@@ -356,42 +356,42 @@ export const HookSuppliesWarehouse = () => {
             let allItems = []
             if (+getSuppliesDetail.value.supply.supply_warehouse === +route.params.warehouse) {
                 allItems = [
-                    ...warehouse.list.good.give.map(item => {
+                    ...warehouse.list.good?.give.map(item => {
                         item.type = 'good';
                         return item
-                    }),
-                    ...warehouse.list.weight.give.map(item => {
+                    }) ?? [],
+                    ...warehouse.list.weight?.give.map(item => {
                         item.type = 'weight';
                         return item
-                    }),
-                    ...warehouse.list.consumable.give.map(item => {
+                    }) ?? [],
+                    ...warehouse.list.consumable?.give.map(item => {
                         item.type = 'consumable';
                         return item
-                    }),
-                    ...warehouse.list.other.give.map(item => {
+                    }) ?? [],
+                    ...warehouse.list.other?.give.map(item => {
                         item.type = 'other';
                         return item
-                    }),
+                    }) ?? [],
                 ]
 
             } else {
                 allItems = [
-                    ...warehouse.list.good.receive.map(item => {
+                    ...warehouse.list.good?.receive.map(item => {
                         item.type = 'good';
                         return item
-                    }),
-                    ...warehouse.list.weight.receive.map(item => {
+                    }) ?? [],
+                    ...warehouse.list.weight?.receive.map(item => {
                         item.type = 'weight';
                         return item
-                    }),
-                    ...warehouse.list.consumable.receive.map(item => {
+                    }) ?? [],
+                    ...warehouse.list.consumable?.receive.map(item => {
                         item.type = 'consumable';
                         return item
-                    }),
-                    ...warehouse.list.other.receive.map(item => {
+                    }) ?? [],
+                    ...warehouse.list.other?.receive.map(item => {
                         item.type = 'other';
                         return item
-                    }),
+                    }) ?? [],
                 ]
             }
 
