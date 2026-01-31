@@ -10,6 +10,27 @@
     display: none;
   }
 
+  &__track {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__there-comment, &__there-sale {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 5px;
+  }
+
+  &__there-comment {
+      background: var(--green);
+  }
+
+  &__there-sale {
+    background: var(--primary);
+  }
+
   &__item {
     position: relative;
     background: var(--white);
@@ -17,7 +38,7 @@
 
     @media screen and (min-width: 1000px) {
       display: grid;
-      grid-template-columns: 150px 1fr 150px 110px 70px auto;
+      grid-template-columns: 200px 1fr 150px 110px 70px auto;
       border: 1px solid var(--primary);
       padding: 5px 10px;
       align-items: center;

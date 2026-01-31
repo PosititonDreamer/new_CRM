@@ -17,6 +17,7 @@ export const Orders = defineStore('Orders', () => {
     const kitsList = ref([]);
     const presentsList = ref([]);
     const boxesList = ref([]);
+    const salesList = ref([]);
 
     const getOrders = computed(() => orders)
     const getNextPage = computed(() => nextPage)
@@ -29,6 +30,7 @@ export const Orders = defineStore('Orders', () => {
     const getKitsList = computed(() => kitsList)
     const getPresentsList = computed(() => presentsList)
     const getBoxesList = computed(() => boxesList)
+    const getSalesList = computed(() => salesList)
 
     const {updateLoader} = Loader()
     const {addMessages} = Messages();
@@ -77,6 +79,7 @@ export const Orders = defineStore('Orders', () => {
                 presentsList.value = res.data.presents_list
                 kitsList.value = res.data.kits_list
                 boxesList.value = res.data.boxes_list
+                salesList.value = res.data.sales_list
                 addMessages(res.data.messages, 'success')
             })
             .catch(err => {
@@ -398,6 +401,7 @@ export const Orders = defineStore('Orders', () => {
         getPresentsList,
         getClientsList,
         getBoxesList,
+        getSalesList,
         findOrders,
         findOrdersDetail,
         findGoodsList,

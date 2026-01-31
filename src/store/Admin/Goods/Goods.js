@@ -17,7 +17,7 @@ export const Goods = defineStore('Goods', () => {
 
     const findGoods = async () => {
         updateLoader({method: 'findGoods', status: false})
-        await axios.get(`/admin/goods/list.php?warehouse=${route.params.warehouse}`)
+        await axios.get(`/admin/goods/list.php?warehouse=${route.params.warehouse ?? 1}`)
             .then((res) => {
                 goods.value = res.data.goods
                 addMessages(res.data.messages, 'success')

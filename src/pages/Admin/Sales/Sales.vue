@@ -1,31 +1,31 @@
 <script>
-import {GoodsKit} from "@/store/Admin/Goods/Kits.js";
+import {SalesHook} from "@/hooks/pages/Sales/index.js";
 import {Goods} from "@/store/Admin/Goods/Goods.js";
 import {Products} from "@/store/Admin/Products/Products.js";
 import {MeasureUnits} from "@/store/Admin/Products/MeasureUnits.js";
+import {Sales} from "@/store/Admin/Sales/Sales.js";
 import {computed, ref, watch} from "vue";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
+import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
-import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
-import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
-import {HookGoodsKit} from "@/hooks/pages/Goods/Kits.js";
-import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
+import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
+import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 
 export default {
-  name: "GoodsKit",
-  components: {UCheckbox, UAlert, USelect, UInput, UForm, UPopup, UAccordion, UActions, UCard, UButton},
+  name: "Sales",
+  components: {UForm, UCheckbox, USelect, UAlert, UInput, UPopup, UActions, UCard, UAccordion, UButton},
   async beforeCreate() {
-    const {findGoodsKit} = GoodsKit()
+    const {findSales} = Sales()
     const {findGoods} = Goods()
     const {findProducts} = Products()
     const {findMeasureUnits} = MeasureUnits()
 
-    await findGoodsKit()
+    await findSales()
     await findGoods()
     await findProducts()
     await findMeasureUnits()
@@ -33,30 +33,23 @@ export default {
   },
   setup() {
     const {
+      getSales,
       route,
       router,
-      kit,
+      sale,
       addItem,
       removeItem,
-      getGoodsKit,
-      submitCreateGoodsKit,
-      submitUpdateGoodsKit,
-      submitDeleteGoodsKit,
-    } = HookGoodsKit()
+      submitCreateSales,
+      submitUpdateSales,
+      submitDeleteSales,
+      clearData,
+    } = SalesHook()
 
     const loading = ref(false)
 
-    const {findGoodsKit} = GoodsKit()
-    const {findGoods, getGoods} = Goods()
+    const {getGoods} = Goods()
     const {getProducts} = Products()
     const {getMeasureUnits} = MeasureUnits()
-
-    watch(() => route.params.warehouse,
-        () => {
-          findGoods()
-          findGoodsKit()
-        }
-    )
 
     const actions = ref([
       {
@@ -70,37 +63,32 @@ export default {
     ])
 
     const changeRoute = (to) => {
-      if (to.name === "GoodsKit") {
-        kit.title.value.value = ""
-        kit.number.value.value = 0
-
-        kit.title.value.tacked = false
-        kit.number.value.tacked = false
-        kit.list.value = []
+      if (to.name === "Sales") {
+        clearData()
 
         document.body.removeAttribute("style");
         return;
       }
-      if (to.name === 'GoodsKitCreate') {
+      if (to.name === 'SalesCreate') {
         addItem()
         return;
       }
-      if (to.name === 'GoodsKitUpdate' && to.params.id) {
+      if (to.name === 'SalesUpdate' && to.params.id) {
         loading.value = false
-        if (!getGoodsKit.value.length || !getGoods.value.length) {
+        if (!getSales.value.length || !getGoods.value.length) {
           setTimeout(() => {
             changeRoute(to)
           })
           return
         }
-        const findKit = getGoodsKit.value.find(item => +item.id === +to.params.id)
-        kit.title.value.value = findKit.title
-        kit.number.value.value = findKit.number
-        kit.comment.value.value = findKit.comment
-        kit.viewComment.value = findKit.view_comment
+        const findSale = getSales.value.find(item => +item.id === +to.params.id)
+        sale.title.value.value = findSale.title
+        sale.keywords.value.value = findSale.keywords
+        sale.sum.value.value = findSale.sum
+        sale.date.value.value = findSale.date
 
 
-        findKit.list.forEach(item => {
+        findSale.list.forEach(item => {
           const good = getGoods.value.find(good => good.id === item.good)
           addItem({
             quantity: +item.quantity,
@@ -109,9 +97,8 @@ export default {
           }, item.id)
         })
 
-        kit.title.value.tacked = true
-        kit.number.value.tacked = true
-        kit.comment.value.tacked = true
+        sale.title.value.tacked = true
+        sale.date.value.tacked = true
         setTimeout(() => {
           loading.value = true
         })
@@ -148,19 +135,19 @@ export default {
       })
     })
 
-    const computedKits = computed(() => {
-      if (!getGoodsKit.value.length || !getGoods.value.length || !getProducts.value.length || !getMeasureUnits.value.length) {
+    const computedSales = computed(() => {
+      if (!getSales.value.length || !getGoods.value.length || !getProducts.value.length || !getMeasureUnits.value.length) {
         return []
       }
-      return getGoodsKit.value.map(kit => {
-        kit.list = kit.list.map(item => {
+      return getSales.value.map(sale => {
+        sale.list = sale.list.map(item => {
           const findGood = getGoods.value.find(good => good.id === item.good)
           const findProduct = getProducts.value.find(product => product.id === findGood.product)
           const MeasureUnits = getMeasureUnits.value.find(unit => unit.id === findProduct.measure_unit)
           item.title = `${findProduct?.show_title ? findProduct.show_title : findProduct.title}, ${findGood.quantity} ${MeasureUnits?.title ? MeasureUnits?.title : ''}`
           return item
         })
-        return kit
+        return sale
       })
     })
 
@@ -173,64 +160,67 @@ export default {
     return {
       route,
       router,
-      kit,
+      sale,
       addItem,
       removeItem,
-      getGoodsKit,
-      submitCreateGoodsKit,
-      submitUpdateGoodsKit,
-      submitDeleteGoodsKit,
+      submitCreateSales,
+      submitUpdateSales,
+      submitDeleteSales,
       actions,
-      loading,
-      getGoods,
-      getProducts,
-      getMeasureUnits,
       computedGoods,
       computedProducts,
-      computedKits
+      computedSales,
+      loading
     }
   }
 }
 </script>
-
 <template>
-  <div class="goods-kit">
+  <div class="sales">
     <u-button
-        @click="router.push({name: 'GoodsKitCreate', params: {warehouse: route.params.warehouse}})"
-        class="goods-kit__create"
+        @click="router.push({name: 'SalesCreate', params: {warehouse: route.params.warehouse}})"
+        class="sales__create"
     >
-      Добавить набор
+      Добавить акцию
     </u-button>
-    <div class="list goods-kit__list">
+    <div class="list sales__list">
       <u-card
-          v-for="(kit, id) in computedKits"
-          class="goods-kit__item"
-          :key="`good-kit-${kit.id}`"
-          :style="[{'--z-index': computedKits.length - id}]"
+          v-for="(sale, id) in computedSales"
+          class="sales__item"
+          :key="`sale-${sale.id}`"
+          :style="[{'--z-index': computedSales.length - id}]"
       >
-        <p class="sub-title">{{ kit.title }}</p>
-        <p class="text">
-          <b>Номер набора: </b> {{ kit.number }}
+        <p class="sub-title">{{ sale.title }}</p>
+        <p class="text" v-if="sale.keywords.trim().length">
+          <b>Ключевые слова: </b> {{sale.keywords}}
         </p>
-        <p class="text" v-if="kit.view_comment">
-          <b>Системный комментарий: </b> {{ kit.comment }}
+        <p class="text" v-else>
+          <i>
+            <b>Без ключевых слов</b>
+          </i>
+        </p>
+        <p class="text">
+          <b>Сумма: </b> От {{sale.sum}} ₽
+        </p>
+        <p class="text">
+          <b>Активна до: </b> {{new Date(sale.date).toLocaleDateString('ru-RU')}}
         </p>
         <u-actions
-            class="goods-kit__actions"
+            class="sales__actions"
             :actions="actions"
-            @update="router.push({name: 'GoodsKitUpdate', params: {id: kit.id}})"
-            @delete="router.push({name: 'GoodsKitDelete', params: {id: kit.id}})"
+            @update="router.push({name: 'SalesUpdate', params: {id: sale.id}})"
+            @delete="router.push({name: 'SalesDelete', params: {id: sale.id}})"
         />
         <u-accordion
-            class="goods-kit__accordion"
+            class="sales__accordion"
             title="Входящие фасованные товары"
             small
         >
-          <div class="goods-kit__content">
+          <div class="sales__content">
             <p
-                v-for="item in kit.list"
+                v-for="item in sale.list"
                 class="text"
-                :key="`good-kit-text-item-${item.id}`"
+                :key="`sale-text-item-${item.id}`"
             >
               {{ item.title }}, {{ item.quantity }} шт.
             </p>
@@ -239,66 +229,59 @@ export default {
       </u-card>
     </div>
     <u-alert
-        v-if="route.name === 'GoodsKitDelete' && route.params.id"
-        title="Удалить набор?"
+        v-if="route.name === 'SalesDelete' && route.params.id"
+        title="Удалить акцию?"
         type="confirm"
-        @close="router.push({name: 'GoodsKit', params: {warehouse: route.params.warehouse}})"
-        @accept="submitDeleteGoodsKit"
+        @close="router.push({name: 'Sales'})"
+        @accept="submitDeleteSales"
     />
     <u-popup
-        v-if="route.name === 'GoodsKitCreate' && computedGoods.length && computedProducts.length"
-        title="Добавление набора"
-        @close="router.push({name: 'GoodsKit', params: {warehouse: route.params.warehouse}})"
+        v-if="route.name === 'SalesCreate' && computedGoods.length && computedProducts.length"
+        title="Добавление акции"
+        @close="router.push({name: 'Sales'})"
     >
       <u-form
-          text="Добавить набор"
-          @submit.prevent="submitCreateGoodsKit"
+          text="Добавить акцию"
+          @submit.prevent="submitCreateSales"
       >
         <div class="list">
-
           <u-input
               title="Название"
-              :start-value="kit.title.value.value"
-              :error="kit.title.value.error"
-              v-model="kit.title.value.value"
-              @change="kit.title.value.tacked = true"
-              @blur="kit.title.value.tacked = true"
+              :start-value="sale.title.value.value"
+              :error="sale.title.value.error"
+              v-model="sale.title.value.value"
+              @change="sale.title.value.tacked = true"
+              @blur="sale.title.value.tacked = true"
           />
           <u-input
-              title="Номер"
+              title="Ключевые слова"
+              :start-value="sale.keywords.value.value"
+              v-model="sale.keywords.value.value"
+          />
+          <u-input
+              title="Сумма"
               type="number"
-              :start-value="kit.number.value.value"
-              :error="kit.number.value.error"
-              v-model="kit.number.value.value"
-              @change="kit.number.value.tacked = true"
-              @blur="kit.number.value.tacked = true"
-          />
-          <u-checkbox
-              title="Добавить комментарий?"
-              name="comment"
-              value="1"
-              :checked="kit.viewComment.value"
-              @checked="kit.viewComment.value = !kit.viewComment.value"
+              :start-value="sale.sum.value.value"
+              v-model="sale.sum.value.value"
           />
           <u-input
-              v-if="kit.viewComment.value"
-              title="Комментарий"
-              type="textarea"
-              :start-value="kit.comment.value.value"
-              :error="kit.comment.value.error"
-              v-model="kit.comment.value.value"
-              @change="kit.comment.value.tacked = true"
-              @blur="kit.comment.value.tacked = true"
+              title="Название"
+              type="date"
+              :start-value="sale.date.value.value"
+              :error="sale.date.value.error"
+              v-model="sale.date.value.value"
+              @change="sale.date.value.tacked = true"
+              @blur="sale.date.value.tacked = true"
           />
           <u-card>
             <p class="sub-title">Фасованные товары</p>
             <div class="list">
 
               <u-card
-                  v-for="(item, id) in kit.list.value"
-                  :key="`good-kit-item${item.id}`"
-                  :class="['list goods-kit__form-item', {'goods-kit__form-item--division': kit.list.value.length > 1}]"
-                  :style="[{'--z-index': kit.list.value.length - id}]"
+                  v-for="(item, id) in sale.list.value"
+                  :key="`sale-item${item.id}`"
+                  :class="['list sales__form-item', {'sales__form-item--division': sale.list.value.length > 1}]"
+                  :style="[{'--z-index': sale.list.value.length - id}]"
               >
                 <u-select
                     title="Продукт"
@@ -310,7 +293,7 @@ export default {
                   item.product.tacked = true
                   item.good.value = ''
                 }"
-                    class="goods-kit__select goods-kit__select--product"
+                    class="sales__select sales__select--product"
                 />
                 <u-select
                     v-if="item.product.value"
@@ -331,17 +314,17 @@ export default {
                     @blur="item.quantity.tacked = true"
                 />
                 <u-button
-                    v-if="kit.list.value.length > 1"
+                    v-if="sale.list.value.length > 1"
                     type="button"
                     modifier="red"
-                    class="goods-kit__delete-kit"
+                    class="sales__delete-kit"
                     @click="removeItem(item.id)"
                 />
               </u-card>
               <u-button
                   type="button"
                   @click="addItem()"
-                  class="goods-kit__add-kit"
+                  class="sales__add-kit"
               >
                 Добавить товар
               </u-button>
@@ -350,61 +333,53 @@ export default {
         </div>
       </u-form>
     </u-popup>
-
     <u-popup
-        v-if="route.name === 'GoodsKitUpdate' && loading"
-        title="Изменение набора"
-        @close="router.push({name: 'GoodsKit', params: {warehouse: route.params.warehouse}})"
+        v-if="route.name === 'SalesUpdate' && loading"
+        title="Изменение акции"
+        @close="router.push({name: 'Sales'})"
     >
       <u-form
-          text="Изменить набор"
-          @submit.prevent="submitUpdateGoodsKit"
+          text="Изменить акцию"
+          @submit.prevent="submitUpdateSales"
       >
         <div class="list">
-
           <u-input
               title="Название"
-              :start-value="kit.title.value.value"
-              :error="kit.title.value.error"
-              v-model="kit.title.value.value"
-              @change="kit.title.value.tacked = true"
-              @blur="kit.title.value.tacked = true"
+              :start-value="sale.title.value.value"
+              :error="sale.title.value.error"
+              v-model="sale.title.value.value"
+              @change="sale.title.value.tacked = true"
+              @blur="sale.title.value.tacked = true"
           />
           <u-input
-              title="Номер"
+              title="Ключевые слова"
+              :start-value="sale.keywords.value.value"
+              v-model="sale.keywords.value.value"
+          />
+          <u-input
+              title="Сумма"
               type="number"
-              :start-value="kit.number.value.value"
-              :error="kit.number.value.error"
-              v-model="kit.number.value.value"
-              @change="kit.number.value.tacked = true"
-              @blur="kit.number.value.tacked = true"
-          />
-          <u-checkbox
-              title="Добавить комментарий?"
-              name="comment"
-              value="1"
-              :checked="kit.viewComment.value"
-              @checked="kit.viewComment.value = !kit.viewComment.value"
+              :start-value="sale.sum.value.value"
+              v-model="sale.sum.value.value"
           />
           <u-input
-              v-if="kit.viewComment.value"
-              title="Комментарий"
-              type="textarea"
-              :start-value="kit.comment.value.value"
-              :error="kit.comment.value.error"
-              v-model="kit.comment.value.value"
-              @change="kit.comment.value.tacked = true"
-              @blur="kit.comment.value.tacked = true"
+              title="Название"
+              type="date"
+              :start-value="sale.date.value.value"
+              :error="sale.date.value.error"
+              v-model="sale.date.value.value"
+              @change="sale.date.value.tacked = true"
+              @blur="sale.date.value.tacked = true"
           />
           <u-card>
             <p class="sub-title">Фасованные товары</p>
             <div class="list">
 
               <u-card
-                  v-for="(item, id) in kit.list.value"
-                  :key="`good-kit-item${item.id}`"
-                  :class="['list goods-kit__form-item', {'goods-kit__form-item--division': kit.list.value.length > 1}]"
-                  :style="[{'--z-index': kit.list.value.length - id}]"
+                  v-for="(item, id) in sale.list.value"
+                  :key="`sale-item${item.id}`"
+                  :class="['list sales__form-item', {'sales__form-item--division': sale.list.value.length > 1}]"
+                  :style="[{'--z-index': sale.list.value.length - id}]"
               >
                 <u-select
                     title="Продукт"
@@ -416,7 +391,7 @@ export default {
                   item.product.tacked = true
                   item.good.value = ''
                 }"
-                    class="goods-kit__select goods-kit__select--product"
+                    class="sales__select sales__select--product"
                 />
                 <u-select
                     v-if="item.product.value"
@@ -437,17 +412,17 @@ export default {
                     @blur="item.quantity.tacked = true"
                 />
                 <u-button
-                    v-if="kit.list.value.length > 1"
+                    v-if="sale.list.value.length > 1"
                     type="button"
                     modifier="red"
-                    class="goods-kit__delete-kit"
+                    class="sales__delete-kit"
                     @click="removeItem(item.id)"
                 />
               </u-card>
               <u-button
                   type="button"
                   @click="addItem()"
-                  class="goods-kit__add-kit"
+                  class="sales__add-kit"
               >
                 Добавить товар
               </u-button>
@@ -458,5 +433,4 @@ export default {
     </u-popup>
   </div>
 </template>
-
-<style lang="scss" src="./Kit.scss" scoped/>
+<style lang="scss" src="./Sales.scss" scoped />

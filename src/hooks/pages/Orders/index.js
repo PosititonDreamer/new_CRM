@@ -30,6 +30,7 @@ export const HookOrders = () => {
         getKitsList,
         getPresentsList,
         getBoxesList,
+        getSalesList,
         createOrders,
         updateOrders,
         deleteOrders,
@@ -744,6 +745,10 @@ export const HookOrders = () => {
         {
             name: "Подарок",
             value: 'present'
+        },
+        {
+            name: "Акция",
+            value: 'sale'
         }
     ]
 
@@ -790,8 +795,9 @@ export const HookOrders = () => {
         if (!getProductsList.value.length) {
             return []
         }
+        console.log(getProductsList)
 
-        return getProductsList.value.map(product => {
+        return getProductsList.value.filter(product => +product.hidden === 0).map(product => {
             return {
                 name: product.show_title ? product.show_title : product.title,
                 value: product.id
@@ -804,10 +810,23 @@ export const HookOrders = () => {
             return []
         }
 
-        return getKitsList.value.map(kit => {
+        return getKitsList.value.filter(kit => +kit.hidden === 0).map(kit => {
             return {
                 name: kit.title,
                 value: kit.id,
+            }
+        })
+    })
+
+    const computedSales = computed(() => {
+        if (!getSalesList.value.length) {
+            return []
+        }
+
+        return getSalesList.value.filter(sale => +sale.hidden === 0).map(sale => {
+            return {
+                name: sale.title,
+                value: sale.id,
             }
         })
     })
@@ -850,6 +869,11 @@ export const HookOrders = () => {
                 return `Подарок: ${findPresent.title}`
             }
 
+            if(item.type === 'sale') {
+                const findSale = getSalesList.value.find(sale => +sale.id === +item.good)
+                return `Акция: ${findSale.title}`
+            }
+
             return item
         })
     })
@@ -860,7 +884,6 @@ export const HookOrders = () => {
         }
         const newArray = getOrderDetail.value.goods_list.map(item => {
             if (item.type === 'good') {
-                console.log(item)
                 const findProduct = getProductsList.value.find(product => +product.id === +item.product)
 
                 return {
@@ -964,6 +987,7 @@ export const HookOrders = () => {
         getKitsList,
         getPresentsList,
         getBoxesList,
+        getSalesList,
         computedBoxesList,
         sendTelegramMessage,
         filter,
@@ -990,6 +1014,7 @@ export const HookOrders = () => {
         computedProducts,
         computedKits,
         computedPresents,
+        computedSales,
         computedDetailOrdersComposition,
         computedDetailOrdersGoods,
         collectGoods,

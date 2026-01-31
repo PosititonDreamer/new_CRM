@@ -65,6 +65,7 @@ export default {
       computedProducts,
       computedKits,
       computedPresents,
+      computedSales,
       computedDetailOrdersComposition,
       computedDetailOrdersGoods,
       computedBoxesList,
@@ -237,6 +238,7 @@ export default {
       computedKits,
       getKitsList,
       computedPresents,
+      computedSales,
       submitCreateOrders,
       findClients,
       getClientsList,
@@ -537,7 +539,7 @@ export default {
               </template>
               <template v-else-if="item.type.value === 'kit'">
                 <u-select
-                    title="Товар"
+                    title="Набор"
                     :values="computedKits"
                     :start-value="item.good.value"
                     :error="item.good.error"
@@ -557,7 +559,7 @@ export default {
               </template>
               <template v-else-if="item.type.value === 'present'">
                 <u-select
-                    title="Товар"
+                    title="Подарок"
                     :values="computedPresents"
                     :start-value="item.good.value"
                     :error="item.good.error"
@@ -565,6 +567,21 @@ export default {
                     @change="() => {
                     item.good.tacked = true
                     item.present = true
+                    item.quantity.value = 1
+                  }"
+                    class="orders__select orders__select--good"
+                />
+              </template>
+              <template v-else-if="item.type.value === 'sale'">
+                <u-select
+                    title="Акция"
+                    :values="computedSales"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="() => {
+                    item.good.tacked = true
+                    item.present = false
                     item.quantity.value = 1
 
                   }"
@@ -754,7 +771,7 @@ export default {
               </template>
               <template v-else-if="item.type.value === 'kit'">
                 <u-select
-                    title="Товар"
+                    title="Набор"
                     :values="computedKits"
                     :start-value="item.good.value"
                     :error="item.good.error"
@@ -774,7 +791,7 @@ export default {
               </template>
               <template v-else-if="item.type.value === 'present'">
                 <u-select
-                    title="Товар"
+                    title="Подарок"
                     :values="computedPresents"
                     :start-value="item.good.value"
                     :error="item.good.error"
@@ -782,6 +799,22 @@ export default {
                     @change="() => {
                     item.good.tacked = true
                     item.present = true
+                    item.quantity.value = 1
+
+                  }"
+                    class="orders__select orders__select--good"
+                />
+              </template>
+              <template v-else-if="item.type.value === 'sale'">
+                <u-select
+                    title="Акция"
+                    :values="computedSales"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="() => {
+                    item.good.tacked = true
+                    item.present = false
                     item.quantity.value = 1
 
                   }"

@@ -80,7 +80,11 @@ export default {
             :style="[{'--z-index': orders.length - id}]"
             @click="clickOrder(order, checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : actions)"
     >
-      <p class="text">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="text orders-list__track">
+        {{ order.track ? order.track : 'Не присвоен' }}
+        <span v-if="order.comment.trim().length" class="orders-list__there-comment"></span>
+        <span v-if="order.sale" class="orders-list__there-sale"></span>
+      </p>
       <p class="text">
         {{ order.client }}
       </p>
@@ -161,7 +165,11 @@ export default {
             :style="[{'--z-index': orders.length - id}]"
             @click="clickOrder(order, checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : actions)"
     >
-      <p class="text">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="text orders-list__track">
+        {{ order.track ? order.track : 'Не присвоен' }}
+        <span v-if="order.comment.trim().length" class="orders-list__there-comment"></span>
+        <span v-if="order.sale" class="orders-list__there-sale"></span>
+      </p>
       <p class="text orders-list__name">
         {{ order.client }}
       </p>

@@ -29,6 +29,7 @@ import ClientsFindPage from "@/pages/Admin/Clients/Find/Find.vue";
 import NotificationsPage from "@/pages/Admin/Warehouses/Notifications/Notifications.vue";
 import OrderGoodsPage from "@/pages/OrdersGoods/OrdersGoods.vue";
 import MailingsPage from "@/pages/Admin/Mailings/Mailings.vue";
+import SalesPage from "@/pages/Admin/Sales/Sales.vue";
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -250,6 +251,31 @@ const routes = [
             },
             {
                 name: "WarehousesDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "Sales",
+        path: '/admin/sales',
+        component: SalesPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Акции"
+        },
+        children: [
+            {
+                name: "SalesCreate",
+                path: 'create',
+            },
+            {
+                name: "SalesUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "SalesDelete",
                 path: 'delete/:id',
             }
         ]
