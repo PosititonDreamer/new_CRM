@@ -265,8 +265,9 @@ export default {
               v-model="sale.sum.value.value"
           />
           <u-input
-              title="Название"
+              title="Активна до"
               type="date"
+              :min="new Date().toISOString().split('T')[0]"
               :start-value="sale.date.value.value"
               :error="sale.date.value.error"
               v-model="sale.date.value.value"
@@ -363,8 +364,9 @@ export default {
               v-model="sale.sum.value.value"
           />
           <u-input
-              title="Название"
+              title="Активна до"
               type="date"
+              :min="new Date().toISOString().split('T')[0]"
               :start-value="sale.date.value.value"
               :error="sale.date.value.error"
               v-model="sale.date.value.value"
