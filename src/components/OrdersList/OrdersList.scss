@@ -24,7 +24,8 @@
   }
 
   &__there-comment {
-      background: var(--green);
+    background: var(--yellow-light);
+    border: 1px solid var(--primary);
   }
 
   &__there-sale {

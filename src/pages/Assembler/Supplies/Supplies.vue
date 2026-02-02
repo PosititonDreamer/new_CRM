@@ -44,11 +44,17 @@ export default {
     } = HookSuppliesWarehouse()
 
     const {
-      findSuppliesWarehouseDetail
+      findSuppliesWarehouseDetail,
+      findSuppliesWarehouse
     } = SuppliesWarehouse()
 
     const loading = ref(true)
 
+    watch(() => route.params.warehouse,
+        () => {
+          findSuppliesWarehouse()
+        }
+    )
 
     const changeRoute = async (to) => {
       if (to.name === 'AssemblerSupplies') {
@@ -56,12 +62,14 @@ export default {
         return
       }
       if (to.name === 'AssemblerSuppliesCreate') {
-        if (getSuppliesWarehouse.value.length > 1) {
+        const activeSupplies = getSuppliesWarehouse.value.filter(warehouse => +warehouse.warehouse_receive === +route.params.warehouse) ?? []
+        if (activeSupplies.length > 1) {
+          loading.value = true
           return;
         }
-        if (getSuppliesWarehouse.value.length === 1) {
+        if (activeSupplies.length === 1) {
           loading.value = false
-          supply.value.value = getSuppliesWarehouse.value[0].id
+          supply.value.value = activeSupplies[0].id
           supply.value.tacked = true
           changeSupply()
           if (!suppliesList.value.length) {
@@ -182,7 +190,7 @@ export default {
       </u-card>
     </div>
     <u-popup
-        v-if="route.name === 'AssemblerSuppliesCreate' && getSuppliesWarehouse.length && loading && computedList"
+        v-if="route.name === 'AssemblerSuppliesCreate' && getSuppliesWarehouse.length && loading"
         title="Заказ поставки"
         @close="router.push({name: 'AssemblerSupplies'})"
     >
@@ -210,7 +218,7 @@ export default {
               disabled
               empty
           />
-          <div class="list">
+          <div class="list" v-if="computedList">
             <u-card>
               <p class="title">Фасованные товары</p>
               <div class="list">
@@ -412,7 +420,7 @@ export default {
       </u-form>
     </u-popup>
     <u-popup
-        v-if="route.name === 'AssemblerSuppliesUpdate' && getSuppliesWarehouse.length && loading && computedList"
+        v-if="route.name === 'AssemblerSuppliesUpdate' && getSuppliesWarehouse.length && loading"
         title="Изменение поставки"
         @close="router.push({name: 'AssemblerSupplies'})"
     >
@@ -429,7 +437,7 @@ export default {
               disabled
               empty
           />
-          <div class="list">
+          <div class="list" v-if="computedList">
             <u-card>
               <p class="title">Фасованные товары</p>
               <div class="list">

@@ -263,7 +263,7 @@ export const HookSuppliesWarehouse = () => {
     }
 
     const computedWarehouse = computed(() => {
-        return getSuppliesWarehouse.value.map(warehouse => {
+        return getSuppliesWarehouse.value.filter(warehouse => +warehouse.warehouse_give !== +route.params.warehouse).map(warehouse => {
             return {
                 value: warehouse.id,
                 name: warehouse.warehouse_give_title
@@ -277,7 +277,7 @@ export const HookSuppliesWarehouse = () => {
             const status = getSuppliesTypes.value.find(supplyType => +supplyType.id === +item.supply_status)
             return {
                 ...item,
-                warehouse: +route.params.warehouse === +item.supply_warehouse ? `Поставка в: ${warehouse?.warehouse_receive_title}` : `Поставка из: ${warehouse?.warehouse_give_title}`,
+                warehouse: +route.params.warehouse !== +item.supply_warehouse ? `Поставка в: ${warehouse?.warehouse_receive_title}` : `Поставка из: ${warehouse?.warehouse_give_title}`,
                 status: status.title,
                 actions: computed(() => {
                     if (+route.params.warehouse !== +item.supply_warehouse) {
