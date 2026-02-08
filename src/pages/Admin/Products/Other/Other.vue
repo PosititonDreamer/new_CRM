@@ -12,10 +12,11 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
+import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
 
 export default {
   name: "Other",
-  components: {UForm, USelect, UInput, UPopup, UActions, UAccordion, UCard},
+  components: {UAlert, UForm, USelect, UInput, UPopup, UActions, UAccordion, UCard},
   async beforeCreate() {
     const {findOthers} = Other()
     const {findProducts} = Products()
@@ -28,7 +29,7 @@ export default {
     await findMeasureUnits()
   },
   setup() {
-    const {route, router, packing, product, getOthers, submitUpdate} = HookOther()
+    const {route, router, packing, product, getOthers, submitUpdate, submitDelete} = HookOther()
     const {getProducts} = Products()
     const {getPacking} = Packing()
     const {getMeasureUnits} = MeasureUnits()
@@ -64,6 +65,10 @@ export default {
       {
         name: "update",
         text: "Изменить"
+      },
+      {
+        name: "delete",
+        text: "Удалить"
       }
     ])
 
@@ -159,6 +164,7 @@ export default {
       router,
       route,
       submitUpdate,
+      submitDelete,
       products,
       packings,
       changeProduct,
@@ -190,7 +196,7 @@ export default {
             :actions="actions"
             :key="`other-actions-${other.id}`"
             @update="router.push({name: 'OtherUpdate', params: {id: other.id}})"
-
+            @delete="router.push({name: 'OtherDelete', params: {id: other.id}})"
         />
       </u-card>
 
@@ -218,12 +224,24 @@ export default {
                   :actions="actions"
                   :key="`other-actions-${other.id}`"
                   @update="router.push({name: 'OtherUpdate', params: {id: other.id}})"
+                  @delete="router.push({name: 'OtherDelete', params: {id: other.id}})"
+
               />
             </u-card>
           </div>
         </u-accordion>
       </u-card>
     </div>
+
+    <u-alert
+        v-if="route.name === 'OtherDelete' && route.params.id"
+        title="Удалить кривой продукт?"
+        type="confirm"
+        @close="router.push({name: 'Other'})"
+        @accept="submitDelete()"
+    />
+
+
     <u-popup
         v-if="route.name === 'OtherUpdate' && computedData.length && products.length && loading"
         title="Изменение кривого товара"

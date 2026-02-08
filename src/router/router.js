@@ -202,6 +202,10 @@ const routes = [
             {
                 name: "OtherUpdate",
                 path: 'update/:id',
+            },
+            {
+                name: "OtherDelete",
+                path: 'delete/:id',
             }
         ]
     },

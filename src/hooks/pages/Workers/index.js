@@ -21,6 +21,7 @@ export const HookWorkers = () => {
     const {data: salary} = validateInput("Number", 0, 1)
     const {data: penalty} = validateInput("String", "", 1)
     const {data: sumPenalty} = validateInput("Number", 0, 1)
+    const {data: datePenalty} = validateInput("Date", "" )
     const warehouses = ref([])
 
     const worker = {
@@ -28,7 +29,7 @@ export const HookWorkers = () => {
         name,
         description,
         salary,
-        warehouses
+        warehouses,
     }
 
     const router = useRouter()
@@ -106,12 +107,14 @@ export const HookWorkers = () => {
     const submitCreatePenaltyWorkers = async () => {
         penalty.value.tacked = true
         sumPenalty.value.tacked = true
+        datePenalty.value.tacked = true
 
-        if(penalty.value.valid && sumPenalty.value.valid) {
+        if(penalty.value.valid && sumPenalty.value.valid && datePenalty.value.valid) {
             await createPenaltyWorkers({
                 description: penalty.value.value,
                 worker: route.params.id,
                 sum: sumPenalty.value.value,
+                date: datePenalty.value.value,
             })
         }
     }
@@ -132,6 +135,7 @@ export const HookWorkers = () => {
         submitDeleteWorkers,
         penalty,
         sumPenalty,
+        datePenalty,
         submitCreatePenaltyWorkers
     }
 }

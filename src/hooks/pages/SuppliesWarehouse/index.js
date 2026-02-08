@@ -38,7 +38,7 @@ export const HookSuppliesWarehouse = () => {
         }
 
         const findSupply = getSuppliesWarehouse.value.find(item => +item.id === +supply.value.value)
-        data.goods_weight = findSupply.list.weight_give?.map(item => {
+        data.goods_weight = findSupply.list.weight.receive?.map(item => {
             return {
                 product: item.product,
                 balance: item.balance,

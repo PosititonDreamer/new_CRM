@@ -3,7 +3,7 @@ import {validateInput} from "@/hooks/validateInput.js";
 import {useRouter, useRoute} from "vue-router";
 
 export const HookOther = () => {
-    const {getOthers, updateOthers} = Other()
+    const {getOthers, updateOthers, deleteOthers} = Other()
 
     const {data: packing} = validateInput("String", "", 1)
     const {data: product} = validateInput("String", "", 1)
@@ -22,6 +22,12 @@ export const HookOther = () => {
         }
     }
 
+    const submitDelete = async () => {
+        await deleteOthers({
+            id: route.params.id,
+        })
+    }
+
     return {
         route,
         router,
@@ -29,5 +35,6 @@ export const HookOther = () => {
         product,
         getOthers,
         submitUpdate,
+        submitDelete
     }
 }

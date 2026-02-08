@@ -41,7 +41,8 @@ export default {
       submitDeleteWorkers,
       submitCreatePenaltyWorkers,
       penalty,
-      sumPenalty
+      sumPenalty,
+      datePenalty
     } = HookWorkers()
     const loading = ref(false)
 
@@ -89,12 +90,16 @@ export default {
         worker.rule.value.value = ""
         worker.name.value.value = ""
         penalty.value.value = ''
+        sumPenalty.value.value = 0
+        datePenalty.value.value = ''
 
         worker.salary.value.tacked = false
         worker.description.value.tacked = false
         worker.rule.value.tacked = false
         worker.name.value.tacked = false
         penalty.value.tacked = false
+        sumPenalty.value.tacked = false
+        datePenalty.value.tacked = false
         worker.warehouses.value = []
 
         document.body.removeAttribute("style");
@@ -174,7 +179,8 @@ export default {
       loading,
       submitCreatePenaltyWorkers,
       penalty,
-      sumPenalty
+      sumPenalty,
+      datePenalty
     }
   }
 }
@@ -439,6 +445,15 @@ export default {
               :error="penalty.error"
               @change="penalty.tacked = true"
               @blur="penalty.tacked = true"
+          />
+          <u-input
+              title="Дата"
+              type="date"
+              :start-value="datePenalty.value"
+              v-model="datePenalty.value"
+              :error="datePenalty.error"
+              @change="datePenalty.tacked = true"
+              @blur="datePenalty.tacked = true"
           />
         </div>
       </u-form>

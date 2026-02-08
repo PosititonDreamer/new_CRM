@@ -56,8 +56,9 @@ export default {
       const salaries = getSalaries.value.salaries.filter(item => item.ready)
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
-        salary: salaries.length ? (salaries.length * computedSalaryWorker.value) + price : 0,
-        penalty: penalties?.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0
+        salary: salaries.length ? (salaries.length * computedSalaryWorker.value) : 0,
+        penalty: penalties?.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0,
+        price
       }
     })
 
@@ -66,8 +67,9 @@ export default {
       const salaries = getSalaries.value.salaries.filter(item => !item.ready)
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
-        salary: salaries.length ? (salaries.length * computedSalaryWorker.value) + price : 0,
-        penalty: penalties.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0
+        salary: salaries.length ? (salaries.length * computedSalaryWorker.value) : 0,
+        penalty: penalties.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0,
+        price
       }
     })
 
@@ -85,7 +87,7 @@ export default {
 
       return {
         salaries: (computedSalaryWorker.value * salaries.length) + price,
-        penalties: penalties.reduce((sum, item) => sum + +item.sum, 0)
+        penalties: penalties.reduce((sum, item) => sum + +item.sum, 0),
       }
     })
 
@@ -202,31 +204,40 @@ export default {
       </p>
 
       <p class="text">
-        <b>Формула расчета: </b> Сумма заказов * стоимость одного заказа + сумма стоимости товаров в заказе - сумма штрафов
+        <b>Формула расчета: </b> Сумма заказов * стоимость одного заказа + сумма доплат за упаковку - сумма штрафов
       </p>
       <p class="text">
-        <b>Оплачено: </b> {{ computedPaySalaryWorker.salary - computedPaySalaryWorker.penalty }} ₽
-        <template v-if="computedPaySalaryWorker.penalty">
-          ({{ computedPaySalaryWorker.salary }} - {{ computedPaySalaryWorker.penalty }})
+        <b>Оплачено: </b> {{ computedPaySalaryWorker.salary + computedPaySalaryWorker.price - computedPaySalaryWorker.penalty }} ₽
+        <template v-if="computedPaySalaryWorker.penalty || computedPaySalaryWorker.price">
+          ({{ computedPaySalaryWorker.salary }}
+          <template v-if="computedPaySalaryWorker.price">+ {{computedPaySalaryWorker.price}}</template>
+          <template v-if="computedPaySalaryWorker.penalty">- {{ computedPaySalaryWorker.penalty }}</template>)
         </template>
       </p>
 
       <p class="text">
-        <b>Не оплачено: </b> {{ computedNotPaySalaryWorker.salary - computedNotPaySalaryWorker.penalty }} ₽
-        <template v-if="computedNotPaySalaryWorker.penalty">
-          ({{ computedNotPaySalaryWorker.salary }} - {{ computedNotPaySalaryWorker.penalty }})
+        <b>Не оплачено: </b> {{ computedNotPaySalaryWorker.salary + computedNotPaySalaryWorker.price - computedNotPaySalaryWorker.penalty }} ₽
+        <template v-if="computedNotPaySalaryWorker.penalty || computedNotPaySalaryWorker.price">
+          ({{ computedNotPaySalaryWorker.salary }}
+          <template v-if="computedNotPaySalaryWorker.price">+ {{computedNotPaySalaryWorker.price}}</template>
+          <template v-if="computedNotPaySalaryWorker.penalty">- {{ computedNotPaySalaryWorker.penalty }}</template>)
         </template>
       </p>
 
       <p class="text">
         <b>Общая сумма: </b>
         {{
-          (computedPaySalaryWorker.salary + computedNotPaySalaryWorker.salary) - (computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty)
+          (computedPaySalaryWorker.salary + computedPaySalaryWorker.price + computedNotPaySalaryWorker.salary + computedNotPaySalaryWorker.price) - (computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty)
         }}
         ₽
-        <template v-if="computedNotPaySalaryWorker.penalty || computedPaySalaryWorker.penalty">
-          ({{ computedPaySalaryWorker.salary + computedNotPaySalaryWorker.salary }} -
-          {{ computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty }})
+        <template v-if="computedNotPaySalaryWorker.penalty || computedPaySalaryWorker.penalty || computedPaySalaryWorker.price || computedNotPaySalaryWorker.price">
+          ({{ computedPaySalaryWorker.salary + computedNotPaySalaryWorker.salary }}
+          <template v-if="computedPaySalaryWorker.price + computedNotPaySalaryWorker.price">
+            + {{computedPaySalaryWorker.price + computedNotPaySalaryWorker.price}}
+          </template>
+          <template v-if="computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty">
+            - {{ computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty }}
+          </template>)
         </template>
       </p>
 
@@ -247,6 +258,9 @@ export default {
                 </p>
                 <p class="text">
                   <b>Описание: </b>{{ penalty.description }}
+                </p>
+                <p class="text">
+                  <b>Дата штрафа: </b>{{ penalty.date.split('-').reverse().join('.') }}
                 </p>
               </u-card>
             </div>
@@ -274,8 +288,8 @@ export default {
                     {{ salary.send ? 'Отправлен' : 'Не отправлен' }}
                   </b>
                 </p>
-                <p class="text">
-                  <b>Стоимость: </b> {{salary.price}} ₽
+                <p class="text" v-if="+salary.price > 0">
+                  <b>Доплата: </b> {{salary.price}} ₽
                 </p>
               </u-card>
             </div>
@@ -294,6 +308,9 @@ export default {
                 </p>
                 <p class="text">
                   <b>Описание: </b>{{ penalty.description }}
+                </p>
+                <p class="text">
+                  <b>Дата штрафа: </b>{{ penalty.date.split('-').reverse().join('.') }}
                 </p>
               </u-card>
             </div>
@@ -317,15 +334,14 @@ export default {
                   <b>Дата создания заказа: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
                 </p>
 
-                <p class="text">
-                  <b>Стоимость: </b> {{salary.price}} ₽
+                <p class="text" v-if="+salary.price > 0">
+                  <b>Доплата: </b> {{salary.price}} ₽
                 </p>
               </u-card>
             </div>
           </u-accordion>
         </u-card>
       </div>
-
     </div>
     <div class="salaries__list" v-if="getSalaries && +getSalaries?.rule === 3">
       <template v-if="getSalaries.penalties.length">

@@ -120,12 +120,13 @@ export const Workers = defineStore('Workers', () => {
         updateLoader({method: 'deleteWorkers', status: true})
     }
 
-    const createPenaltyWorkers = async ({description, sum, worker}) => {
+    const createPenaltyWorkers = async ({description, sum, worker, date}) => {
         updateLoader({method: 'createPenalty', status: false})
         const formData = new FormData()
         formData.append('description', description)
         formData.append('worker', worker)
         formData.append('sum', sum)
+        formData.append('date', date)
         await axios.post('/admin/workers/penalty.php',formData)
             .then(res => {
                 router.push({name: 'Workers'})

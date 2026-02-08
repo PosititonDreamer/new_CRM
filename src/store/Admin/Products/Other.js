@@ -48,9 +48,26 @@ export const Other = defineStore('Other', () => {
         updateLoader({method: 'updateOther', status: true})
     }
 
+    const deleteOthers = async ({id}) => {
+        updateLoader({method: 'deleteOthers', status: false})
+        const formData = new FormData()
+        formData.append('id', id)
+        axios.post('/admin/products/other/delete.php', formData)
+            .then(res => {
+                others.value = others.value.filter(other => +other.id !== +id)
+                router.push('/admin/products/other')
+                addMessages(res.data.messages, 'success')
+            })
+            .catch(err => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'deleteOthers', status: true})
+    }
+
     return {
         getOthers,
         findOthers,
         updateOthers,
+        deleteOthers
     }
 });
