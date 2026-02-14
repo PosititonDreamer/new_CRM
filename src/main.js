@@ -5,7 +5,7 @@ import router from './router/router'
 import { createPinia } from 'pinia';
 import axios from 'axios'
 const pinia = createPinia();
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://crm.system/api/' : '/api/';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'https://ural-muhomor.ru/api/' : '/api/';
 createApp(App)
     .use(router)
     .use(pinia)

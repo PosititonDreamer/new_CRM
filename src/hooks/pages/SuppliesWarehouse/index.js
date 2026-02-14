@@ -38,7 +38,7 @@ export const HookSuppliesWarehouse = () => {
         }
 
         const findSupply = getSuppliesWarehouse.value.find(item => +item.id === +supply.value.value)
-        data.goods_weight = findSupply.list.weight.receive?.map(item => {
+        data.goods_weight = !findSupply.list.weight_give ? [] : findSupply.list.weight_give.map(item => {
             return {
                 product: item.product,
                 balance: item.balance,
@@ -62,6 +62,7 @@ export const HookSuppliesWarehouse = () => {
                 })
             }
         })
+
         findSupply.list.good?.receive.forEach(item => {
             const giveItem = findSupply.list.good.give.find(give => give.id === item.id)
 
@@ -73,15 +74,19 @@ export const HookSuppliesWarehouse = () => {
                     balance: item.balance,
                     max: computed(() => {
                         const findItem = data.goods_weight.find(find => find.product === item.product)
-                        let balance = +findItem.currentBalance.value
-                        let value = 0
+                        if(findItem) {
+                            let balance = +findItem.currentBalance.value
+                            let value = 0
 
-                        const findSupply = suppliesList.value.find(supplyItem => supplyItem.id === item.id)
-                        if (findSupply) {
-                            value = findSupply.value
+                            const findSupply = suppliesList.value.find(supplyItem => supplyItem.id === item.id)
+                            if (findSupply) {
+                                value = findSupply.value
+                            }
+
+                            return Math.floor(balance / item.quantity) + value
+                        } else {
+                            return 0
                         }
-
-                        return Math.floor(balance / item.quantity) + value
                     }),
                     measure: item.measure,
                     product: item.product,
@@ -168,6 +173,15 @@ export const HookSuppliesWarehouse = () => {
                 value: computed(() => suppliesList.value.find(supplyItem => supplyItem.id === item.id))
             })
         })
+
+        if(data.goods.length) {
+            data.goods = data.goods.sort((a, b) => {
+                if(a.title === b.title) {
+                    return +a.quantity - +b.quantity
+                }
+                return a.title - b.title
+            })
+        }
 
         return data
     })

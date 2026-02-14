@@ -10,10 +10,11 @@ import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
+import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 
 export default {
   name: 'SuppliesWarehouse',
-  components: {UCheckbox, UActions, UAlert, UCard, USelect, UForm, UPopup, UButton},
+  components: {UAccordion, UCheckbox, UActions, UAlert, UCard, USelect, UForm, UPopup, UButton},
   async beforeCreate() {
     const {
       findSuppliesWarehouse
@@ -190,7 +191,7 @@ export default {
     <div class="list supplies__card-list">
       <u-card
           class="supplies__card"
-          v-for="(item, id) in computedSupplyList"
+          v-for="(item, id) in computedSupplyList.filter(child => +child.supply_status !== 3)"
           :key="`supplies-${item.id}`"
           :style="[{'--z-index': computedSupplyList.length - id}]"
       >
@@ -215,6 +216,40 @@ export default {
         <p class="text">
           <b>Количество товаров: </b> {{ item.length }}
         </p>
+      </u-card>
+      <u-card>
+        <u-accordion title="Принятые поставки">
+          <div class="list">
+            <u-card
+                class="supplies__card"
+                v-for="(item, id) in computedSupplyList.filter(child => +child.supply_status === 3)"
+                :key="`supplies-${item.id}`"
+                :style="[{'--z-index': computedSupplyList.length - id}]"
+            >
+              <u-actions
+                  class="supplies__actions"
+                  :actions="item.actions.value"
+                  @preview="router.push({name: 'SuppliesWarehousePreview', params: {id: item.id}})"
+                  @collect="router.push({name: 'SuppliesWarehouseCollect', params: {id: item.id}})"
+                  @update="router.push({name: 'SuppliesWarehouseUpdate', params: {id: item.id}})"
+                  @delete="router.push({name: 'SuppliesWarehouseDelete', params: {id: item.id}})"
+                  @accept="router.push({name: 'SuppliesWarehouseAccept', params: {id: item.id}})"
+              />
+              <p class="sub-title">
+                {{ item.warehouse }}
+              </p>
+              <p class="text">
+                <b>Статус: </b> {{ item.status }}
+              </p>
+              <p class="text">
+                <b>Дата создания: </b> {{ new Date(item.date).toLocaleDateString('ru-RU') }}
+              </p>
+              <p class="text">
+                <b>Количество товаров: </b> {{ item.length }}
+              </p>
+            </u-card>
+          </div>
+        </u-accordion>
       </u-card>
     </div>
     <u-popup

@@ -79,13 +79,15 @@
     background: var(--white);
     width: 100%;
     top: calc(100% - 1px);
-    display: grid;
+    display: flex;
+    flex-direction: column;
     border: 1px solid var(--primary);
     border-radius: 0 0 5px 5px;
   }
 
   &__item {
-    height: 31px;
+    min-height: 31px;
+    height: max-content;
     padding: 5px 10px;
     width: 100%;
     display: block;
