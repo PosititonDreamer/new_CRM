@@ -823,7 +823,7 @@ export const HookOrders = () => {
             return []
         }
 
-        return getSalesList.value.filter(sale => +sale.hidden === 0).map(sale => {
+        return getSalesList.value.filter(sale => +sale.hidden === 0 && +sale.active).map(sale => {
             return {
                 name: sale.title,
                 value: sale.id,

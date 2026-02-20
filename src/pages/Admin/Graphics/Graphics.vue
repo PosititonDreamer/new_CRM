@@ -1,6 +1,4 @@
 <script>
-import {Graphics} from "@/hooks/pages/Graphics/index.js";
-import {HookGraphics} from "@/store/Admin/Graphics/Graphics.js";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
@@ -8,7 +6,9 @@ import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import {Chart, Grid, Line, Tooltip} from "vue3-charts";
-import {computed, ref, watch} from "vue";
+import { watch } from "vue";
+import {Graphics} from "@/store/Admin/Graphics/Graphics.js";
+import {HookGraphics} from "@/hooks/pages/Graphics/index.js";
 
 export default {
   name: 'Graphics',

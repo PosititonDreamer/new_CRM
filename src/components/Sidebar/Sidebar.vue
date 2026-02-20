@@ -263,8 +263,10 @@ export default {
           </router-link>
         </div>
         <div class="list">
-          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Mailings'}">Рассылки
-          </router-link>
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Mailings'}">Рассылки</router-link>
+        </div>
+        <div class="list">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Magazines'}">Журнал товаров</router-link>
         </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">

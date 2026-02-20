@@ -30,6 +30,7 @@ import NotificationsPage from "@/pages/Admin/Warehouses/Notifications/Notificati
 import OrderGoodsPage from "@/pages/OrdersGoods/OrdersGoods.vue";
 import MailingsPage from "@/pages/Admin/Mailings/Mailings.vue";
 import SalesPage from "@/pages/Admin/Sales/Sales.vue";
+import MagazinesPage from "@/pages/Admin/Magazines/Magazines.vue";
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -207,6 +208,23 @@ const routes = [
                 name: "OtherDelete",
                 path: 'delete/:id',
             }
+        ]
+    },
+    {
+        name: "Magazines",
+        path: '/admin/magazines',
+        component: MagazinesPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Журнал товаров"
+        },
+        children: [
+            {
+                name: "MagazinesSetting",
+                path: 'setting',
+            },
         ]
     },
     {
