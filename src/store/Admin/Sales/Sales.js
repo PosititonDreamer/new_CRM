@@ -27,13 +27,15 @@ export const Sales = defineStore('Sales', () => {
         updateLoader({method: 'findSales', status: true})
     }
 
-    const createSales = async ({title, keywords, sum, date, list}) => {
+    const createSales = async ({title, keywords, sum, date, date_start, sum_max, list}) => {
         updateLoader({method: 'createSales', status: false})
         const formData = new FormData()
         formData.append("title", title)
         formData.append("keywords", keywords)
         formData.append("sum", sum)
         formData.append("date", date)
+        formData.append("date_start", date_start)
+        formData.append("sum_max", sum_max)
         formData.append('list', JSON.stringify(list))
         await axios.post('/admin/sales/create.php', formData)
             .then(res => {
@@ -47,7 +49,7 @@ export const Sales = defineStore('Sales', () => {
         updateLoader({method: 'createSales', status: true})
     }
 
-    const updateSales = async ({id, title, keywords, sum, date, list}) => {
+    const updateSales = async ({id, title, keywords, sum, date, date_start, sum_max, list}) => {
         updateLoader({method: 'updateSales', status: false})
         const formData = new FormData()
         formData.append("id", id)
@@ -55,6 +57,8 @@ export const Sales = defineStore('Sales', () => {
         formData.append("keywords", keywords)
         formData.append("sum", sum)
         formData.append("date", date)
+        formData.append("date_start", date_start)
+        formData.append("sum_max", sum_max)
         formData.append('list', JSON.stringify(list))
         await axios.post('/admin/sales/update.php', formData)
             .then(res => {

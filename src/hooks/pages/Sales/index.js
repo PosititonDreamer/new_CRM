@@ -17,7 +17,9 @@ export const SalesHook = () => {
     const {data: title} = validateInput("String", "", 3)
     const {data: keywords} = validateInput("String", "")
     const {data: sum} = validateInput("Number", 0)
+    const {data: sum_max} = validateInput("Number", 0)
     const {data: date} = validateInput("Date", "")
+    const {data: date_start} = validateInput("Date", new Date().toISOString().split('T')[0])
     const list = ref([])
 
     const sale = {
@@ -25,6 +27,8 @@ export const SalesHook = () => {
         keywords,
         sum,
         date,
+        sum_max,
+        date_start,
         list,
     }
 
@@ -55,12 +59,14 @@ export const SalesHook = () => {
             item.good.tacked = true
         })
 
-        if(title.value.valid && date.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid)) {
+        if((sum_max.value.value > sum.value.value || !sum_max.value.value) && title.value.valid && date.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid)) {
             await createSales({
                 title: title.value.value,
                 keywords: keywords.value.value,
                 sum: sum.value.value,
+                sum_max: sum_max.value.value > 0 ? sum_max.value.value : 'NULL',
                 date: date.value.value,
+                date_start: date_start.value.value,
                 list: list.value.map(item => {
                     return {
                         quantity: item.quantity.value,
@@ -81,13 +87,15 @@ export const SalesHook = () => {
             item.good.tacked = true
         })
 
-        if(title.value.valid && date.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid)) {
+        if((sum_max.value.value > sum.value.value || !sum_max.value.value) && title.value.valid && date.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid)) {
             await updateSales({
                 id: route.params.id,
                 title: title.value.value,
                 keywords: keywords.value.value,
                 sum: sum.value.value,
+                sum_max: sum_max.value.value > 0 ? sum_max.value.value : 'NULL',
                 date: date.value.value,
+                date_start: date_start.value.value,
                 list: list.value.map(item => {
                     return {
                         quantity: item.quantity.value,
@@ -109,11 +117,15 @@ export const SalesHook = () => {
         keywords.value.tacked = false
         sum.value.tacked = false
         date.value.tacked = false
+        date_start.value.tacked = false
+        sum_max.value.tacked = false
 
         title.value.value = ""
         keywords.value.value = ""
         sum.value.value = 0
         date.value.value = ""
+        sum_max.value.value = 0
+        date_start.value.value = new Date().toISOString().split('T')[0]
         list.value = []
     }
 

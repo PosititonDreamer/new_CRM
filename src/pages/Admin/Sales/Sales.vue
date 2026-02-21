@@ -85,7 +85,9 @@ export default {
         sale.title.value.value = findSale.title
         sale.keywords.value.value = findSale.keywords
         sale.sum.value.value = findSale.sum
+        sale.sum_max.value.value = findSale.sum_max ?? 0
         sale.date.value.value = findSale.date
+        sale.date_start.value.value = findSale.date_start
 
 
         findSale.list.forEach(item => {
@@ -200,7 +202,10 @@ export default {
           </i>
         </p>
         <p class="text">
-          <b>Сумма: </b> От {{sale.sum}} ₽
+          <b>Сумма: </b> От {{sale.sum}} ₽ <template v-if="sale.sum_max">до {{sale.sum_max}} ₽ </template>
+        </p>
+        <p class="text">
+          <b>Активна с: </b> {{new Date(sale.date_start).toLocaleDateString('ru-RU')}}
         </p>
         <p class="text">
           <b>Активна до: </b> {{new Date(sale.date).toLocaleDateString('ru-RU')}}
@@ -265,9 +270,24 @@ export default {
               v-model="sale.sum.value.value"
           />
           <u-input
+              title="Максимальная сумма"
+              :min="0"
+              type="number"
+              :start-value="sale.sum_max.value.value"
+              v-model="sale.sum_max.value.value"
+              :error="(sale.sum_max.value.value < sale.sum.value.value && sale.sum_max.value.value !== 0) ? 'Максимальная сумма, должна быть больше минимальной' : ''"
+          />
+          <u-input
+              title="Активна c"
+              type="date"
+              :max="sale.date.value.value ?? ''"
+              :start-value="sale.date_start.value.value"
+              v-model="sale.date_start.value.value"
+          />
+          <u-input
               title="Активна до"
               type="date"
-              :min="new Date().toISOString().split('T')[0]"
+              :min="sale.date_start.value.value ?? new Date().toISOString().split('T')[0]"
               :start-value="sale.date.value.value"
               :error="sale.date.value.error"
               v-model="sale.date.value.value"
@@ -364,9 +384,23 @@ export default {
               v-model="sale.sum.value.value"
           />
           <u-input
+              title="Максимальная сумма"
+              type="number"
+              :start-value="sale.sum_max.value.value"
+              v-model="sale.sum_max.value.value"
+              :error="(sale.sum_max.value.value < sale.sum.value.value && sale.sum_max.value.value !== 0) ? 'Максимальная сумма, должна быть больше минимальной' : ''"
+          />
+          <u-input
+              title="Активна c"
+              type="date"
+              :max="sale.date.value.value ?? ''"
+              :start-value="sale.date_start.value.value"
+              v-model="sale.date_start.value.value"
+          />
+          <u-input
               title="Активна до"
               type="date"
-              :min="new Date().toISOString().split('T')[0]"
+              :min="sale.date_start.value.value ?? new Date().toISOString().split('T')[0]"
               :start-value="sale.date.value.value"
               :error="sale.date.value.error"
               v-model="sale.date.value.value"
