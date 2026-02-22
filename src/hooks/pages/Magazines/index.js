@@ -65,17 +65,42 @@ export const HookMagazines = () => {
         const goods = getProducts.value.map(product => {
             const findGoods = getMagazinesGoods.value.filter(good => +good.product === +product.id)
             const measure = getMeasureUnits.value.find(unit => +unit.id === +product.measure_unit)
-
+            let prevBalance = 0
             return {
                 title: product.show_title ? product.show_title : product.title,
                 measure: measure.title,
                 goods: findGoods.map(good => {
                     return {
                         ...good,
-                        list: getMagazinesList.value.map(item => {
+                        list: getMagazinesList.value.map((item, key) => {
                             const findGood = item.list.good.find(child => +child.good === +good.id)
 
-                            return findGood?.balance ?? null
+                            if(item.type === 'supply') {
+                                return {
+                                    balance: findGood?.balance ?? null,
+                                    type: item.supply_type === 'income' ? 'green' : 'red'
+                                }
+                            }
+
+                            let type = 'default'
+                            if(key === 0) {
+                                prevBalance = 0;
+                            } else {
+                                if(findGood && prevBalance > +findGood.balance) {
+                                    type = 'red'
+                                } else if(findGood && prevBalance < +findGood.balance) {
+                                    type = 'green'
+                                } else {
+                                    type = 'gray'
+                                }
+                            }
+                            if(findGood?.balance) {
+                                prevBalance = +findGood.balance
+                            }
+                            return {
+                                balance: findGood?.balance ?? null,
+                                type
+                            }
                         })
                     }
                 }).sort((a,b) => +a.quantity - +b.quantity)
@@ -89,39 +114,117 @@ export const HookMagazines = () => {
             if(!findGood) {
                 return null
             }
+            let prevBalance = 0
 
             return {
                 title: product.show_title ? product.show_title : product.title,
                 measure: measure.title,
                 goods: {
                     ...findGood,
-                    list: getMagazinesList.value.map(item => {
+                    list: getMagazinesList.value.map((item, key) => {
                         const findWeight = item.list.weight.find(child => +child.good === +findGood.id)
 
-                        return findWeight?.balance ?? null
+                        if(item.type === 'supply') {
+                            return {
+                                balance: findWeight?.balance ?? null,
+                                type: item.supply_type === 'income' ? 'green' : 'red'
+                            }
+                        }
+
+                        let type = 'default'
+                        if(key === 0) {
+                            prevBalance = 0;
+                        } else {
+                            if(findWeight && prevBalance > +findWeight.balance) {
+                                type = 'red'
+                            } else if(findWeight && prevBalance < +findWeight.balance) {
+                                type = 'green'
+                            } else {
+                                type = 'gray'
+                            }
+                        }
+                        if(findWeight?.balance) {
+                            prevBalance = +findWeight.balance
+                        }
+                        return {
+                            balance: findWeight?.balance ?? null,
+                            type
+                        }
                     })
                 }
             }
         }).filter(product => product)
 
-        const consumable = getMagazinesConsumable.value.map(consumable => {
+        const consumable = getMagazinesConsumable.value.map((consumable, key) => {
+            let prevBalance = 0
             return {
                 title: consumable.title,
                 goods: getMagazinesList.value.map(item => {
                     const findConsumable = item.list.consumable.find(child => +child.good === +consumable.id)
 
-                    return findConsumable?.balance ?? null
+                    if(item.type === 'supply') {
+                        return {
+                            balance: findConsumable?.balance ?? null,
+                            type: item.supply_type === 'income' ? 'green' : 'red'
+                        }
+                    }
+
+                    let type = 'default'
+                    if(key === 0) {
+                        prevBalance = 0;
+                    } else {
+                        if(findConsumable && prevBalance > +findConsumable.balance) {
+                            type = 'red'
+                        } else if(findConsumable && prevBalance < +findConsumable.balance) {
+                            type = 'green'
+                        } else {
+                            type = 'gray'
+                        }
+                    }
+                    if(findConsumable?.balance) {
+                        prevBalance = +findConsumable.balance
+                    }
+                    return {
+                        balance: findConsumable?.balance ?? null,
+                        type
+                    }
                 })
             }
         })
 
-        const other = getMagazinesOther.value.map(other => {
+        const other = getMagazinesOther.value.map((other, key) => {
+            let prevBalance = 0
             return {
                 title: other.title,
                 goods: getMagazinesList.value.map(item => {
                     const findOther = item.list.other.find(child => +child.good === +other.id)
 
-                    return findOther?.balance ?? null
+                    if(item.type === 'supply') {
+                        return {
+                            balance: findOther?.balance ?? null,
+                            type: item.supply_type === 'income' ? 'green' : 'red'
+                        }
+                    }
+
+                    let type = 'default'
+                    if(key === 0) {
+                        prevBalance = 0;
+                    } else {
+                        if(findOther && prevBalance > +findOther.balance) {
+                            type = 'red'
+                        } else if(findOther && prevBalance < +findOther.balance) {
+                            type = 'green'
+                        } else {
+                            type = 'gray'
+                        }
+                    }
+                    if(findOther?.balance) {
+                        prevBalance = +findOther.balance
+                    }
+                    return {
+                        balance: findOther?.balance ?? null,
+                        type
+                    }
                 })
             }
         })
@@ -140,7 +243,8 @@ export const HookMagazines = () => {
             date = [date[1], [date[2]]].join('-')
             return {
                 date: date.split('-').reverse().join('.'),
-                type: item.type !== 'everyday' ? 'Поставка' : null
+                type: item.type !== 'everyday' ? 'П' : null,
+                supply_type: item.type === 'supply' ? item.supply_type : null,
             }
         })
     })

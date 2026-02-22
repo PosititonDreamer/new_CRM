@@ -686,20 +686,6 @@ export default {
         @close="router.push({name: 'AssemblerSupplies'})"
         class="supplies-preview"
     >
-      <u-button
-          class="supplies-preview__button"
-          v-if="computedDetailSupply.statusId === 1 && computedDetailSupply.warehouse === +route.params.warehouse"
-          @click="router.push({name: 'AssemblerSuppliesCollect', params: {id: route.params.id}})"
-      >
-        Собрать
-      </u-button>
-      <u-button
-          class="supplies-preview__button"
-          v-if="computedDetailSupply.statusId === 2 && computedDetailSupply.warehouse !== +route.params.warehouse"
-          @click="router.push({name: 'AssemblerSuppliesAccept', params: {id: route.params.id}})"
-      >
-        Принять
-      </u-button>
       <p class="title">
         {{ computedDetailSupply.title }}
       </p>

@@ -233,7 +233,7 @@ export default {
                 </div>
                 <div class="list" v-if="warehouse.supply">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
-                               :to="{name: 'SuppliesWarehouse', params: {warehouse: warehouse.id}}">Поставки
+                               :to="{name: 'SuppliesWarehouse', params: {warehouse: warehouse.id}}">Поставки <template v-if="warehouse.count > 0">{{warehouse.count}}</template>
                   </router-link>
                 </div>
               </div>
@@ -366,7 +366,7 @@ export default {
                 </div>
                 <div class="list" v-if="warehouse.supply">
                   <router-link class="sidebar__link" active-class="sidebar__link--active"
-                               :to="{name: 'AssemblerSupplies', params: {warehouse: warehouse.id}}">Поставки
+                               :to="{name: 'AssemblerSupplies', params: {warehouse: warehouse.id}}">Поставки <template v-if="warehouse.count > 0">{{warehouse.count}}</template>
                   </router-link>
                 </div>
               </div>

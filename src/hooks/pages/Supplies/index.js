@@ -4,6 +4,7 @@ import {validateInput} from "@/hooks/validateInput.js";
 import {computed, ref} from "vue";
 import {Products} from "@/store/Admin/Products/Products.js";
 import {MeasureUnits} from "@/store/Admin/Products/MeasureUnits.js";
+import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
 
 export const HookSupplies = () => {
     const {
@@ -13,6 +14,10 @@ export const HookSupplies = () => {
         updateSupplies,
         deleteSupplies,
     } = Supplies()
+
+    const {
+         findWarehouses
+    } = Warehouses()
 
     const {getProducts} = Products()
     const {getMeasureUnits} = MeasureUnits()
@@ -53,6 +58,7 @@ export const HookSupplies = () => {
                     }
                 })
             })
+            await findWarehouses()
         }
     }
 
@@ -68,11 +74,13 @@ export const HookSupplies = () => {
                     }
                 })
             })
+            await findWarehouses()
         }
     }
 
     const submitDeleteSupplies = async () => {
         await deleteSupplies(route.params.id)
+        await findWarehouses()
     }
 
     const clearData = () => {

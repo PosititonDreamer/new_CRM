@@ -3,7 +3,7 @@ import {validateInput} from "@/hooks/validateInput.js";
 import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
 
 export const HookWarehouses = () => {
-    const {createWarehouse, updateWarehouse, removeWarehouse} = Warehouses();
+    const {createWarehouse, updateWarehouse, removeWarehouse, findWarehouses} = Warehouses();
     const {data: title} = validateInput("String", "", 3)
     const {data: description} = validateInput("String", "", 3)
     const {data: type} = validateInput("String", "", 1)
@@ -22,6 +22,7 @@ export const HookWarehouses = () => {
                 description: description.value.value,
                 type: type.value.value,
             })
+            await findWarehouses()
         }
     }
 
@@ -37,11 +38,13 @@ export const HookWarehouses = () => {
                 type: type.value.value,
                 id: route.params.id,
             })
+            await findWarehouses()
         }
     }
 
     const submitDeleteWarehouses = async () => {
         await removeWarehouse(route.params.id)
+        await findWarehouses()
     }
 
     return {

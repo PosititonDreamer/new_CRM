@@ -54,6 +54,11 @@ export default {
       Настройка журнала
     </u-button>
 
+    <template v-if="computedAllMagazines">
+      <h2 class="magazines__title">{{magazine.date_start.value.value.split("-").reverse().join('.')}}-{{magazine.date_end.value.value.split("-").reverse().join('.')}}</h2>
+      <h2 class="magazines__title">{{computedSelectWarehouse.find(item => item.value === magazine.warehouse.value.value).name}}</h2>
+    </template>
+
     <template v-if="computedAllMagazines?.goods.length">
       <h2 class="magazines__title">Фасованные товары</h2>
       <div class="magazines__wrapper">
@@ -62,7 +67,7 @@ export default {
             <div class="magazines__item magazines__item--long magazines__item--head">
               Название
             </div>
-            <div class="magazines__item magazines__item--head" v-for="head in computedMagazinesHead"
+            <div :class="['magazines__item magazines__item--head', {'magazines__item--color-red': head.supply_type === 'outcome','magazines__item--color-green': head.supply_type === 'income' }]" v-for="head in computedMagazinesHead"
                  :key="`goods-${head.date}`">
               {{ head.date }}
               <span v-if="head.type">
@@ -80,7 +85,9 @@ export default {
               <div class="magazines__item magazines__item--stop-pos magazines__item--left">{{ good.quantity }}
                 {{ product.measure }}
               </div>
-              <div class="magazines__item magazines__item--hover" v-for="balance in good.list">{{ balance }}</div>
+              <div :class="[`magazines__item magazines__item--hover magazines__item--color-${balance.type}`]" v-for="balance in good.list">
+                {{ balance.balance }}
+              </div>
             </template>
           </div>
         </div>
@@ -95,7 +102,7 @@ export default {
             <div class="magazines__item magazines__item--head">
               Название
             </div>
-            <div class="magazines__item magazines__item--head" v-for="head in computedMagazinesHead"
+            <div :class="['magazines__item magazines__item--head', {'magazines__item--color-red': head.supply_type === 'outcome','magazines__item--color-green': head.supply_type === 'income' }]" v-for="head in computedMagazinesHead"
                  :key="`goods-${head.date}`">
               {{ head.date }}
               <span v-if="head.type">
@@ -107,8 +114,11 @@ export default {
             <div class="magazines__item magazines__item--left magazines__product-title">
               {{product.title}} ({{product.measure}})
             </div>
-            <div class="magazines__item magazines__item--hover" v-for="balance in product.goods.list">
-              {{balance}}
+            <div
+                v-for="balance in product.goods.list"
+                :class="[`magazines__item magazines__item--hover magazines__item--color-${balance.type}`]"
+            >
+              {{balance.balance}}
             </div>
           </div>
         </div>
@@ -123,7 +133,7 @@ export default {
             <div class="magazines__item magazines__item--head">
               Название
             </div>
-            <div class="magazines__item magazines__item--head" v-for="head in computedMagazinesHead"
+            <div :class="['magazines__item magazines__item--head', {'magazines__item--color-red': head.supply_type === 'outcome','magazines__item--color-green': head.supply_type === 'income' }]" v-for="head in computedMagazinesHead"
                  :key="`goods-${head.date}`">
               {{ head.date }}
               <span v-if="head.type">
@@ -135,8 +145,8 @@ export default {
             <div class="magazines__item magazines__item--left magazines__product-title">
               {{product.title}}
             </div>
-            <div class="magazines__item magazines__item--hover" v-for="balance in product.goods">
-              {{balance}}
+            <div :class="[`magazines__item magazines__item--hover magazines__item--color-${balance.type}`]" v-for="balance in product.goods">
+              {{balance.balance}}
             </div>
           </div>
         </div>
@@ -151,7 +161,7 @@ export default {
             <div class="magazines__item magazines__item--head">
               Название
             </div>
-            <div class="magazines__item magazines__item--head" v-for="head in computedMagazinesHead"
+            <div :class="['magazines__item magazines__item--head', {'magazines__item--color-red': head.supply_type === 'outcome','magazines__item--color-green': head.supply_type === 'income' }]" v-for="head in computedMagazinesHead"
                  :key="`goods-${head.date}`">
               {{ head.date }}
               <span v-if="head.type">
@@ -163,8 +173,8 @@ export default {
             <div class="magazines__item magazines__item--left magazines__product-title">
               {{product.title}}
             </div>
-            <div class="magazines__item magazines__item--hover" v-for="balance in product.goods">
-              {{balance}}
+            <div :class="[`magazines__item magazines__item--hover magazines__item--color-${balance.type}`]" v-for="balance in product.goods">
+              {{balance.balance}}
             </div>
           </div>
         </div>

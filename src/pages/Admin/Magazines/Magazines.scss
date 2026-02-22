@@ -26,10 +26,10 @@
 
   &__row {
     display: grid;
-    grid-template-columns: 400px repeat(var(--columns), 100px);
+    grid-template-columns: 400px repeat(var(--columns), 70px);
 
     &--goods {
-      grid-template-columns: 280px 120px repeat(var(--columns), 100px);
+      grid-template-columns: 280px 120px repeat(var(--columns), 70px);
     }
 
     &--head {
@@ -67,7 +67,6 @@
 
     &--head {
       flex-direction: column;
-      font-weight: 700;
 
       &:first-child {
         align-items: flex-start;
@@ -91,6 +90,25 @@
         left: 0;
         width: 100%;
         height: 100%;
+      }
+    }
+
+    &--color-gray, &--color-default {
+      color: var(--primary-50);
+    }
+
+    &--color-green {
+      font-weight: 700;
+
+      span {
+      }
+    }
+
+    &--color-red {
+      color: var(--supply-red);
+
+      span {
+        color: var(--supply-red);
       }
     }
   }

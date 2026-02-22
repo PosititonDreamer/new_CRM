@@ -187,7 +187,7 @@ export default {
     </u-button>
     <div class="list sales__list">
       <u-card
-          v-for="(sale, id) in computedSales"
+          v-for="(sale, id) in computedSales.filter(item => item.active)"
           class="sales__item"
           :key="`sale-${sale.id}`"
           :style="[{'--z-index': computedSales.length - id}]"
@@ -229,6 +229,58 @@ export default {
             >
               {{ item.title }}, {{ item.quantity }} шт.
             </p>
+          </div>
+        </u-accordion>
+      </u-card>
+      <u-card>
+        <u-accordion title="Завершенные акции">
+          <div class="list sales__list">
+            <u-card
+                v-for="(sale, id) in computedSales.filter(item => !item.active)"
+                class="sales__item"
+                :key="`sale-${sale.id}`"
+                :style="[{'--z-index': computedSales.length - id}]"
+            >
+              <p class="sub-title">{{ sale.title }}</p>
+              <p class="text" v-if="sale.keywords.trim().length">
+                <b>Ключевые слова: </b> {{sale.keywords}}
+              </p>
+              <p class="text" v-else>
+                <i>
+                  <b>Без ключевых слов</b>
+                </i>
+              </p>
+              <p class="text">
+                <b>Сумма: </b> От {{sale.sum}} ₽ <template v-if="sale.sum_max">до {{sale.sum_max}} ₽ </template>
+              </p>
+              <p class="text">
+                <b>Активна с: </b> {{new Date(sale.date_start).toLocaleDateString('ru-RU')}}
+              </p>
+              <p class="text">
+                <b>Активна до: </b> {{new Date(sale.date).toLocaleDateString('ru-RU')}}
+              </p>
+              <u-actions
+                  class="sales__actions"
+                  :actions="actions"
+                  @update="router.push({name: 'SalesUpdate', params: {id: sale.id}})"
+                  @delete="router.push({name: 'SalesDelete', params: {id: sale.id}})"
+              />
+              <u-accordion
+                  class="sales__accordion"
+                  title="Входящие фасованные товары"
+                  small
+              >
+                <div class="sales__content">
+                  <p
+                      v-for="item in sale.list"
+                      class="text"
+                      :key="`sale-text-item-${item.id}`"
+                  >
+                    {{ item.title }}, {{ item.quantity }} шт.
+                  </p>
+                </div>
+              </u-accordion>
+            </u-card>
           </div>
         </u-accordion>
       </u-card>

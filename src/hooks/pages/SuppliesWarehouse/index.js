@@ -2,6 +2,9 @@ import {SuppliesWarehouse} from "@/store/SuppliesWarehouse/SuppliesWarehouse.js"
 import {useRoute, useRouter} from "vue-router";
 import {validateInput} from "@/hooks/validateInput.js";
 import {computed, ref, watch} from "vue";
+import {Auth} from "@/store/Workers/Auth.js";
+import {Assembler} from "@/store/Assembler/Assembler.js";
+import {Warehouses} from "@/store/Admin/Warehouses/Warehouses.js";
 
 export const HookSuppliesWarehouse = () => {
     const {
@@ -16,6 +19,18 @@ export const HookSuppliesWarehouse = () => {
         acceptSuppliesWarehouse,
         clearDetail
     } = SuppliesWarehouse()
+
+    const {
+        getWorker
+    } = Auth()
+
+    const {
+        findWarehouses: findWarehousesAssembler,
+    } = Assembler()
+
+    const {
+        findWarehouses
+    } = Warehouses()
 
     const route = useRoute()
     const router = useRouter()
@@ -74,7 +89,7 @@ export const HookSuppliesWarehouse = () => {
                     balance: item.balance,
                     max: computed(() => {
                         const findItem = data.goods_weight.find(find => find.product === item.product)
-                        if(findItem) {
+                        if (findItem) {
                             let balance = +findItem.currentBalance.value
                             let value = 0
 
@@ -174,9 +189,9 @@ export const HookSuppliesWarehouse = () => {
             })
         })
 
-        if(data.goods.length) {
+        if (data.goods.length) {
             data.goods = data.goods.sort((a, b) => {
-                if(a.title === b.title) {
+                if (a.title === b.title) {
                     return +a.quantity - +b.quantity
                 }
                 return a.title - b.title
@@ -236,6 +251,14 @@ export const HookSuppliesWarehouse = () => {
                     }
                 })
             }, afterPage)
+
+            if (getWorker.value.rule === 'Админ') {
+                await findWarehouses()
+            }
+
+            if (getWorker.value.rule === 'Сборщик') {
+                await findWarehousesAssembler()
+            }
         }
     }
 
@@ -250,21 +273,53 @@ export const HookSuppliesWarehouse = () => {
                     }
                 })
             }, afterPage)
+
+            if (getWorker.value.rule === 'Админ') {
+                await findWarehouses()
+            }
+
+            if (getWorker.value.rule === 'Сборщик') {
+                await findWarehousesAssembler()
+            }
         }
     }
 
     const submitDeleteSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         await deleteSuppliesWarehouse(route.params.id, afterPage)
+
+        if (getWorker.value.rule === 'Админ') {
+            await findWarehouses()
+        }
+
+        if (getWorker.value.rule === 'Сборщик') {
+            await findWarehousesAssembler()
+        }
     }
 
     const submitSendSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         if (collectedList.value.length === getSuppliesDetail.value.list?.length) {
             await sendSuppliesWarehouse(route.params.id, afterPage)
+
+            if (getWorker.value.rule === 'Админ') {
+                await findWarehouses()
+            }
+
+            if (getWorker.value.rule === 'Сборщик') {
+                await findWarehousesAssembler()
+            }
         }
     }
 
     const submitAcceptSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         await acceptSuppliesWarehouse(route.params.id, afterPage)
+
+        if (getWorker.value.rule === 'Админ') {
+            await findWarehouses()
+        }
+
+        if (getWorker.value.rule === 'Сборщик') {
+            await findWarehousesAssembler()
+        }
     }
 
     const clearData = () => {
