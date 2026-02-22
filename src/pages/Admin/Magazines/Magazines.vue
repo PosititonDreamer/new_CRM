@@ -29,7 +29,8 @@ export default {
       computedAllMagazines,
       computedSelectWarehouse,
       computedMagazinesHead,
-      submitFindGraphics
+      submitFindGraphics,
+      getMagazinesInfo
     } = HookMagazines()
 
     return {
@@ -40,6 +41,7 @@ export default {
       computedAllMagazines,
       computedSelectWarehouse,
       computedMagazinesHead,
+      getMagazinesInfo,
       submitFindGraphics
     }
   }
@@ -55,8 +57,8 @@ export default {
     </u-button>
 
     <template v-if="computedAllMagazines">
-      <h2 class="magazines__title">{{magazine.date_start.value.value.split("-").reverse().join('.')}}-{{magazine.date_end.value.value.split("-").reverse().join('.')}}</h2>
-      <h2 class="magazines__title">{{computedSelectWarehouse.find(item => item.value === magazine.warehouse.value.value).name}}</h2>
+      <h2 class="magazines__title">{{getMagazinesInfo.date_start.split("-").reverse().join('.')}}-{{getMagazinesInfo.date_end.split("-").reverse().join('.')}}</h2>
+      <h2 class="magazines__title">{{computedSelectWarehouse.find(item => item.value === getMagazinesInfo.warehouse).name}}</h2>
     </template>
 
     <template v-if="computedAllMagazines?.goods.length">

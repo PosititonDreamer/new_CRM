@@ -14,6 +14,7 @@ export const HookMagazines = () => {
         getMagazinesConsumable,
         getMagazinesOther,
         getMagazinesList,
+        getMagazinesInfo,
         findMagazines,
     } = Magazines()
 
@@ -257,6 +258,7 @@ export const HookMagazines = () => {
         computedSelectWarehouse,
         computedAllMagazines,
         computedMagazinesHead,
+        getMagazinesInfo,
         submitFindGraphics
     }
 }

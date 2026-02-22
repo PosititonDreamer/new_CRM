@@ -12,6 +12,11 @@ export const Magazines = defineStore('Magazines', () => {
     const magazinesConsumable = ref([])
     const magazinesOther = ref([])
     const magazinesList = ref([])
+    const magazinesInfo = ref({
+        date_start: '',
+        date_end: '',
+        warehouse: ''
+    })
 
     const getMinDate = computed(() => minDate)
     const getMagazinesGoods = computed(() => magazinesGoods)
@@ -19,6 +24,7 @@ export const Magazines = defineStore('Magazines', () => {
     const getMagazinesConsumable = computed(() => magazinesConsumable)
     const getMagazinesOther = computed(() => magazinesOther)
     const getMagazinesList = computed(() => magazinesList)
+    const getMagazinesInfo = computed(() => magazinesInfo)
 
     const {updateLoader} = Loader()
     const {addMessages} = Messages();
@@ -50,6 +56,11 @@ export const Magazines = defineStore('Magazines', () => {
                 magazinesWeight.value = res.data.weight
                 magazinesConsumable.value = res.data.consumable
                 magazinesOther.value = res.data.other
+                magazinesInfo.value = {
+                    date_start,
+                    date_end,
+                    warehouse
+                }
                 router.push({name: 'Magazines'})
                 addMessages(res.data.messages, 'success')
             })
@@ -66,6 +77,7 @@ export const Magazines = defineStore('Magazines', () => {
         getMagazinesConsumable,
         getMagazinesOther,
         getMagazinesList,
+        getMagazinesInfo,
         findMinDate,
         findMagazines,
     }
