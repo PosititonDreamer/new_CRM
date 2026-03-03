@@ -52,6 +52,7 @@ export const HookSuppliesWarehouse = () => {
             goods_weight: []
         }
 
+
         const findSupply = getSuppliesWarehouse.value.find(item => +item.id === +supply.value.value)
         data.goods_weight = !findSupply.list.weight_give ? [] : findSupply.list.weight_give.map(item => {
             return {
@@ -78,7 +79,9 @@ export const HookSuppliesWarehouse = () => {
             }
         })
 
-        findSupply.list.good?.receive.forEach(item => {
+        console.log(data.goods_weight)
+
+        findSupply.list.good?.receive.filter(item => !item.hidden).forEach(item => {
             const giveItem = findSupply.list.good.give.find(give => give.id === item.id)
 
             if (giveItem.weight) {
@@ -127,7 +130,7 @@ export const HookSuppliesWarehouse = () => {
             }
         })
 
-        findSupply.list.weight?.receive.forEach(item => {
+        findSupply.list.weight?.receive.filter(item => !item.hidden).forEach(item => {
             const giveItem = findSupply.list.weight.give.find(give => give.id === item.id)
             const weightItem = data.goods_weight.find(weightItem => +weightItem.id === item.id)
             if (weightItem) {
@@ -161,7 +164,7 @@ export const HookSuppliesWarehouse = () => {
             }
         })
 
-        findSupply.list.consumable?.receive.forEach(item => {
+        findSupply.list.consumable?.receive.filter(item => !item.hidden).forEach(item => {
             const giveItem = findSupply.list.consumable.give.find(give => give.id === item.id)
             data.consumable.push({
                 id: item.id,
@@ -175,7 +178,7 @@ export const HookSuppliesWarehouse = () => {
             })
         })
 
-        findSupply.list.other?.receive.forEach(item => {
+        findSupply.list.other?.receive.filter(item => !item.hidden).forEach(item => {
             const giveItem = findSupply.list.other.give.find(give => give.id === item.id)
             data.other.push({
                 id: item.id,
@@ -346,10 +349,10 @@ export const HookSuppliesWarehouse = () => {
             const status = getSuppliesTypes.value.find(supplyType => +supplyType.id === +item.supply_status)
             return {
                 ...item,
-                warehouse: +route.params.warehouse !== +item.supply_warehouse ? `Поставка в: ${warehouse?.warehouse_receive_title}` : `Поставка из: ${warehouse?.warehouse_give_title}`,
+                warehouse: +route.params.warehouse !== +warehouse.warehouse_receive ? `Поставка в: ${warehouse?.warehouse_receive_title}` : `Поставка из: ${warehouse?.warehouse_give_title}`,
                 status: status.title,
                 actions: computed(() => {
-                    if (+route.params.warehouse !== +item.supply_warehouse) {
+                    if (+route.params.warehouse !== +warehouse.warehouse_receive) {
                         if (+item.supply_status === 1) {
                             return [
                                 {

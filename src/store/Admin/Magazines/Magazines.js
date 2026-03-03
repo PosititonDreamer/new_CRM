@@ -45,6 +45,16 @@ export const Magazines = defineStore('Magazines', () => {
 
     const findMagazines = async ({warehouse, date_start, date_end}) => {
         updateLoader({method: 'findMagazines', status: false})
+        magazinesList.value = []
+        magazinesGoods.value = []
+        magazinesWeight.value = []
+        magazinesConsumable.value = []
+        magazinesOther.value = []
+        magazinesInfo.value = {
+            date_start: '',
+            date_end: '',
+            warehouse: ''
+        }
         const formData = new FormData();
         formData.append('warehouse', warehouse);
         formData.append('date_start', date_start);

@@ -156,11 +156,11 @@ export const HookMagazines = () => {
             }
         }).filter(product => product)
 
-        const consumable = getMagazinesConsumable.value.map((consumable, key) => {
+        const consumable = getMagazinesConsumable.value.map(consumable => {
             let prevBalance = 0
             return {
                 title: consumable.title,
-                goods: getMagazinesList.value.map(item => {
+                goods: getMagazinesList.value.map((item, key) => {
                     const findConsumable = item.list.consumable.find(child => +child.good === +consumable.id)
 
                     if(item.type === 'supply') {
@@ -193,11 +193,11 @@ export const HookMagazines = () => {
             }
         })
 
-        const other = getMagazinesOther.value.map((other, key) => {
+        const other = getMagazinesOther.value.map(other => {
             let prevBalance = 0
             return {
                 title: other.title,
-                goods: getMagazinesList.value.map(item => {
+                goods: getMagazinesList.value.map((item, key) => {
                     const findOther = item.list.other.find(child => +child.good === +other.id)
 
                     if(item.type === 'supply') {
@@ -219,6 +219,9 @@ export const HookMagazines = () => {
                             type = 'gray'
                         }
                     }
+                    if(+findOther?.good === 1) {
+                        console.log(prevBalance,findOther)
+                    }
                     if(findOther?.balance) {
                         prevBalance = +findOther.balance
                     }
@@ -239,6 +242,7 @@ export const HookMagazines = () => {
     })
 
     const computedMagazinesHead = computed(() => {
+        console.log(getMagazinesList)
         return getMagazinesList.value.map(item => {
             let date = item.date.split('-')
             date = [date[1], [date[2]]].join('-')
