@@ -36,7 +36,6 @@ export const Assembler = defineStore('Assembler', () => {
         await axios.get(`/assembler/warehouses/list.php?worker=${getWorker.value.id}`)
             .then(res => {
                 warehouses.value = res.data.warehouses
-                addMessages(res.data.messages, 'success')
             })
 
             .catch((err) => {
@@ -52,7 +51,6 @@ export const Assembler = defineStore('Assembler', () => {
             goods.value = res.data.goods
             products.value = res.data.products
             measureUnits.value = res.data.measure_units
-            addMessages(res.data.messages, 'success')
         })
         .catch((err) => {
             addMessages(err.response.data.messages, 'error')
@@ -67,7 +65,6 @@ export const Assembler = defineStore('Assembler', () => {
                 goodsWeight.value = res.data.goods_weight
                 products.value = res.data.products
                 measureUnits.value = res.data.measure_units
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -80,7 +77,6 @@ export const Assembler = defineStore('Assembler', () => {
         await axios.get(`/assembler/goods/consumable/list.php?warehouse=${route.params.warehouse}`)
             .then(res => {
                 goodsConsumable.value = res.data.goods_consumable
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -94,7 +90,6 @@ export const Assembler = defineStore('Assembler', () => {
             .then(res => {
                 goodsOther.value = res.data.goods_other
                 goodsOtherType.value = res.data.goods_other_type
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')

@@ -18,7 +18,6 @@ export const Other = defineStore('Other', () => {
         await axios.get("/admin/products/other/list.php")
             .then(res => {
                 others.value = res.data.products_other
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

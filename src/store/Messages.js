@@ -6,13 +6,19 @@ export const Messages = defineStore('Messages', () => {
 
     const getMessages = computed(() => messages)
 
-    const addMessages = (texts, type) => {
+    const addMessages = (texts, type, place = null) => {
+
+        if(place) {
+            messages.value = messages.value.filter(message => message.place !== place)
+        }
+
         texts.forEach(message => {
             const id = Date.now()
             messages.value.push({
                 message,
                 id,
-                type
+                type,
+                place
             })
 
             setTimeout(() => {

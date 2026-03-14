@@ -9,6 +9,7 @@ import {Chart, Grid, Line, Tooltip} from "vue3-charts";
 import { watch } from "vue";
 import {Graphics} from "@/store/Admin/Graphics/Graphics.js";
 import {HookGraphics} from "@/hooks/pages/Graphics/index.js";
+import {Messages} from "@/store/Messages.js";
 
 export default {
   name: 'Graphics',
@@ -44,6 +45,7 @@ export default {
       computedGraphicMonth,
       computedGraphicYear,
     } = HookGraphics()
+    const {addMessages} = Messages()
 
     const changeRoute = (to) => {
       if (to.name === 'Graphics') {
@@ -60,6 +62,26 @@ export default {
     })
 
     changeRoute(route.name)
+
+    const copyGraphics = () => {
+      let copyText = 'Товары\nНазвание\tРасход\tЕдиница измерения\n'
+      getGraphics.value.goods.forEach(item => {
+        copyText += `${item.product}\t${(+item.quantity + +item.composition_quantity).toFixed(2).replace('.', ',')}\t${item.measure}\n`
+      })
+      copyText += '\n\nРасходники\nНазвание\tРасход\n'
+      const consumable = [...getGraphics.value.consumable.filter(item => item.title.indexOf('н-а') > -1), ...getGraphics.value.consumable.filter(item => item.title.indexOf('н-а') === -1)]
+      consumable.forEach(item => {
+        copyText += `${item.title}\t${item.quantity}\n`
+      })
+
+      copyText += '\n\nКоробки и магниты\nНазвание\tРасход\n'
+      const other = getGraphics.value.other.sort((a,b) => a.title - b.title)
+      other.forEach(item => {
+        copyText += `${item.title}\t${item.quantity}\n`
+      })
+      navigator.clipboard.writeText(copyText)
+      addMessages(['Таблица успешно скопирована'], 'success')
+    }
 
     return {
       getGraphics,
@@ -83,6 +105,7 @@ export default {
       computedGraphicsOrdersMonth,
       computedGraphicsOrdersYear,
       computedGraphicsOrdersLines,
+      copyGraphics,
     }
   }
 }
@@ -90,12 +113,19 @@ export default {
 
 <template>
   <div class="graphics">
-    <u-button
-        class="graphics__create"
-        @click="router.push({name: 'GraphicsSetting'})"
-    >
-      Настройки графика
-    </u-button>
+    <div class="graphics__actions">
+      <u-button
+          @click="router.push({name: 'GraphicsSetting'})"
+      >
+        Настройки графика
+      </u-button>
+      <u-button
+          v-if="getGraphics"
+          @click="copyGraphics"
+      >
+        Скопировать данные
+      </u-button>
+    </div>
 
     <div class="graphics__list" v-if="getGraphics">
       <p class="title">Графики за:

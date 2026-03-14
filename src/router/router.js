@@ -583,7 +583,7 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            title: "Грфики"
+            title: "Графики"
         },
         children: [
             {

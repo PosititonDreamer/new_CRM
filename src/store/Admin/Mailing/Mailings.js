@@ -20,7 +20,6 @@ export const Mailings = defineStore('Mailings', () => {
         await axios.get('/admin/mailings/list.php')
             .then(res => {
                 mailings.value = res.data.mailings
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

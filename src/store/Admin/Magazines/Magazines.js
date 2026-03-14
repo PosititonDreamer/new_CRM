@@ -35,7 +35,6 @@ export const Magazines = defineStore('Magazines', () => {
         await axios.get("/admin/magazines/min_date.php")
             .then(res => {
                 minDate.value = res.data.min_date
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -72,7 +71,6 @@ export const Magazines = defineStore('Magazines', () => {
                     warehouse
                 }
                 router.push({name: 'Magazines'})
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')

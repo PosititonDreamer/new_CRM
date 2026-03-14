@@ -15,6 +15,7 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
+import {Messages} from "@/store/Messages.js";
 
 export default {
   name: "GoodsConsumable",
@@ -46,6 +47,7 @@ export default {
     const {getMeasureUnits} = MeasureUnits()
     const {getProducts} = Products()
     const {getGoods, findGoods} = Goods()
+    const {addMessages} = Messages()
 
     watch(() => route.params.warehouse,
         () => {
@@ -141,6 +143,7 @@ export default {
     const copyData = () => {
       let copyText = ['Название\tКоличество', ...computedConsumable.value.map(item => `${item.title.replace("н-а ", "")}\t${item.balance}`)].join('\n')
       navigator.clipboard.writeText(copyText)
+      addMessages(['Таблица успешно скопирована'], 'success')
     }
 
     return {
@@ -308,7 +311,7 @@ export default {
                   v-for="product in products"
                   :key="`good-consumable-list-${product.id}`"
               >
-                <p class="sub-title">{{ product.title }}</p>
+                <p class="sub-title">{{ product.show_title ?? product.title }}</p>
                 <div class="list goods-consumable__wrapper">
                   <u-checkbox
                       v-for="good in product.goods"
@@ -381,7 +384,7 @@ export default {
                   v-for="product in products"
                   :key="`good-consumable-list-${product.id}`"
               >
-                <p class="sub-title">{{ product.title }}</p>
+                <p class="sub-title">{{ product.show_title ?? product.title }}</p>
                 <div class="list goods-consumable__wrapper">
                   <u-checkbox
                       v-for="good in product.goods"

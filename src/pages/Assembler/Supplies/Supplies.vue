@@ -170,11 +170,11 @@ export default {
         <u-actions
             class="supplies__actions"
             :actions="item.actions.value"
-            @preview="router.push({name: 'SuppliesWarehousePreview', params: {id: item.id}})"
-            @collect="router.push({name: 'SuppliesWarehouseCollect', params: {id: item.id}})"
-            @update="router.push({name: 'SuppliesWarehouseUpdate', params: {id: item.id}})"
-            @delete="router.push({name: 'SuppliesWarehouseDelete', params: {id: item.id}})"
-            @accept="router.push({name: 'SuppliesWarehouseAccept', params: {id: item.id}})"
+            @preview="router.push({name: 'AssemblerSuppliesPreview', params: {id: item.id}})"
+            @collect="router.push({name: 'AssemblerSuppliesCollect', params: {id: item.id}})"
+            @update="router.push({name: 'AssemblerSuppliesUpdate', params: {id: item.id}})"
+            @delete="router.push({name: 'AssemblerSuppliesDelete', params: {id: item.id}})"
+            @accept="router.push({name: 'AssemblerSuppliesAccept', params: {id: item.id}})"
         />
         <p class="sub-title">
           {{ item.warehouse }}
@@ -201,11 +201,11 @@ export default {
               <u-actions
                   class="supplies__actions"
                   :actions="item.actions.value"
-                  @preview="router.push({name: 'SuppliesWarehousePreview', params: {id: item.id}})"
-                  @collect="router.push({name: 'SuppliesWarehouseCollect', params: {id: item.id}})"
-                  @update="router.push({name: 'SuppliesWarehouseUpdate', params: {id: item.id}})"
-                  @delete="router.push({name: 'SuppliesWarehouseDelete', params: {id: item.id}})"
-                  @accept="router.push({name: 'SuppliesWarehouseAccept', params: {id: item.id}})"
+                  @preview="router.push({name: 'AssemblerSuppliesPreview', params: {id: item.id}})"
+                  @collect="router.push({name: 'AssemblerSuppliesCollect', params: {id: item.id}})"
+                  @update="router.push({name: 'AssemblerSuppliesUpdate', params: {id: item.id}})"
+                  @delete="router.push({name: 'AssemblerSuppliesDelete', params: {id: item.id}})"
+                  @accept="router.push({name: 'AssemblerSuppliesAccept', params: {id: item.id}})"
               />
               <p class="sub-title">
                 {{ item.warehouse }}
@@ -786,16 +786,33 @@ export default {
           <p class="text">
             <b>Дата создания поставки: </b> {{ new Date(computedDetailSupply.date).toLocaleDateString('ru-RU') }}
           </p>
-          <u-card class="supplies-preview__list">
-            <p class="sub-title">Позиции в поставке:</p>
-            <p
-                class="text supplies-preview__list-item"
-                v-for="(item, id) in computedDetailSupply.list"
-                :key="`supply-preview-item-${item.id}`"
-            >
-              {{ id + 1 }}. {{ item.title }} - {{ item.quantity }} {{ item.measure }}
-            </p>
-          </u-card>
+          <p class="supplies-collect__sub-title sub-title ">Состав заказа:</p>
+          <div class="list">
+            <u-card
+                v-for="good in computedDetailSupply.list"
+                :key="`order-good-item-${good.id}-${good.type}`"
+                :class="[{'supplies-collect__card--collect': collectedList.find(item => +item === +good.id)}]">
+              <div class="supplies-collect__info">
+                <u-checkbox
+                    title=""
+                    name="order-collect-good-item"
+                    :value="good.id"
+                    :checked="!!collectedList.find(item => +item === +good.id)"
+                    @checked="!!collectedList.find(item => +item === +good.id) ? collectedList = collectedList.filter(item => +item !== +good.id) : collectedList.push(good.id)"
+                    :key="`order-good-check-item-${good.id}-${good.type}`"
+                />
+                <p class="supplies-collect__name">
+                  {{ good.title }}
+                  <span
+                      v-if="+good.quantity > 1"
+                      class="text--few text--bold"
+                  >
+                  &nbsp;-&nbsp;{{ good.quantity }} {{ good.measure }}
+                </span>
+                </p>
+              </div>
+            </u-card>
+          </div>
         </div>
       </u-form>
     </u-popup>

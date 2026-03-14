@@ -25,7 +25,6 @@ export const Workers = defineStore('Workers', () => {
                 workers.value = res.data.workers
                 workersRules.value = res.data.rules
                 workersWarehouses.value = res.data.warehouses
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

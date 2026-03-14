@@ -19,7 +19,6 @@ export const Packing = defineStore('Packing', () => {
         axios.get('/admin/products/packing/list.php')
             .then(res => {
                 packing.value = res.data.packing
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

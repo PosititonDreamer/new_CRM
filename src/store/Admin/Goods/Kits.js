@@ -20,7 +20,6 @@ export const GoodsKit = defineStore('GoodsKit', () => {
         await axios.get(`/admin/goods/kit/list.php?warehouse=${route.params.warehouse}`)
             .then((res) => {
                 goodsKit.value = res.data.goods_kits
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

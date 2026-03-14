@@ -19,7 +19,6 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
         await axios.get('/admin/products/measure_units/list.php')
             .then(res => {
                 measureUnits.value = res.data.measure_units
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

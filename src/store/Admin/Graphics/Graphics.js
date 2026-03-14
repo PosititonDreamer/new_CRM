@@ -25,7 +25,6 @@ export const Graphics = defineStore('Graphics', () => {
             .then((res) => {
                 graphics.value = res.data.graphics
                 router.push({name: 'Graphics'})
-                addMessages(res.data.messages, 'success');
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -40,7 +39,6 @@ export const Graphics = defineStore('Graphics', () => {
             .then((res) => {
                 minDate.value = res.data.min_date
                 router.push({name: 'Graphics'})
-                addMessages(res.data.messages, 'success');
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')

@@ -63,6 +63,13 @@ export const HookMagazines = () => {
          return null
         }
 
+        const show = {
+            goods: new Array(getMagazinesList.value.length).fill(false),
+            weight: new Array(getMagazinesList.value.length).fill(false),
+            consumable: new Array(getMagazinesList.value.length).fill(false),
+            other: new Array(getMagazinesList.value.length).fill(false)
+        }
+
         const goods = getProducts.value.map(product => {
             const findGoods = getMagazinesGoods.value.filter(good => +good.product === +product.id)
             const measure = getMeasureUnits.value.find(unit => +unit.id === +product.measure_unit)
@@ -76,10 +83,21 @@ export const HookMagazines = () => {
                         list: getMagazinesList.value.map((item, key) => {
                             const findGood = item.list.good.find(child => +child.good === +good.id)
 
+                            if(findGood) {
+                                show.goods[key] = true
+                            }
+
                             if(item.type === 'supply') {
                                 return {
                                     balance: findGood?.balance ?? null,
                                     type: item.supply_type === 'income' ? 'green' : 'red'
+                                }
+                            }
+
+                            if(item.type === 'hand') {
+                                return {
+                                    balance: findGood?.balance ?? null,
+                                    type: findGood?.type_view ?? 'default'
                                 }
                             }
 
@@ -125,10 +143,21 @@ export const HookMagazines = () => {
                     list: getMagazinesList.value.map((item, key) => {
                         const findWeight = item.list.weight.find(child => +child.good === +findGood.id)
 
+                        if(findWeight) {
+                            show.weight[key] = true
+                        }
+
                         if(item.type === 'supply') {
                             return {
                                 balance: findWeight?.balance ?? null,
                                 type: item.supply_type === 'income' ? 'green' : 'red'
+                            }
+                        }
+
+                        if(item.type === 'hand') {
+                            return {
+                                balance: findWeight?.balance ?? null,
+                                type: findWeight?.type_view ?? 'default'
                             }
                         }
 
@@ -163,10 +192,21 @@ export const HookMagazines = () => {
                 goods: getMagazinesList.value.map((item, key) => {
                     const findConsumable = item.list.consumable.find(child => +child.good === +consumable.id)
 
+                    if(findConsumable) {
+                        show.consumable[key] = true
+                    }
+
                     if(item.type === 'supply') {
                         return {
                             balance: findConsumable?.balance ?? null,
                             type: item.supply_type === 'income' ? 'green' : 'red'
+                        }
+                    }
+
+                    if(item.type === 'hand') {
+                        return {
+                            balance: findConsumable?.balance ?? null,
+                            type: findConsumable?.type_view ?? 'default'
                         }
                     }
 
@@ -200,10 +240,21 @@ export const HookMagazines = () => {
                 goods: getMagazinesList.value.map((item, key) => {
                     const findOther = item.list.other.find(child => +child.good === +other.id)
 
+                    if(findOther) {
+                        show.other[key] = true
+                    }
+
                     if(item.type === 'supply') {
                         return {
                             balance: findOther?.balance ?? null,
                             type: item.supply_type === 'income' ? 'green' : 'red'
+                        }
+                    }
+
+                    if(item.type === 'hand') {
+                        return {
+                            balance: findOther?.balance ?? null,
+                            type: findOther?.type_view ?? 'default'
                         }
                     }
 
@@ -219,9 +270,6 @@ export const HookMagazines = () => {
                             type = 'gray'
                         }
                     }
-                    if(+findOther?.good === 1) {
-                        console.log(prevBalance,findOther)
-                    }
                     if(findOther?.balance) {
                         prevBalance = +findOther.balance
                     }
@@ -233,23 +281,31 @@ export const HookMagazines = () => {
             }
         })
 
+        console.log({
+            goods,
+            weight,
+            consumable,
+            other,
+            show
+        })
+
         return {
             goods,
             weight,
             consumable,
-            other
+            other,
+            show
         }
     })
 
     const computedMagazinesHead = computed(() => {
-        console.log(getMagazinesList)
         return getMagazinesList.value.map(item => {
             let date = item.date.split('-')
             date = [date[1], [date[2]]].join('-')
             return {
                 date: date.split('-').reverse().join('.'),
-                type: item.type !== 'everyday' ? 'П' : null,
-                supply_type: item.type === 'supply' ? item.supply_type : null,
+                type: item.type !== 'everyday' ? item.type === 'supply' ? 'П' : 'Р' : null,
+                supply_type: item.type === 'supply' || item.type === 'hand' ? item.supply_type ?? 'income' : null,
             }
         })
     })

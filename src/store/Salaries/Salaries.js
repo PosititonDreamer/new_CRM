@@ -33,7 +33,6 @@ export const Salaries = defineStore('Salaries', () => {
                     worker: res.data.worker,
                 }
                 router.push({name: afterPage})
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')

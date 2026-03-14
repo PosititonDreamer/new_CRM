@@ -176,7 +176,7 @@ export default {
             {{ good.balance }}
           </p>
           <p v-else class="text">
-            <b>Весовой товар</b>
+            <b>Вес</b>
           </p>
           <p class="text" v-if="viewPrice">
             {{ +good.price > 0 ? `${good.price}₽` : '' }}
@@ -265,7 +265,7 @@ export default {
               @change="good.product.value.tacked = true"
           />
           <u-input
-              :title="`Количество ${getMeasureUnits.find(measure => measure.id === good.product.value.value)?.title ?? ''} в упаковке`"
+              :title="`Количество ${getMeasureUnits.find(measure => +measure.id === +getProducts.find(product => +product.id === +good.product.value.value)?.measure_unit)?.title ?? ''} в упаковке`"
               type="number"
               :start-value="good.quantity.value.value"
               :error="good.quantity.value.error"
@@ -328,7 +328,7 @@ export default {
               :disabled="route.name === 'GoodsUpdateBalance'"
           />
           <u-input
-              :title="`Количество ${getMeasureUnits.find(measure => measure.id === good.product.value.value)?.title ?? ''} в упаковке`"
+              :title="`Количество ${getMeasureUnits.find(measure => +measure.id === +getProducts.find(product => +product.id === +good.product.value.value)?.measure_unit)?.title ?? ''} в упаковке`"
               type="number"
               :start-value="good.quantity.value.value"
               :error="good.quantity.value.error"

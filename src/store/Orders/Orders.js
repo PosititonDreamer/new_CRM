@@ -38,7 +38,7 @@ export const Orders = defineStore('Orders', () => {
     const router = useRouter();
     const route = useRoute();
 
-    const findOrders = async ({date_start, date_end, delivery, sort}, page = 0) => {
+    const findOrders = async ({date_start, date_end, delivery, sort, find_status}, page = 0) => {
         updateLoader({method: 'findOrders', status: false})
         let params = '';
         if (date_start) {
@@ -53,6 +53,9 @@ export const Orders = defineStore('Orders', () => {
         if (sort) {
             params += `&sort=${sort}`;
         }
+        if (sort) {
+            params += `&find_status=${find_status}`;
+        }
         params += '&page=' + page;
         await axios.get(`/orders/list.php?status=${route.params.status}${params}`)
             .then((res) => {
@@ -62,7 +65,6 @@ export const Orders = defineStore('Orders', () => {
                     orders.value = [...orders.value, ...res.data.orders]
                 }
                 nextPage.value = res.data.next_page
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -80,7 +82,6 @@ export const Orders = defineStore('Orders', () => {
                 kitsList.value = res.data.kits_list
                 boxesList.value = res.data.boxes_list
                 salesList.value = res.data.sales_list
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -93,7 +94,6 @@ export const Orders = defineStore('Orders', () => {
         await axios.get('/orders/check_orders_unprocessed.php')
             .then((res) => {
                 unprocessedOrders.value = res.data.orders_info
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -106,7 +106,6 @@ export const Orders = defineStore('Orders', () => {
         await axios.get(`/orders/item.php?id=${route.params.id}`)
             .then((res) => {
                 orderDetail.value = res.data.order
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -279,7 +278,7 @@ export const Orders = defineStore('Orders', () => {
             await axios.post('/orders/send.php', formData)
                 .then(() => {
                     send++
-                    addMessages([`Отправлено ${send} из ${id_list.length}`], 'success')
+                    addMessages([`Отправлено ${send} из ${id_list.length}`], 'success', 'orders')
                 })
                 .catch(err => {
                     addMessages(err.response.data.messages, 'error')

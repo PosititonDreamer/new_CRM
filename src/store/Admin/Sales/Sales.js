@@ -19,7 +19,6 @@ export const Sales = defineStore('Sales', () => {
         await axios.get('/admin/sales/list.php')
             .then((res) => {
                 sales.value = res.data.sales_list
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

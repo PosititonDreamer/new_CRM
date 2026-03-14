@@ -23,7 +23,6 @@ export const OrdersFind = defineStore('OrdersFind', () => {
         await axios.post('/orders/find_list.php', formData)
             .then(res => {
                 orders.value = res.data.orders
-                addMessages(res.data.messages, 'success')
                 router.push({name: afterPage})
             })
             .catch(err => {

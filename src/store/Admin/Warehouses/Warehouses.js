@@ -28,7 +28,6 @@ export const Warehouses = defineStore('Warehouses', () => {
             .then(res => {
                 warehouses.value = res.data.warehouses
                 warehousesTypes.value = res.data.warehouses_type
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -99,7 +98,6 @@ export const Warehouses = defineStore('Warehouses', () => {
         await axios.get(`/admin/goods/notifications.php?check`)
             .then(res => {
                 notifications.value = res.data.check
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -116,7 +114,6 @@ export const Warehouses = defineStore('Warehouses', () => {
                     measure_units: res.data.measure_units,
                     warehouses: res.data.warehouses,
                 }
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')

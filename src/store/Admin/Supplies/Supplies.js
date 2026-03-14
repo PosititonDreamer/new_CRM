@@ -20,7 +20,6 @@ export const Supplies = defineStore('Supplies', () => {
         await axios.get('/admin/supplies/list.php')
             .then(res => {
                 supplies.value = res.data.supplies;
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

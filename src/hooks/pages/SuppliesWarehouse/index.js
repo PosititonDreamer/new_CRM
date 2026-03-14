@@ -79,11 +79,9 @@ export const HookSuppliesWarehouse = () => {
             }
         })
 
-        console.log(data.goods_weight)
 
         findSupply.list.good?.receive.filter(item => !item.hidden).forEach(item => {
             const giveItem = findSupply.list.good.give.find(give => give.id === item.id)
-
             if (giveItem.weight) {
                 data.goods.push({
                     id: item.id,
@@ -119,7 +117,9 @@ export const HookSuppliesWarehouse = () => {
                     title: item.show_title ? item.show_title : item.title,
                     quantity: item.quantity,
                     balance: item.balance,
-                    max: +giveItem.balance,
+                    max: computed(() => {
+                        return +giveItem.balance >= 0 ? +giveItem.balance : 0
+                    }),
                     measure: item.measure,
                     product: item.product,
                     few: +item.few,
@@ -153,7 +153,9 @@ export const HookSuppliesWarehouse = () => {
                     title: item.show_title ? item.show_title : item.title,
                     quantity: item.quantity,
                     balance: item.balance,
-                    max: +giveItem.balance,
+                    max: computed(() => {
+                        return +giveItem.balance >= 0 ? +giveItem.balance : 0
+                    }),
                     measure: item.measure,
                     product: item.product,
                     type: 'weight',
@@ -170,7 +172,9 @@ export const HookSuppliesWarehouse = () => {
                 id: item.id,
                 title: item.title,
                 balance: item.balance,
-                max: +giveItem.balance,
+                max: computed(() => {
+                    return +giveItem.balance >= 0 ? +giveItem.balance : 0
+                }),
                 type: 'consumable',
                 few: +item.few,
                 few_very: +item.few_very,
@@ -184,7 +188,9 @@ export const HookSuppliesWarehouse = () => {
                 id: item.id,
                 title: item.title,
                 balance: item.balance,
-                max: +giveItem.balance,
+                max: computed(() => {
+                    return +giveItem.balance >= 0 ? +giveItem.balance : 0
+                }),
                 type: 'other',
                 few: +item.few,
                 few_very: +item.few_very,
@@ -314,14 +320,15 @@ export const HookSuppliesWarehouse = () => {
     }
 
     const submitAcceptSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
-        await acceptSuppliesWarehouse(route.params.id, afterPage)
+        if (collectedList.value.length === getSuppliesDetail.value.list?.length) {
+            await acceptSuppliesWarehouse(route.params.id, afterPage)
+            if (getWorker.value.rule === 'Админ') {
+                await findWarehouses()
+            }
 
-        if (getWorker.value.rule === 'Админ') {
-            await findWarehouses()
-        }
-
-        if (getWorker.value.rule === 'Сборщик') {
-            await findWarehousesAssembler()
+            if (getWorker.value.rule === 'Сборщик') {
+                await findWarehousesAssembler()
+            }
         }
     }
 

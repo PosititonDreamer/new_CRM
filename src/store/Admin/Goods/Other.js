@@ -23,7 +23,6 @@ export const GoodsOther = defineStore('GoodsOther', () => {
             .then((res) => {
                 goodsOther.value = res.data.goods_other
                 goodsOtherType.value = res.data.goods_other_type
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

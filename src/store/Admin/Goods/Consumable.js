@@ -20,7 +20,6 @@ export const GoodsConsumable = defineStore('GoodsConsumable', () => {
         await axios.get(`/admin/goods/consumable/list.php?warehouse=${route.params.warehouse}`)
             .then((res) => {
                 goodsConsumable.value = res.data.goods_consumable
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

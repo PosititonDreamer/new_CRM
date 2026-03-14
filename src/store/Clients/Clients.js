@@ -37,7 +37,6 @@ export const Clients = defineStore('Clients', () => {
                     clients.value = res.data.clients
                 }
                 nextPage.value = res.data.next_page
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
@@ -54,7 +53,6 @@ export const Clients = defineStore('Clients', () => {
             .then((res) => {
                 nextPage.value = null
                 clients.value = res.data.clients
-                addMessages(res.data.messages, 'success')
                 router.push({name: afterPage})
             })
             .catch(err => {

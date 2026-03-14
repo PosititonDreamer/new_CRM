@@ -14,6 +14,7 @@ export const HookOrders = () => {
             date_end: null,
             delivery: null,
             sort: 'old',
+            find_status: "1"
         }
     )
 
@@ -733,6 +734,25 @@ export const HookOrders = () => {
         }
     ]
 
+    const filterStatuses = [
+        {
+            name: 'В обработке',
+            value: '3'
+        },
+        {
+            name: 'Создан',
+            value: '1'
+        },
+        {
+            name: 'Собран',
+            value: '2'
+        },
+        {
+            name: 'Отправлен',
+            value: '4'
+        },
+    ]
+
     const compositionTypes = [
         {
             name: "Товар",
@@ -795,7 +815,6 @@ export const HookOrders = () => {
         if (!getProductsList.value.length) {
             return []
         }
-        console.log(getProductsList)
 
         return getProductsList.value.filter(product => +product.hidden === 0).map(product => {
             return {
@@ -1026,5 +1045,6 @@ export const HookOrders = () => {
         copyTracksAll,
         copyTrack,
         copyNumber,
+        filterStatuses
     }
 }

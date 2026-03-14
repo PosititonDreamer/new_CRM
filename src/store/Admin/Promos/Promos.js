@@ -20,7 +20,6 @@ export const Promos = defineStore('Promos', () => {
         await axios.get('/admin/promos/list.php')
             .then((res) => {
                 promos.value = res.data.promos
-                addMessages(res.data.messages, 'success')
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')

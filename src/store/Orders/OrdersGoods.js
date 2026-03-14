@@ -24,7 +24,6 @@ export const OrdersGoods = defineStore('OrdersGoods', () => {
                         return +a.sort - +b.sort
                     }
                 });
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

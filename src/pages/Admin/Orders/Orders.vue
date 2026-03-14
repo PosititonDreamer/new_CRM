@@ -78,6 +78,7 @@ export default {
       copyTracksAll,
       copyTrack,
       copyNumber,
+      filterStatuses
     } = HookOrders()
 
     const {
@@ -261,7 +262,8 @@ export default {
       submitAddTrack,
       submitAddBlank,
       copyNumber,
-      filterUpdate
+      filterUpdate,
+      filterStatuses
     }
   }
 }
@@ -342,6 +344,15 @@ export default {
           :start-value="filter.sort"
           :empty="false"
           @update="changeFilter"
+      />
+      <u-select
+          title="Статус заказа"
+          :values="filterStatuses"
+          v-model="filter.find_status"
+          :start-value="filter.find_status"
+          :empty="false"
+          @update="changeFilter"
+          v-if="+route.params.status === 4"
       />
     </div>
     <orders-list

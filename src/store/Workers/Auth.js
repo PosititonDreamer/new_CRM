@@ -24,7 +24,6 @@ export const Auth = defineStore('Auth', () => {
                 axios.defaults.headers.common['Authorization'] = `${token}`;
                 localStorage.setItem('token', token);
                 worker.value = res.data.worker;
-                addMessages(res.data.messages, 'success')
                 if(route.name === 'Auth') {
                     if(worker.value.rule === 'Админ') {
                         router.push({name: "Admin"});
@@ -53,7 +52,6 @@ export const Auth = defineStore('Auth', () => {
             .then(res => {
                 axios.defaults.headers.common['Authorization'] = `${token}`;
                 worker.value = res.data.worker;
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')

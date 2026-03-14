@@ -16,6 +16,10 @@
     &:not(:last-child) {
       margin-bottom: 10px;
     }
+
+    @media screen and (max-width: 1000px) {
+      max-width: calc(var(--window-width) - 100px);
+    }
   }
 
   &__table {

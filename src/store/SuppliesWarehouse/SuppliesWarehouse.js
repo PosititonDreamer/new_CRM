@@ -30,7 +30,6 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
                 supplies.value = res.data.supplies
                 suppliesTypes.value = res.data.types
                 suppliesWarehouse.value = res.data.warehouses_supply
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -47,7 +46,6 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
                     list: res.data.list,
                     status_list: res.data.status_list
                 }
-                addMessages(res.data.messages, 'success')
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
