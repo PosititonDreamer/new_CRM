@@ -2,4 +2,8 @@
   border-radius: 5px;
   border: 1px solid var(--primary-25);
   padding: 10px;
+
+  &--yellow {
+    border-color: var(--yellow);
+  }
 }

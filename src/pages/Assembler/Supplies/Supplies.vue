@@ -166,6 +166,7 @@ export default {
           v-for="(item, id) in computedSupplyList.filter(child => +child.supply_status !== 3)"
           :key="`supplies-${item.id}`"
           :style="[{'--z-index': computedSupplyList.length - id}]"
+          :yellow="(+item.warehouse_id === +route.params.warehouse && +item.supply_status === 2) || (+item.warehouse_id !== +route.params.warehouse && +item.supply_status === 1)"
       >
         <u-actions
             class="supplies__actions"
@@ -259,9 +260,7 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.goods" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }} {{ item.quantity }} {{ item.measure }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }}
-                  </p>
+
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>
@@ -308,9 +307,6 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.weight" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }} {{ item.measure }}
-                  </p>
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>
@@ -357,9 +353,6 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.consumable" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }}
-                  </p>
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>
@@ -406,9 +399,6 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.other" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }}
-                  </p>
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>
@@ -478,9 +468,6 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.goods" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }} {{ item.quantity }} {{ item.measure }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }}
-                  </p>
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>
@@ -527,9 +514,6 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.weight" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }} {{ item.measure }}
-                  </p>
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>
@@ -576,9 +560,6 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.consumable" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }}
-                  </p>
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>
@@ -625,9 +606,6 @@ export default {
               <div class="list">
                 <div class="supplies__item" v-for="item in computedList.other" :key="`supplies-item-${item.id}`">
                   <p class="text text--bold text--big">{{ item.title }}</p>
-                  <p :class="['text', {'text--bold text--few': +item.balance <= +item.few && +item.balance > ++item.few_very}, {'text--bold text--few-very': +item.balance <= ++item.few_very}, {'text--null': +item.balance === 0}]">
-                    <b>Остаток: </b> {{ +item.balance }}
-                  </p>
                   <p class="text">
                     <b>Максимальная поставка: </b> {{ item.max }}
                   </p>

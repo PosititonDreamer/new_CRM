@@ -357,6 +357,7 @@ export const HookSuppliesWarehouse = () => {
             return {
                 ...item,
                 warehouse: +route.params.warehouse !== +warehouse.warehouse_receive ? `Поставка в: ${warehouse?.warehouse_receive_title}` : `Поставка из: ${warehouse?.warehouse_give_title}`,
+                warehouse_id: +warehouse.warehouse_receive,
                 status: status.title,
                 actions: computed(() => {
                     if (+route.params.warehouse !== +warehouse.warehouse_receive) {

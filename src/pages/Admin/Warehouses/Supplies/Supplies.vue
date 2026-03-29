@@ -194,6 +194,7 @@ export default {
           v-for="(item, id) in computedSupplyList.filter(child => +child.supply_status !== 3)"
           :key="`supplies-${item.id}`"
           :style="[{'--z-index': computedSupplyList.length - id}]"
+          :yellow="(+item.warehouse_id === +route.params.warehouse && +item.supply_status === 2) || (+item.warehouse_id !== +route.params.warehouse && +item.supply_status === 1)"
       >
         <u-actions
             class="supplies__actions"
