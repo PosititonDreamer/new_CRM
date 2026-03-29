@@ -422,6 +422,7 @@ export default {
     <u-popup
         title="Выписка штрафа"
         v-if="route.name === 'WorkersCreatePenalty'"
+        @close="router.push({name: 'Workers'})"
     >
       <u-form
           text="Выписать штраф"
