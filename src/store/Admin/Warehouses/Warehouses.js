@@ -35,12 +35,14 @@ export const Warehouses = defineStore('Warehouses', () => {
         updateLoader({method: 'findWarehouses', status: true})
     }
 
-    const createWarehouse = async ({title, description, type}) => {
+    const createWarehouse = async ({title, description, type, few, few_very}) => {
         updateLoader({method: 'createWarehouse', status: false})
         const formData = new FormData()
         formData.append('title', title)
         formData.append('description', description)
         formData.append('type', type)
+        formData.append('few', few)
+        formData.append('few_very', few_very)
         await axios.post(`/admin/warehouses/create.php`, formData)
             .then(res => {
                 warehouses.value.push(res.data.warehouse)
@@ -53,13 +55,15 @@ export const Warehouses = defineStore('Warehouses', () => {
         updateLoader({method: 'createWarehouse', status: true})
     }
 
-    const updateWarehouse = async ({title, description, type, id}) => {
+    const updateWarehouse = async ({title, description, type, id, few, few_very}) => {
         updateLoader({method: 'updateWarehouse', status: false})
         const formData = new FormData()
         formData.append('title', title)
         formData.append('description', description)
         formData.append('type', type)
         formData.append('id', id)
+        formData.append('few', few)
+        formData.append('few_very', few_very)
         await axios.post(`/admin/warehouses/update.php`, formData)
             .then(res => {
                 warehouses.value = warehouses.value.map(warehouse => {

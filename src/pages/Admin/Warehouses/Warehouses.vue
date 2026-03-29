@@ -25,6 +25,8 @@ export default {
       title,
       description,
       type,
+      few,
+      few_very,
       router,
       route,
       submitCreateWarehouses,
@@ -95,6 +97,8 @@ export default {
       title,
       description,
       type,
+      few,
+      few_very,
       router,
       route,
       submitCreateWarehouses,
@@ -131,7 +135,15 @@ export default {
           <b>Описание: </b> {{ warehouse.description }}
         </p>
         <p class="text">
-
+          <b>Тип: </b> {{ getWarehousesTypes.find(getType => getType.id === warehouse.type)?.title }}
+        </p>
+        <p class="text">
+          <b>Малое количество товаров: </b> {{ warehouse.few }} дней
+        </p>
+        <p class="text">
+          <b>Очень малое количество товаров: </b> {{ warehouse.few_very }} дней
+        </p>
+        <p class="text">
           <b>Тип: </b> {{ getWarehousesTypes.find(getType => getType.id === warehouse.type)?.title }}
         </p>
 
@@ -178,6 +190,24 @@ export default {
               v-model="type.value"
               @change="type.tacked = true"
           />
+          <u-input
+              type="number"
+              title="Малое количество товаров"
+              :start-value="few.value"
+              :error="few.error"
+              v-model="few.value"
+              @change="few.tacked = true"
+              @blur="few.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Очень малое количество товаров"
+              :start-value="few_very.value"
+              :error="few_very.error"
+              v-model="few_very.value"
+              @change="few_very.tacked = true"
+              @blur="few_very.tacked = true"
+          />
         </div>
       </u-form>
     </u-popup>
@@ -213,6 +243,24 @@ export default {
               :error="type.error"
               v-model="type.value"
               @change="type.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Малое количество товаров"
+              :start-value="few.value"
+              :error="few.error"
+              v-model="few.value"
+              @change="few.tacked = true"
+              @blur="few.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Очень малое количество товаров"
+              :start-value="few_very.value"
+              :error="few_very.error"
+              v-model="few_very.value"
+              @change="few_very.tacked = true"
+              @blur="few_very.tacked = true"
           />
         </div>
       </u-form>

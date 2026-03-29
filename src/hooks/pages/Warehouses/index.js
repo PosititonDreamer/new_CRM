@@ -7,6 +7,8 @@ export const HookWarehouses = () => {
     const {data: title} = validateInput("String", "", 3)
     const {data: description} = validateInput("String", "", 3)
     const {data: type} = validateInput("String", "", 1)
+    const {data: few} = validateInput("Number", 0, 1)
+    const {data: few_very} = validateInput("Number", 0, 1)
 
     const router = useRouter()
     const route = useRoute()
@@ -15,12 +17,16 @@ export const HookWarehouses = () => {
         title.value.tacked = true
         description.value.tacked = true
         type.value.tacked = true
+        few.value.tacked = true
+        few_very.value.tacked = true
 
-        if(title.value.valid && description.value.valid && type.value.valid) {
+        if(title.value.valid && description.value.valid && type.value.valid && few.value.valid && few_very.value.valid) {
             await createWarehouse({
                 title: title.value.value,
                 description: description.value.value,
                 type: type.value.value,
+                few: few.value.value,
+                few_very: few_very.value.value,
             })
             await findWarehouses()
         }
@@ -30,13 +36,17 @@ export const HookWarehouses = () => {
         title.value.tacked = true
         description.value.tacked = true
         type.value.tacked = true
+        few.value.tacked = true
+        few_very.value.tacked = true
 
-        if(title.value.valid && description.value.valid && type.value.valid) {
+        if(title.value.valid && description.value.valid && type.value.valid  && few.value.valid && few_very.value.valid) {
             await updateWarehouse({
                 title: title.value.value,
                 description: description.value.value,
                 type: type.value.value,
                 id: route.params.id,
+                few: few.value.value,
+                few_very: few_very.value.value,
             })
             await findWarehouses()
         }
@@ -51,6 +61,8 @@ export const HookWarehouses = () => {
         title,
         description,
         type,
+        few,
+        few_very,
         router,
         route,
         submitCreateWarehouses,
