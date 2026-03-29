@@ -170,26 +170,6 @@ export default {
           </div>
         </div>
         <div class="list">
-          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Products'}">Продукты
-          </router-link>
-          <div class="sidebar__sub-list list">
-            <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Other'}">Кривые
-                продукты
-              </router-link>
-            </div>
-            <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'MeasureUnits'}">
-                Единицы измерения
-              </router-link>
-            </div>
-            <div class="list">
-              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Packing'}">Упаковки
-              </router-link>
-            </div>
-          </div>
-        </div>
-        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Workers'}">Работники
           </router-link>
         </div>
@@ -251,6 +231,30 @@ export default {
           </div>
         </div>
         <div class="list">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Products'}">Продукты
+          </router-link>
+          <div class="sidebar__sub-list list">
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Other'}">Кривые
+                продукты
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'MeasureUnits'}">
+                Единицы измерения
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Packing'}">Упаковки
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'ProductsConnections'}">Связь продуктов
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Graphics'}">Графики
           </router-link>
         </div>
@@ -267,6 +271,9 @@ export default {
         </div>
         <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Magazines'}">Журнал товаров</router-link>
+        </div>
+        <div class="list">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Purchasing'}">Закупка</router-link>
         </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">

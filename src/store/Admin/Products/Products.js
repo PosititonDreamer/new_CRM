@@ -25,13 +25,14 @@ export const Products = defineStore('Products', () => {
         updateLoader({method: 'findProducts', status: true})
     }
 
-    const createProduct = async ({title, show_title, measure_unit, client_title}) => {
+    const createProduct = async ({title, show_title, measure_unit, client_title, weight}) => {
         updateLoader({method: 'createProduct', status: false})
         const formData = new FormData()
         formData.append('title', title)
         formData.append('show_title', show_title)
         formData.append('measure_unit', measure_unit)
         formData.append('client_title', client_title)
+        formData.append('weight', weight)
         await axios.post('/admin/products/create.php', formData)
             .then(res => {
                 products.value.push(res.data.product)
@@ -44,7 +45,7 @@ export const Products = defineStore('Products', () => {
         updateLoader({method: 'createProduct', status: true})
     }
 
-    const updateProduct = async ({title, show_title, measure_unit, sort, id, client_title}) => {
+    const updateProduct = async ({title, show_title, measure_unit, sort, id, client_title, weight}) => {
         updateLoader({method: 'updateProduct', status: false})
         const formData = new FormData()
         formData.append('title', title)
@@ -53,6 +54,7 @@ export const Products = defineStore('Products', () => {
         formData.append('sort', sort)
         formData.append('id', id)
         formData.append('client_title', client_title)
+        formData.append('weight', weight)
         await axios.post('/admin/products/update.php', formData)
             .then(res => {
                 products.value = products.value.map(product => {

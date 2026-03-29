@@ -87,12 +87,14 @@ export default {
         product.title.value.value = findProduct.title
         product.showTitle.value.value = findProduct.show_title
         product.clientTitle.value.value = findProduct.client_title
+        product.weight.value.value = findProduct.weight
 
         product.measureUnit.value.tacked = true
         product.sort.value.tacked = true
         product.title.value.tacked = true
         product.showTitle.value.tacked = true
         product.clientTitle.value.tacked = true
+        product.weight.value.tacked = true
       }
     }
 
@@ -101,6 +103,15 @@ export default {
     })
 
     changeRoute(route)
+
+    const changeMeasure = () => {
+      product.measureUnit.value.tacked = true
+      if (+product.measureUnit.value.value === 1) {
+        product.weight.value.value = 0
+      } else {
+        product.weight.value.value = 1
+      }
+    }
 
     return {
       getProducts,
@@ -112,7 +123,8 @@ export default {
       submitCreateProduct,
       submitUpdateProduct,
       submitDeleteProduct,
-      measures
+      measures,
+      changeMeasure
     }
   }
 }
@@ -143,6 +155,9 @@ export default {
           </p>
           <p class="text">
             <b>Единица измеренеия: </b>{{ getMeasureUnits.find(measureUnit => measureUnit.id === product.measure_unit)?.title }}
+          </p>
+          <p class="text">
+            <b>Актуальный вес: </b>{{ product.weight }}
           </p>
         </div>
         <u-actions
@@ -201,8 +216,20 @@ export default {
               :values="measures"
               v-model="product.measureUnit.value.value"
               :start-value="product.measureUnit.value.value"
-              @change="product.measureUnit.value.tacked = true"
+              @change="changeMeasure"
               :error="product.measureUnit.value.error"
+              class="products__select"
+          />
+          <u-input
+              v-if="+product.measureUnit.value.value === 1"
+              title="Актуальный вес"
+              type="number"
+              v-model="product.weight.value.value"
+              :start-value="product.weight.value.value"
+              @blur="product.weight.value.tacked = true"
+              :error="product.weight.value.error"
+              @change="product.weight.value.tacked = true"
+              :step="0.01"
           />
         </div>
       </u-form>
@@ -246,8 +273,20 @@ export default {
               :values="measures"
               v-model="product.measureUnit.value.value"
               :start-value="product.measureUnit.value.value"
-              @change="product.measureUnit.value.tacked = true"
+              @change="changeMeasure"
               :error="product.measureUnit.value.error"
+              class="products__select"
+          />
+          <u-input
+              v-if="+product.measureUnit.value.value === 1"
+              title="Актуальный вес"
+              type="number"
+              v-model="product.weight.value.value"
+              :start-value="product.weight.value.value"
+              @blur="product.weight.value.tacked = true"
+              :error="product.weight.value.error"
+              @change="product.weight.value.tacked = true"
+              :step="0.01"
           />
           <u-input
               type="number"

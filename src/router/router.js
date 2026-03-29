@@ -31,6 +31,8 @@ import OrderGoodsPage from "@/pages/OrdersGoods/OrdersGoods.vue";
 import MailingsPage from "@/pages/Admin/Mailings/Mailings.vue";
 import SalesPage from "@/pages/Admin/Sales/Sales.vue";
 import MagazinesPage from "@/pages/Admin/Magazines/Magazines.vue";
+import ConnectionPage from "@/pages/Admin/Products/Connection/Connection.vue";
+import PurchasingPage from "@/pages/Admin/Purchasing/Purchasing.vue";
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -119,6 +121,31 @@ const routes = [
             },
             {
                 name: "ProductsDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "ProductsConnections",
+        path: '/admin/products/connections',
+        component: ConnectionPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Связь продуктов"
+        },
+        children: [
+            {
+                name: "ProductsConnectionsCreate",
+                path: 'create',
+            },
+            {
+                name: "ProductsConnectionsUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "ProductsConnectionsDelete",
                 path: 'delete/:id',
             }
         ]
@@ -588,6 +615,23 @@ const routes = [
         children: [
             {
                 name: "GraphicsSetting",
+                path: 'setting',
+            }
+        ]
+    },
+    {
+        name: "Purchasing",
+        path: '/admin/purchasing',
+        component: PurchasingPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Закупка"
+        },
+        children: [
+            {
+                name: "PurchasingSetting",
                 path: 'setting',
             }
         ]

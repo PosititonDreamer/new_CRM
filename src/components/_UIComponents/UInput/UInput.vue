@@ -37,6 +37,10 @@ export default {
     rows: {
       type: Number,
       default: 4,
+    },
+    step: {
+      type: Number,
+      default: 1,
     }
   },
   setup({startValue, type}, {emit}) {
@@ -102,6 +106,7 @@ export default {
         @blur="$emit('blur')"
         :min="min"
         :max="max"
+        :step="step"
     />
     <span class="u-input__error">{{ error }}</span>
   </label>
