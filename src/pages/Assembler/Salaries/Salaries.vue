@@ -42,7 +42,7 @@ export default {
     
     const computedNotPaySalaryWorker = computed(() => {
       const penalties = getSalaries.value.penalties.filter(item => !item.ready)
-      const salaries = getSalaries.value.salaries.filter(item => !item.ready)
+      const salaries = getSalaries.value.salaries.filter(item => !item.ready && item.send)
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
         salary: salaries.length ? (salaries.length * computedSalaryWorker.value)  : 0,
@@ -92,6 +92,10 @@ export default {
       <p class="text">
         <b>Неоплаченных заказов за выбранный период: </b>
         {{ getSalaries.salaries.filter(item => !item.ready || !item.send).length }}
+      </p>
+      <p class="text">
+        <b>Отправленных заказов за выбранный период: </b>
+        {{ getSalaries.salaries.filter(item => item.send).length }}
       </p>
       <p class="text">
         <b>Всего неоплаченных заказов: </b> {{ getSalaries.salaries_length }}
@@ -191,7 +195,7 @@ export default {
               title="Не оплаченные заказы"
           >
             <div class="list">
-              <u-card v-for="salary in getSalaries.salaries.filter(item => !item.ready)">
+              <u-card v-for="salary in getSalaries.salaries.filter(item => !item.ready && item.send)">
                 <p class="sub-title">
                   {{ salary.track }}
                 </p>

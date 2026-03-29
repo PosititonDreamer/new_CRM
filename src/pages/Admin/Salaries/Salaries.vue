@@ -64,7 +64,7 @@ export default {
 
     const computedNotPaySalaryWorker = computed(() => {
       const penalties = getSalaries.value.penalties.filter(item => !item.ready)
-      const salaries = getSalaries.value.salaries.filter(item => !item.ready)
+      const salaries = getSalaries.value.salaries.filter(item => !item.ready && item.send)
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
         salary: salaries.length ? (salaries.length * computedSalaryWorker.value) : 0,
@@ -86,7 +86,8 @@ export default {
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
 
       return {
-        salaries: (computedSalaryWorker.value * salaries.length) + price,
+        price,
+        salaries: (computedSalaryWorker.value * salaries.length),
         penalties: penalties.reduce((sum, item) => sum + +item.sum, 0),
       }
     })
@@ -176,6 +177,10 @@ export default {
         {{ getSalaries.salaries.filter(item => !item.ready || !item.send).length }}
       </p>
       <p class="text">
+        <b>Отправленных заказов за выбранный период: </b>
+        {{ getSalaries.salaries.filter(item => item.send).length }}
+      </p>
+      <p class="text">
         <b>Всего неоплаченных заказов: </b> {{ getSalaries.salaries_length }}
       </p>
       <template v-if="getSalaries.penalties.length">
@@ -204,7 +209,7 @@ export default {
       </p>
 
       <p class="text">
-        <b>Формула расчета: </b> Сумма заказов * стоимость одного заказа + сумма доплат за упаковку - сумма штрафов
+        <b>Формула расчета: </b> Сумма отправленных заказов * стоимость одного заказа + сумма доплат за упаковку - сумма штрафов
       </p>
       <p class="text">
         <b>Оплачено: </b> {{ computedPaySalaryWorker.salary + computedPaySalaryWorker.price - computedPaySalaryWorker.penalty }} ₽
@@ -273,7 +278,7 @@ export default {
               title="Не оплаченные заказы"
           >
             <div class="list">
-              <u-card v-for="salary in getSalaries.salaries.filter(item => !item.ready)">
+              <u-card v-for="salary in getSalaries.salaries.filter(item => !item.ready && item.send)">
                 <p class="sub-title">
                   {{ salary.track }}
                 </p>
@@ -506,7 +511,13 @@ export default {
               <b>Стоимость одного заказа: </b> {{ computedSalaryWorker }} ₽
             </p>
             <p class="text">
+              <b>Сумма доплаты: </b> {{ computedCurrentSalaries.price }} ₽
+            </p>
+            <p class="text">
               <b>Сумма оплаты за заказы: </b> {{ computedCurrentSalaries.salaries }} ₽
+            </p>
+            <p class="text">
+              <b>Итоговая сумма за заказы: </b> {{ computedCurrentSalaries.salaries + computedCurrentSalaries.price }} ₽
             </p>
             <p class="text">
               <b>Штрафов: </b> {{ salaryAssembler.penaltiesList.value.length }}
