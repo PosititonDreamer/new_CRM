@@ -344,6 +344,7 @@ export default {
           :start-value="filter.sort"
           :empty="false"
           @update="changeFilter"
+          class="orders__sort"
       />
       <u-select
           title="Статус заказа"

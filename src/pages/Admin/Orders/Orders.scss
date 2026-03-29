@@ -30,8 +30,12 @@
     margin-top: 20px;
   }
 
-  &__filter-delivery {
+  &__sort {
     z-index: 1;
+  }
+
+  &__filter-delivery {
+    z-index: 2;
   }
 
   &__select {

@@ -311,7 +311,7 @@ export default {
                   v-for="product in products"
                   :key="`good-consumable-list-${product.id}`"
               >
-                <p class="sub-title">{{ product.show_title ?? product.title }}</p>
+                <p class="sub-title">{{ product.show_title ? product.show_title : product.title }}</p>
                 <div class="list goods-consumable__wrapper">
                   <u-checkbox
                       v-for="good in product.goods"
@@ -384,7 +384,7 @@ export default {
                   v-for="product in products"
                   :key="`good-consumable-list-${product.id}`"
               >
-                <p class="sub-title">{{ product.show_title ?? product.title }}</p>
+                <p class="sub-title">{{ product.show_title ? product.show_title : product.title }}</p>
                 <div class="list goods-consumable__wrapper">
                   <u-checkbox
                       v-for="good in product.goods"

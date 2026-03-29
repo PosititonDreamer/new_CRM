@@ -62,6 +62,7 @@ export default {
       computedStatus,
       submitAddBlank,
       clearData,
+      filterStatuses
     } = HookOrders()
 
     const {
@@ -227,7 +228,8 @@ export default {
       submitAddBlank,
       selectClient,
       findClients,
-      filterUpdate
+      filterUpdate,
+      filterStatuses
     }
   }
 }
@@ -283,6 +285,16 @@ export default {
           :start-value="filter.sort"
           :empty="false"
           @update="changeFilter"
+          class="orders__sort"
+      />
+      <u-select
+          title="Статус заказа"
+          :values="filterStatuses"
+          v-model="filter.find_status"
+          :start-value="filter.find_status"
+          :empty="false"
+          @update="changeFilter"
+          v-if="+route.params.status === 4"
       />
     </div>
     <orders-list
