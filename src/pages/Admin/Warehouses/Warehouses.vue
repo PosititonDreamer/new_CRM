@@ -27,6 +27,8 @@ export default {
       type,
       few,
       few_very,
+      few_other,
+      few_very_other,
       router,
       route,
       submitCreateWarehouses,
@@ -60,10 +62,18 @@ export default {
         title.value.value = ""
         description.value.value = ""
         type.value.value = ""
+        few.value.value = 0
+        few_very.value.value = 0
+        few_other.value.value = 0
+        few_very_other.value.value = 0
 
         title.value.tacked = false
         description.value.tacked = false
         type.value.tacked = false
+        few.value.tacked = false
+        few_very.value.tacked = false
+        few_other.value.tacked = false
+        few_very_other.value.tacked = false
 
         document.body.removeAttribute("style");
         return;
@@ -79,11 +89,21 @@ export default {
         title.value.value = findWarehouse.title
         description.value.value = findWarehouse.description
         type.value.value = findWarehouse.type
+        few.value.value = findWarehouse.few
+        few_very.value.value = findWarehouse.few_very
+        few_other.value.value = findWarehouse.few_other
+        few_very_other.value.value = findWarehouse.few_very_other
 
         title.value.tacked = true
         description.value.tacked = true
         type.value.tacked = true
-        loading.value = true
+        few.value.tacked = true
+        few_very.value.tacked = true
+        few_other.value.tacked = true
+        few_very_other.value.tacked = true
+        setTimeout(() => {
+          loading.value = true
+        })
       }
     }
 
@@ -99,6 +119,8 @@ export default {
       type,
       few,
       few_very,
+      few_other,
+      few_very_other,
       router,
       route,
       submitCreateWarehouses,
@@ -142,6 +164,12 @@ export default {
         </p>
         <p class="text">
           <b>Очень малое количество товаров: </b> {{ warehouse.few_very }} дней
+        </p>
+        <p class="text">
+          <b>Малое количество расходников и коробок: </b> {{ warehouse.few_other }} дней
+        </p>
+        <p class="text">
+          <b>Очень малое количество расходников и коробок: </b> {{ warehouse.few_very_other }} дней
         </p>
         <p class="text">
           <b>Тип: </b> {{ getWarehousesTypes.find(getType => getType.id === warehouse.type)?.title }}
@@ -208,6 +236,24 @@ export default {
               @change="few_very.tacked = true"
               @blur="few_very.tacked = true"
           />
+          <u-input
+              type="number"
+              title="Малое количество расходников и коробок"
+              :start-value="few_other.value"
+              :error="few_other.error"
+              v-model="few_other.value"
+              @change="few_other.tacked = true"
+              @blur="few_other.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Очень малое количество расходников и коробок"
+              :start-value="few_very_other.value"
+              :error="few_very_other.error"
+              v-model="few_very_other.value"
+              @change="few_very_other.tacked = true"
+              @blur="few_very_other.tacked = true"
+          />
         </div>
       </u-form>
     </u-popup>
@@ -261,6 +307,24 @@ export default {
               v-model="few_very.value"
               @change="few_very.tacked = true"
               @blur="few_very.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Малое количество расходников и коробок"
+              :start-value="few_other.value"
+              :error="few_other.error"
+              v-model="few_other.value"
+              @change="few_other.tacked = true"
+              @blur="few_other.tacked = true"
+          />
+          <u-input
+              type="number"
+              title="Очень малое количество расходников и коробок"
+              :start-value="few_very_other.value"
+              :error="few_very_other.error"
+              v-model="few_very_other.value"
+              @change="few_very_other.tacked = true"
+              @blur="few_very_other.tacked = true"
           />
         </div>
       </u-form>

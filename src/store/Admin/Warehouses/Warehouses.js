@@ -35,7 +35,7 @@ export const Warehouses = defineStore('Warehouses', () => {
         updateLoader({method: 'findWarehouses', status: true})
     }
 
-    const createWarehouse = async ({title, description, type, few, few_very}) => {
+    const createWarehouse = async ({title, description, type, few, few_very, few_other, few_very_other}) => {
         updateLoader({method: 'createWarehouse', status: false})
         const formData = new FormData()
         formData.append('title', title)
@@ -43,6 +43,8 @@ export const Warehouses = defineStore('Warehouses', () => {
         formData.append('type', type)
         formData.append('few', few)
         formData.append('few_very', few_very)
+        formData.append('few_other', few_other)
+        formData.append('few_very_other', few_very_other)
         await axios.post(`/admin/warehouses/create.php`, formData)
             .then(res => {
                 warehouses.value.push(res.data.warehouse)
@@ -55,7 +57,7 @@ export const Warehouses = defineStore('Warehouses', () => {
         updateLoader({method: 'createWarehouse', status: true})
     }
 
-    const updateWarehouse = async ({title, description, type, id, few, few_very}) => {
+    const updateWarehouse = async ({title, description, type, id, few, few_very, few_other, few_very_other}) => {
         updateLoader({method: 'updateWarehouse', status: false})
         const formData = new FormData()
         formData.append('title', title)
@@ -64,6 +66,8 @@ export const Warehouses = defineStore('Warehouses', () => {
         formData.append('id', id)
         formData.append('few', few)
         formData.append('few_very', few_very)
+        formData.append('few_other', few_other)
+        formData.append('few_very_other', few_very_other)
         await axios.post(`/admin/warehouses/update.php`, formData)
             .then(res => {
                 warehouses.value = warehouses.value.map(warehouse => {
