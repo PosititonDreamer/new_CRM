@@ -138,10 +138,14 @@ export default {
                 } else {
                   return action
                 }
+              } else if(action.name === 'delivered') {
+                return order.delivered ? null : action
+              } else if(action.name === 'keeped') {
+                return order.keeped ? null: action
               } else {
                 return action
               }
-            }).filter(action => action)
+            }).filter(action => !!action)
           "
           @collect="$emit('collect', order.id)"
           @preview="$emit('preview', order.id)"
@@ -153,7 +157,11 @@ export default {
           @addTrack="$emit('addTrack', order.id)"
           @return="$emit('return', order.id)"
           @send="$emit('send', order.id)"
+          @delivered="$emit('delivered', order.id)"
+          @keeped="$emit('keeped', order.id)"
+          @finish="$emit('finish', order.id)"
           @copyTrack="$emit('copyTrack', order)"
+
       />
     </u-card>
   </div>
@@ -223,6 +231,10 @@ export default {
                 } else {
                   return action
                 }
+              } else if(action.name === 'delivered') {
+                return order.delivered ? null : action
+              } else if(action.name === 'keeped') {
+                return order.keeped ? null: action
               } else {
                 return action
               }
@@ -238,6 +250,9 @@ export default {
           @addTrack="$emit('addTrack', order.id)"
           @return="$emit('return', order.id)"
           @send="$emit('send', order.id)"
+          @delivered="$emit('delivered', order.id)"
+          @keeped="$emit('keeped', order.id)"
+          @finish="$emit('finish', order.id)"
           @copyTrack="$emit('copyTrack', order)"
       />
     </div>

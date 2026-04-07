@@ -232,6 +232,62 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'deleteOrders', status: true})
     }
 
+    const deliveredOrders = async (id, afterPage) => {
+        updateLoader({method: 'deliveredOrders', status: false})
+        const formData = new FormData();
+        formData.append('id', id)
+        await axios.post('/orders/delivered_message.php', formData)
+            .then((res) => {
+                orders.value = orders.value.map(order => {
+                    if(+order.id === +id) {
+                        order.delivered = true
+                    }
+                    return order
+                })
+                router.push({name: afterPage, params: {status: route.params.status}});
+                addMessages(res.data.messages, 'success')
+                findUnprocessedOrders()
+            })
+            .catch(err => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'deliveredOrders', status: true})
+    }
+
+    const keepedOrders = async (id, afterPage) => {
+        updateLoader({method: 'keepedOrders', status: false})
+        const formData = new FormData();
+        formData.append('id', id)
+        await axios.post('/orders/keeped_message.php', formData)
+            .then((res) => {
+                orders.value = orders.value.filter(order => +order.id !== +id)
+                router.push({name: afterPage, params: {status: route.params.status}});
+                addMessages(res.data.messages, 'success')
+                findUnprocessedOrders()
+            })
+            .catch(err => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'keepedOrders', status: true})
+    }
+
+    const finishOrders = async (id, afterPage) => {
+        updateLoader({method: 'finishOrders', status: false})
+        const formData = new FormData();
+        formData.append('id', id)
+        await axios.post('/orders/finish.php', formData)
+            .then((res) => {
+                orders.value = orders.value.filter(order => +order.id !== +id)
+                router.push({name: afterPage, params: {status: route.params.status}});
+                addMessages(res.data.messages, 'success')
+                findUnprocessedOrders()
+            })
+            .catch(err => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'finishOrders', status: true})
+    }
+
     const returnOrders = async (id, afterPage) => {
         updateLoader({method: 'returnOrders', status: false})
         const formData = new FormData();
@@ -419,5 +475,8 @@ export const Orders = defineStore('Orders', () => {
         clearClientsList,
         findUnprocessedOrders,
         getUnprocessedOrders,
+        deliveredOrders,
+        keepedOrders,
+        finishOrders,
     }
 });

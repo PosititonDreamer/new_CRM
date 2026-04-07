@@ -35,6 +35,9 @@ export const HookOrders = () => {
         createOrders,
         updateOrders,
         deleteOrders,
+        deliveredOrders,
+        keepedOrders,
+        finishOrders,
         returnOrders,
         collectOrders,
         sendOrders,
@@ -205,6 +208,18 @@ export const HookOrders = () => {
         await deleteOrders(route.params.id, afterPage)
     }
 
+    const submitKeepedOrders = async (afterPage = 'Orders') => {
+        await keepedOrders(route.params.id, afterPage)
+    }
+
+    const submitDeliveredOrders = async (afterPage = 'Orders') => {
+        await deliveredOrders(route.params.id, afterPage)
+    }
+
+    const submitFinishOrders = async (afterPage = 'Orders') => {
+        await finishOrders(route.params.id, afterPage)
+    }
+
     const submitReturnOrders = async (afterPage = 'Orders') => {
         await returnOrders(route.params.id, afterPage)
     }
@@ -291,7 +306,26 @@ export const HookOrders = () => {
 
     const actionsOrders = computed(() => {
         if (getWorker.value.rule === 'Админ') {
-            if (+route.params.status === 1) {
+            if(+route.params.status === 0) {
+                return [
+                    {
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        name: "delivered",
+                        text: "Заказ доставлен"
+                    },
+                    {
+                        name: "keeped",
+                        text: "Истекает срок хранения"
+                    },
+                    {
+                        name: "finish",
+                        text: "Убрать из списка"
+                    },
+                ]
+            } else if (+route.params.status === 1) {
                 return [
                     {
                         name: "collect",
@@ -450,7 +484,26 @@ export const HookOrders = () => {
                 ]
             }
         } else if (getWorker.value.rule === 'Оператор') {
-            if (+route.params.status === 1) {
+            if(+route.params.status === 0) {
+                return [
+                    {
+                        name: "preview",
+                        text: "Посмотреть"
+                    },
+                    {
+                        name: "delivered",
+                        text: "Заказ доставлен"
+                    },
+                    {
+                        name: "keeped",
+                        text: "Истекает срок хранения"
+                    },
+                    {
+                        name: "finish",
+                        text: "Убрать из списка"
+                    },
+                ]
+            } else if (+route.params.status === 1) {
                 return [
                     {
                         name: "preview",
@@ -1045,6 +1098,9 @@ export const HookOrders = () => {
         copyTracksAll,
         copyTrack,
         copyNumber,
-        filterStatuses
+        filterStatuses,
+        submitKeepedOrders,
+        submitDeliveredOrders,
+        submitFinishOrders,
     }
 }

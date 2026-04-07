@@ -684,6 +684,18 @@ const routes = [
                 path: "send/:id"
             },
             {
+                name: "OrdersDelivered",
+                path: "delivered/:id"
+            },
+            {
+                name: "OrdersKeeped",
+                path: "keeped/:id"
+            },
+            {
+                name: "OrdersFinish",
+                path: "finish/:id"
+            },
+            {
                 name: "OrdersSendSeveral",
                 path: "send-several"
             }
@@ -912,6 +924,18 @@ const routes = [
             {
                 name: "OperatorOrdersReturn",
                 path: 'return/:id',
+            },
+            {
+                name: "OperatorOrdersDelivered",
+                path: "delivered/:id"
+            },
+            {
+                name: "OperatorOrdersKeeped",
+                path: "keeped/:id"
+            },
+            {
+                name: "OperatorOrdersFinish",
+                path: "finish/:id"
             },
             {
                 name: "OperatorOrdersAddBlank",

@@ -147,6 +147,14 @@ export default {
               </router-link>
             </div>
             <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'Orders', params: {status: 0}}">Отправить письмо
+                <template v-if="+getUnprocessedOrders.delivered">
+                  {{ getUnprocessedOrders.delivered }}
+                </template>
+              </router-link>
+            </div>
+            <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'OrdersFind'}">Поиск
                 заказов
               </router-link>
@@ -445,6 +453,14 @@ export default {
                            :to="{name: 'OperatorOrders', params: {status: 5}}">Возвращенные
                 <template v-if="+getUnprocessedOrders.returned">
                   {{ getUnprocessedOrders.returned }}
+                </template>
+              </router-link>
+            </div>
+            <div class="list">
+              <router-link class="sidebar__link" active-class="sidebar__link--active"
+                           :to="{name: 'Orders', params: {status: 0}}">Отправить письмо
+                <template v-if="+getUnprocessedOrders.delivered">
+                  {{ getUnprocessedOrders.delivered }}
                 </template>
               </router-link>
             </div>

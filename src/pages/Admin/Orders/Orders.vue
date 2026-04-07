@@ -78,7 +78,10 @@ export default {
       copyTracksAll,
       copyTrack,
       copyNumber,
-      filterStatuses
+      filterStatuses,
+      submitKeepedOrders,
+      submitDeliveredOrders,
+      submitFinishOrders,
     } = HookOrders()
 
     const {
@@ -263,7 +266,10 @@ export default {
       submitAddBlank,
       copyNumber,
       filterUpdate,
-      filterStatuses
+      filterStatuses,
+      submitKeepedOrders,
+      submitDeliveredOrders,
+      submitFinishOrders,
     }
   }
 }
@@ -371,6 +377,9 @@ export default {
         @addTrack="e => router.push({name: 'OrdersAddTrack', params: {id: e}})"
         @return="e => router.push({name: 'OrdersReturn', params: {id: e}})"
         @send="e => router.push({name: 'OrdersSend', params: {id: e}})"
+        @delivered="e => router.push({name: 'OrdersDelivered', params: {id: e}})"
+        @keeped="e => router.push({name: 'OrdersKeeped', params: {id: e}})"
+        @finish="e => router.push({name: 'OrdersFinish', params: {id: e}})"
         @copyTrack="e => copyTrack(e)"
         :check-status="+route.params.status === 6"
     />
@@ -866,6 +875,27 @@ export default {
         type="confirm"
         @close="router.push({name: 'Orders', params: {status: route.params.status}})"
         @accept="submitDeleteOrders()"
+    />
+    <u-alert
+        v-if="route.name === 'OrdersDelivered' && route.params.id"
+        title="Отправить письмо о прибытии заказа?"
+        type="confirm"
+        @close="router.push({name: 'Orders', params: {status: route.params.status}})"
+        @accept="submitDeliveredOrders()"
+    />
+    <u-alert
+        v-if="route.name === 'OrdersKeeped' && route.params.id"
+        title="Отправить письмо об истечении срока хранения?"
+        type="confirm"
+        @close="router.push({name: 'Orders', params: {status: route.params.status}})"
+        @accept="submitKeepedOrders()"
+    />
+    <u-alert
+        v-if="route.name === 'OrdersFinish' && route.params.id"
+        title="Убрать заказ из списка?"
+        type="confirm"
+        @close="router.push({name: 'Orders', params: {status: route.params.status}})"
+        @accept="submitFinishOrders()"
     />
     <u-alert
         v-if="route.name === 'OrdersReturn' && route.params.id"
