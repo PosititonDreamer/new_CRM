@@ -68,7 +68,7 @@ export default {
       computedPurchasing.value.connection.forEach(item => {
         copyText += `${item.title}\t`
         columnsDays.value.forEach(day => {
-          copyText += ((day * item.sum_day - item.sum_actual) > 0 ? (day * item.sum_day - item.sum_actual).toFixed(5) : 0) + "\t"
+          copyText += ((day * item.sum_day - item.sum_actual) > 0 ? Math.ceil((day * item.sum_day - item.sum_actual)) : 0) + "\t"
         })
         copyText += '\n'
       })
@@ -76,7 +76,7 @@ export default {
       computedPurchasing.value.products.forEach(item => {
         copyText += `${item.title}\t`
         columnsDays.value.forEach(day => {
-          copyText += ((day * item.sum_day - item.actual) > 0 ? (day * item.sum_day - item.actual).toFixed(5) : 0) + "\t"
+          copyText += ((day * item.sum_day - item.actual) > 0 ? Math.ceil((day * item.sum_day - item.actual)) : 0) + "\t"
         })
         copyText += '\n'
       })
@@ -87,7 +87,7 @@ export default {
       computedPurchasing.value.consumable.forEach(item => {
         copyText += `${item.title}\t`
         columnsDays.value.forEach(day => {
-          copyText += ((day * item.sum_day - item.actual) > 0 ? (day * item.sum_day - item.actual).toFixed(5) : 0) + "\t"
+          copyText += ((day * item.sum_day - item.actual) > 0 ? Math.ceil((day * item.sum_day - item.actual)) : 0) + "\t"
         })
         copyText += '\n'
       })
@@ -98,7 +98,7 @@ export default {
       computedPurchasing.value.other.forEach(item => {
         copyText += `${item.title}\t`
         columnsDays.value.forEach(day => {
-          copyText += ((day * item.sum_day - item.actual) > 0 ? (day * item.sum_day - item.actual).toFixed(5) : 0) + "\t"
+          copyText += ((day * item.sum_day - item.actual) > 0 ? Math.ceil((day * item.sum_day - item.actual)) : 0) + "\t"
         })
         copyText += '\n'
       })
@@ -113,13 +113,13 @@ export default {
 
       computedPurchasing.value.connection.filter(item => !!item.copy).forEach(item => {
         copyText += `${item.title}\t`
-        copyText += ((item.copy * item.sum_day - item.sum_actual) > 0 ? (item.copy * item.sum_day - item.sum_actual).toFixed(5) : 0) + "\t"
+        copyText += ((item.copy * item.sum_day - item.sum_actual) > 0 ? Math.ceil((item.copy * item.sum_day - item.sum_actual)) : 0) + "\t"
         copyText += '\n'
       })
 
       computedPurchasing.value.products.filter(item => !!item.copy).forEach(item => {
         copyText += `${item.title}\t`
-        copyText += ((item.copy * item.sum_day - item.actual) > 0 ? (item.copy * item.sum_day - item.actual).toFixed(5) : 0) + "\t"
+        copyText += ((item.copy * item.sum_day - item.actual) > 0 ? Math.ceil((item.copy * item.sum_day - item.actual)) : 0) + "\t"
         copyText += '\n'
       })
 
@@ -128,7 +128,7 @@ export default {
       copyText += 'Название\t' + "Количество\n"
       computedPurchasing.value.consumable.filter(item => !!item.copy).forEach(item => {
         copyText += `${item.title}\t`
-        copyText += ((item.copy * item.sum_day - item.actual) > 0 ? (item.copy * item.sum_day - item.actual).toFixed(5) : 0) + "\t"
+        copyText += ((item.copy * item.sum_day - item.actual) > 0 ? Math.ceil((item.copy * item.sum_day - item.actual)) : 0) + "\t"
         copyText += '\n'
       })
 
@@ -137,7 +137,7 @@ export default {
       copyText += 'Название\t' + "Количество\n"
       computedPurchasing.value.other.filter(item => !!item.copy).forEach(item => {
         copyText += `${item.title}\t`
-        copyText += ((item.copy * item.sum_day - item.actual) > 0 ? (item.copy * item.sum_day - item.actual).toFixed(5) : 0) + "\t"
+        copyText += ((item.copy * item.sum_day - item.actual) > 0 ? Math.ceil((item.copy * item.sum_day - item.actual)) : 0) + "\t"
         copyText += '\n'
       })
 
@@ -162,13 +162,13 @@ export default {
       if(table === 'connection') {
         computedPurchasing.value.connection.forEach(item => {
           copyText += `${item.title}\t`
-          copyText += ((period * item.sum_day - item.sum_actual) > 0 ? (period * item.sum_day - item.sum_actual).toFixed(5) : 0) + "\t"
+          copyText += ((period * item.sum_day - item.sum_actual) > 0 ? Math.ceil((period * item.sum_day - item.sum_actual)) : 0) + "\t"
           copyText += '\n'
         })
       } else {
         computedPurchasing.value[table].forEach(item => {
           copyText += `${item.title}\t`
-          copyText += ((period * item.sum_day - item.actual) > 0 ? (period * item.sum_day - item.actual).toFixed(5) : 0) + "\t"
+          copyText += ((period * item.sum_day - item.actual) > 0 ? Math.ceil((period * item.sum_day - item.actual)) : 0) + "\t"
           copyText += '\n'
         })
       }
@@ -264,7 +264,7 @@ export default {
               </template>
             </div>
             <div @click="() => item.copy = day" :class="['purchasing__item purchasing__item--label  ', {'purchasing__item--active': item.copy === day}]" v-for="day in columnsDays" >
-              {{ (day * item.sum_day - item.sum_actual) > 0 ? (day * item.sum_day - item.sum_actual).toFixed(5) : 0 }}
+              {{ (day * item.sum_day - item.sum_actual) > 0 ? Math.ceil((day * item.sum_day - item.sum_actual)) : 0 }}
             </div>
           </div>
         </div>
@@ -289,7 +289,7 @@ export default {
               {{ item.sum_day }}
             </div>
             <div @click="() => item.copy = day" :class="['purchasing__item purchasing__item--label  ', {'purchasing__item--active': item.copy === day}]" v-for="day in columnsDays" >
-              {{ (day * item.sum_day - item.actual) > 0 ? (day * item.sum_day - item.actual).toFixed(5) : 0 }}
+              {{ (day * item.sum_day - item.actual) > 0 ? Math.ceil((day * item.sum_day - item.actual)) : 0 }}
             </div>
           </div>
         </div>
@@ -314,7 +314,7 @@ export default {
               {{ item.sum_day }}
             </div>
             <div @click="() => item.copy = day" :class="['purchasing__item purchasing__item--label  ', {'purchasing__item--active': item.copy === day}]" v-for="day in columnsDays" >
-              {{ (day * item.sum_day - item.actual) > 0 ? (day * item.sum_day - item.actual).toFixed(5) : 0 }}
+              {{ (day * item.sum_day - item.actual) > 0 ? Math.ceil((day * item.sum_day - item.actual)) : 0 }}
             </div>
           </div>
         </div>
@@ -339,7 +339,7 @@ export default {
               {{ item.sum_day }}
             </div>
             <div @click="() => item.copy = day" :class="['purchasing__item purchasing__item--label  ', {'purchasing__item--active': item.copy === day}]" v-for="day in columnsDays" >
-              {{ (day * item.sum_day - item.actual) > 0 ? (day * item.sum_day - item.actual).toFixed(5) : 0 }}
+              {{ (day * item.sum_day - item.actual) > 0 ? Math.ceil((day * item.sum_day - item.actual)) : 0 }}
             </div>
           </div>
         </div>
