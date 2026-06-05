@@ -5,51 +5,51 @@ import {Messages} from "@/store/Messages.js";
 import {Loader} from "@/store/Loader.js";
 import {useRouter} from "vue-router";
 
-export const Purchasing = defineStore('Purchasing', () => {
-    const purchasing = ref(null);
+export const PlanPacking = defineStore('PlanPacking', () => {
+    const packing = ref(null);
     const minDate = ref(null);
 
-    const getPurchasing = computed(() => purchasing)
+    const getPacking = computed(() => packing)
     const getMinDate = computed(() => minDate)
 
     const {updateLoader} = Loader()
     const {addMessages} = Messages();
     const router = useRouter();
 
-    const findPurchasing = async ({date_start, date_end, period}) => {
-        updateLoader({method: 'findPurchasing', status: false})
+    const findPacking = async ({date_start, date_end, period}) => {
+        updateLoader({method: 'findPacking', status: false})
         const formData = new FormData();
         formData.append('date_start', date_start);
         formData.append('date_end', date_end);
         formData.append('period', period);
-        await axios.post('/admin/purchasing/list.php', formData)
+        await axios.post('/admin/packing/list.php', formData)
             .then((res) => {
-                purchasing.value = res.data.purchasing
-                router.push({name: 'Purchasing'})
+                packing.value = res.data.packing
+                router.push({name: 'PlanPacking'})
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
             })
 
-        updateLoader({method: 'findPurchasing', status: true})
+        updateLoader({method: 'findPacking', status: true})
     }
 
-    const findPurchasingMinDate = async () => {
-        updateLoader({method: 'findPurchasingMinDate', status: false})
-        await axios.get('/admin/purchasing/min_date.php')
+    const findPackingMinDate = async () => {
+        updateLoader({method: 'findPackingMinDate', status: false})
+        await axios.get('/admin/packing/min_date.php')
             .then((res) => {
                 minDate.value = res.data.min_date
             })
             .catch((err) => {
                 addMessages(err.response.data.messages, 'error')
             })
-        updateLoader({method: 'findPurchasingMinDate', status: true})
+        updateLoader({method: 'findPackingMinDate', status: true})
     }
 
     return {
-        getPurchasing,
+        getPacking,
         getMinDate,
-        findPurchasing,
-        findPurchasingMinDate,
+        findPacking,
+        findPackingMinDate,
     }
 });

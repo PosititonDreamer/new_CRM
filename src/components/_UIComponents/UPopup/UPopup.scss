@@ -6,7 +6,7 @@
   height: var(--window-height);
   background: var(--back);
   display: flex;
-  z-index: 100;
+  z-index: 10000000;
 
   &--big {
     .u-popup {

@@ -502,7 +502,7 @@ export default {
         <div class="list">
           <u-card class="salaries__card">
             <p class="sub-title">
-              К оплате: {{ computedCurrentSalaries.salaries - computedCurrentSalaries.penalties }} ₽
+              К оплате: {{ computedCurrentSalaries.salaries + computedCurrentSalaries.price - computedCurrentSalaries.penalties }} ₽
             </p>
             <p class="text">
               <b>Заказов: </b> {{ salaryAssembler.salariesList.value.length }}

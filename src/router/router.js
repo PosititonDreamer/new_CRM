@@ -33,6 +33,7 @@ import SalesPage from "@/pages/Admin/Sales/Sales.vue";
 import MagazinesPage from "@/pages/Admin/Magazines/Magazines.vue";
 import ConnectionPage from "@/pages/Admin/Products/Connection/Connection.vue";
 import PurchasingPage from "@/pages/Admin/Purchasing/Purchasing.vue";
+import PlanPackingPage from "@/pages/Admin/PlanPacking/PlanPacking.vue";
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -834,6 +835,24 @@ const routes = [
             layout: 'Sidebar',
             title: "Малое количество товаров"
         },
+
+    },
+    {
+        name: "PlanPacking",
+        path: '/admin/packing',
+        component: PlanPackingPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Планирование упаковок"
+        },
+        children: [
+            {
+                name: "PlanPackingSetting",
+                path: 'setting',
+            }
+        ]
 
     },
     {

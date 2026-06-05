@@ -45,12 +45,14 @@ export default {
     const {addMessages} = Messages()
 
     const changeRoute = (to) => {
-      if (to.name === 'purchasing') {
+      if (to.name === 'Purchasing') {
         date_start.value.value = ''
         date_end.value.value = ''
+        period.value.value = 0
 
         date_start.value.tacked = false
         date_end.value.tacked = false
+        period.value.tacked = false
       }
     }
 
@@ -348,7 +350,7 @@ export default {
 
     <u-popup
         v-if="route.name === 'PurchasingSetting'"
-        title="Найти графики"
+        title="Настройки закупки"
         @close="router.push({name: 'Purchasing'})"
     >
       <u-form

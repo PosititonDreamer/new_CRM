@@ -283,6 +283,9 @@ export default {
         <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Purchasing'}">Закупка</router-link>
         </div>
+        <div class="list">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'PlanPacking'}">Планирование упаковок</router-link>
+        </div>
       </div>
       <div class="sidebar__list list" v-else-if="getWorker.rule === 'Сборщик'">
         <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Assembler'}">Главная
@@ -458,7 +461,7 @@ export default {
             </div>
             <div class="list">
               <router-link class="sidebar__link" active-class="sidebar__link--active"
-                           :to="{name: 'Orders', params: {status: 0}}">Отправить письмо
+                           :to="{name: 'OperatorOrders', params: {status: 0}}">Отправить письмо
                 <template v-if="+getUnprocessedOrders.delivered">
                   {{ getUnprocessedOrders.delivered }}
                 </template>
