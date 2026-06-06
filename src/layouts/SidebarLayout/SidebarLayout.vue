@@ -66,7 +66,6 @@ export default {
         }else if(status === 6) {
           additionalText = +getUnprocessedOrders.assembled_not_track + +getUnprocessedOrders.assembled_add_track
         }
-        console.log(additionalText)
 
         return `${additionalText} (${getOrders.value.length})`
       } else if(route.name === 'OrdersFind' || route.name === 'OperatorOrdersFind') {

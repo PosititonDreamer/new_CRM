@@ -1,7 +1,7 @@
 import {useRoute, useRouter} from "vue-router";
 import {validateInput} from "@/hooks/validateInput.js";
 import {PlanPacking} from "@/store/Admin/PlanPacking/PlanPacking.js";
-import {computed} from "vue";
+import {computed, ref, watch} from "vue";
 
 export const HookPlanPacking = () => {
     const {
@@ -35,20 +35,25 @@ export const HookPlanPacking = () => {
         return [30, 60, 90, 120, 150, 180, +getPacking.value.period].sort((a, b) => a - b)
     })
 
-    const computedPackings = computed(() => {
-        if(!getPacking.value) return []
+    const computedPackings = ref([])
 
-        return Object.values(getPacking.value.products).map(item => {
-            item.list = Object.values(item.list).map(quantity => {
-                quantity.sum_day = (+quantity.expense / +getPacking.value.period).toFixed(5)
-                quantity.quantity = +quantity.quantity
-                quantity.current_balance = +quantity.current_balance
-                return quantity
-            }).sort((a, b) => +a.quantity - +b.quantity)
+    watch(() => getPacking.value,() => {
+        const newArray = []
 
-            return item
-        }).sort((a, b) => +a.sort - +b.sort)
+        if(getPacking.value) {
+            Object.values(getPacking.value.products).forEach(item => {
+                item.list = Object.values(item.list).map(quantity => {
+                    quantity.sum_day = (+quantity.expense / +getPacking.value.period).toFixed(5)
+                    quantity.quantity = +quantity.quantity
+                    quantity.current_balance = +quantity.current_balance
+                    return quantity
+                }).sort((a, b) => +a.quantity - +b.quantity)
 
+                newArray.push(item)
+            })
+        }
+
+        computedPackings.value = newArray
     })
 
     return {
