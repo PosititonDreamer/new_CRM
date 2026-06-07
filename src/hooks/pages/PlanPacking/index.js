@@ -43,7 +43,7 @@ export const HookPlanPacking = () => {
         if(getPacking.value) {
             Object.values(getPacking.value.products).forEach(item => {
                 item.list = Object.values(item.list).map(quantity => {
-                    quantity.sum_day = (+quantity.expense / +getPacking.value.period).toFixed(5)
+                    quantity.sum_day = (+quantity.expense / +getPacking.value.days).toFixed(5)
                     quantity.quantity = +quantity.quantity
                     quantity.current_balance = +quantity.current_balance
                     return quantity
