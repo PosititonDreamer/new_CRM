@@ -78,8 +78,8 @@ export default {
     <div class="plan-packing__wrapper" v-if="getPacking">
       <p class="plan-packing__sub-title">Расчет расходов с {{getPacking.date_start.split('-').reverse().join('.')}} до {{getPacking.date_end.split('-').reverse().join('.')}}</p>
       <p class="plan-packing__sub-title">{{ getPacking.days }} дней</p>
+      <p class="plan-packing__title">Фасованные продукты</p>
       <div class="list" :style="`--columns: ${columnsDays.length}`">
-        <p class="plan-packing__title">Фасованные продукты</p>
         <div class="plan-packing__table">
           <div class="plan-packing__item plan-packing__item--head">
             <div class="plan-packing__column">

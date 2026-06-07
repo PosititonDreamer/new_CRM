@@ -10,7 +10,8 @@
   }
 
   &__sub-title {
-    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 700;
   }
 
   &__wrapper {
@@ -23,9 +24,10 @@
     font-weight: 700;
   }
 
-  &__sub-title {
-    font-size: 18px;
-    font-weight: 700;
+  &__title, &__sub-title {
+    position: sticky;
+    left: 0;
+    margin: 10px 0;
   }
 
   &__item {
