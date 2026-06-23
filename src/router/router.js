@@ -50,6 +50,7 @@ import AssemblerGoodsPage from "@/pages/Assembler/Goods/Goods.vue"
 import AssemblerGoodsWeightPage from "@/pages/Assembler/Goods/Weight/Weight.vue"
 import AssemblerGoodsConsumablePage from "@/pages/Assembler/Goods/Consumable/Consumable.vue"
 import AssemblerGoodsOtherPage from "@/pages/Assembler/Goods/Other/Other.vue"
+import {Loader} from "@/store/Loader.js";
 
 const routes = [
     {
@@ -1153,6 +1154,8 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
         const token = localStorage.getItem('token')
         const {checkAuth, getWorker} = Auth();
+        const {updateLoader} = Loader()
+        updateLoader({method: 'changeRoute', status: false})
 
         if (!getWorker.value.rule && token) {
             await checkAuth(token)
@@ -1197,5 +1200,10 @@ router.beforeEach(async (to, from, next) => {
         }
     }
 )
+
+router.afterEach(async () => {
+    const {updateLoader} = Loader()
+    updateLoader({method: 'changeRoute', status: true})
+})
 
 export default router;
