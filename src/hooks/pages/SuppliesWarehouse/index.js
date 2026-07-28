@@ -253,6 +253,7 @@ export const HookSuppliesWarehouse = () => {
         if (supply.value.valid && suppliesList.value.find(item => item.value > 0)) {
             await createSuppliesWarehouse({
                 supply: supply.value.value,
+                worker: getWorker.value.id,
                 list: suppliesList.value.filter(item => item.value > 0).map(item => {
                     return {
                         warehouse_connection: item.id,
@@ -307,7 +308,7 @@ export const HookSuppliesWarehouse = () => {
 
     const submitSendSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         if (collectedList.value.length === getSuppliesDetail.value.list?.length) {
-            await sendSuppliesWarehouse(route.params.id, afterPage)
+            await sendSuppliesWarehouse(route.params.id, getWorker.value.id, afterPage)
 
             if (getWorker.value.rule === 'Админ') {
                 await findWarehouses()
@@ -321,7 +322,7 @@ export const HookSuppliesWarehouse = () => {
 
     const submitAcceptSuppliesWarehouse = async (afterPage = 'SuppliesWarehouse') => {
         if (collectedList.value.length === getSuppliesDetail.value.list?.length) {
-            await acceptSuppliesWarehouse(route.params.id, afterPage)
+            await acceptSuppliesWarehouse(route.params.id, getWorker.value.id, afterPage)
             if (getWorker.value.rule === 'Админ') {
                 await findWarehouses()
             }

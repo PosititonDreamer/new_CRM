@@ -53,10 +53,11 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
         updateLoader({method: 'findSuppliesWarehouse', status: true})
     }
 
-    const createSuppliesWarehouse = async ({supply, list}, afterPage = 'SuppliesWarehouse') => {
+    const createSuppliesWarehouse = async ({supply, list, worker}, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'createSuppliesWarehouse', status: false})
         const formData = new FormData()
         formData.append('supply', supply)
+        formData.append('worker', worker)
         formData.append('list', JSON.stringify(list))
         await axios.post(`/supplies/create.php`, formData)
             .then(res => {
@@ -108,10 +109,11 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
         updateLoader({method: 'deleteSuppliesWarehouse', status: true})
     }
 
-    const sendSuppliesWarehouse = async (id, afterPage = 'SuppliesWarehouse') => {
+    const sendSuppliesWarehouse = async (id, worker, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'sendSuppliesWarehouse', status: false})
         const formData = new FormData()
         formData.append('id', id)
+        formData.append('worker', worker)
         await axios.post(`/supplies/send.php`, formData)
             .then(res => {
                 supplies.value = supplies.value.map(supply => {
@@ -129,10 +131,11 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
         updateLoader({method: 'sendSuppliesWarehouse', status: true})
     }
 
-    const acceptSuppliesWarehouse = async (id, afterPage = 'SuppliesWarehouse') => {
+    const acceptSuppliesWarehouse = async (id, worker, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'acceptSuppliesWarehouse', status: false})
         const formData = new FormData()
         formData.append('id', id)
+        formData.append('worker', worker)
         await axios.post(`/supplies/accept.php`, formData)
             .then(res => {
                 supplies.value = supplies.value.map(supply => {

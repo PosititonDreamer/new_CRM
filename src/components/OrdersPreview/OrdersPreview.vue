@@ -4,6 +4,7 @@ import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import {ref} from "vue";
 import {Messages} from "@/store/Messages.js";
+import {Orders} from "@/store/Orders/Orders.js";
 
 export default {
   components: {UButton, UCard, UPopup},
@@ -54,6 +55,11 @@ export default {
       openTab,
       copyTrack
     }
+  },
+  beforeUnmount() {
+    const {clearOrderDetail} = Orders()
+
+    clearOrderDetail()
   }
 }
 </script>

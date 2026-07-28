@@ -36,7 +36,6 @@ export default {
       submitUpdateGoods,
       submitUpdateBalanceGoods,
       submitDeleteGoods,
-      viewPrice
     } = HookGoods()
 
     const {findGoods} = Goods()
@@ -135,7 +134,6 @@ export default {
       computedProducts,
       actions,
       products,
-      viewPrice
     }
   }
 }
@@ -149,7 +147,7 @@ export default {
     </u-button>
     <div class="goods__list">
       <div
-          :class="['goods__item', {'goods__item--commodity': viewPrice}]"
+          :class="['goods__item goods__item--commodity']"
           v-for="(product, id) in computedProducts"
           :key="`goods-item-product${product.id}`"
           :style="[{'--z-index': computedProducts.length - id}]"
@@ -178,7 +176,7 @@ export default {
           <p v-else class="text">
             <b>Вес</b>
           </p>
-          <p class="text" v-if="viewPrice">
+          <p class="text">
             {{ +good.price > 0 ? `${good.price}₽` : '' }}
           </p>
           <u-actions
@@ -297,7 +295,6 @@ export default {
               v-model="good.few_very.value.value"
           />
           <u-input
-              v-if="viewPrice"
               title="Оплата сборщику за единицу товара"
               type="number"
               :start-value="good.price.value.value"
@@ -364,7 +361,6 @@ export default {
               :disabled="route.name === 'GoodsUpdateBalance'"
           />
           <u-input
-              v-if="viewPrice"
               title="Оплата сборщику за единицу товара"
               type="number"
               :start-value="good.price.value.value"

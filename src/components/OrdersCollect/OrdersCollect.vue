@@ -6,6 +6,7 @@ import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import {Messages} from "@/store/Messages.js";
+import {Orders} from "@/store/Orders/Orders.js";
 
 export default {
   name: "OrdersCollect",
@@ -49,6 +50,11 @@ export default {
     return {
       copyTrack
     }
+  },
+  beforeUnmount() {
+    const {clearOrderDetail} = Orders()
+
+    clearOrderDetail()
   }
 }
 </script>

@@ -21,10 +21,12 @@ export const HookSalaries = () => {
     const {data: date_end} = validateInput("Date", "")
 
     const salariesList = ref([])
+    const salariesSupplyList = ref([])
     const penaltiesList = ref([])
 
     const salaryAssembler = {
         salariesList,
+        salariesSupplyList,
         penaltiesList
     }
 
@@ -74,11 +76,12 @@ export const HookSalaries = () => {
     }
 
     const submitAcceptSalariesAssembler = async () => {
-        if(salariesList.value.length) {
+        if(salariesList.value.length || salariesSupplyList.value.length) {
             await acceptSalariesAssembler({
                 worker: getSalaries.value.worker,
                 penalties: penaltiesList.value,
                 salaries: salariesList.value,
+                supplies: salariesSupplyList.value
             })
         }
     }
@@ -119,6 +122,7 @@ export const HookSalaries = () => {
 
         salariesList.value = []
         penaltiesList.value = []
+        salariesSupplyList.value = []
     }
 
     return {

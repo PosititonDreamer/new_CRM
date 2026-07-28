@@ -8,6 +8,7 @@ import {useRouter, useRoute} from "vue-router";
 export const Orders = defineStore('Orders', () => {
     const orders = ref([]);
     const nextPage = ref(null);
+    const maxOrders = ref(0);
     const orderDetail = ref(null);
     const clientsList = ref([]);
     const unprocessedOrders = ref(0)
@@ -20,6 +21,7 @@ export const Orders = defineStore('Orders', () => {
     const salesList = ref([]);
 
     const getOrders = computed(() => orders)
+    const getMaxOrders = computed(() => maxOrders)
     const getNextPage = computed(() => nextPage)
     const getOrderDetail = computed(() => orderDetail)
     const getClientsList = computed(() => clientsList)
@@ -65,6 +67,7 @@ export const Orders = defineStore('Orders', () => {
                     orders.value = [...orders.value, ...res.data.orders]
                 }
                 nextPage.value = res.data.next_page
+                maxOrders.value = res.data.count
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -446,6 +449,10 @@ export const Orders = defineStore('Orders', () => {
         clientsList.value = []
     }
 
+    const clearOrderDetail = () => {
+        orderDetail.value = null
+    }
+
     return {
         getOrders,
         getNextPage,
@@ -478,5 +485,7 @@ export const Orders = defineStore('Orders', () => {
         deliveredOrders,
         keepedOrders,
         finishOrders,
+        getMaxOrders,
+        clearOrderDetail,
     }
 });

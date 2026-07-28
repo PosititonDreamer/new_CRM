@@ -34,6 +34,7 @@ import MagazinesPage from "@/pages/Admin/Magazines/Magazines.vue";
 import ConnectionPage from "@/pages/Admin/Products/Connection/Connection.vue";
 import PurchasingPage from "@/pages/Admin/Purchasing/Purchasing.vue";
 import PlanPackingPage from "@/pages/Admin/PlanPacking/PlanPacking.vue";
+import PresentsPage from "@/pages/Admin/Presents/Presents.vue";
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -762,7 +763,7 @@ const routes = [
             isAuth: true,
             isAdmin: true,
             layout: 'Sidebar',
-            title: "Зарлаты"
+            title: "Зарплаты"
         },
         children: [
             {
@@ -853,6 +854,32 @@ const routes = [
                 name: "PlanPackingSetting",
                 path: 'setting',
             }
+        ]
+
+    },
+    {
+        name: "Presents",
+        path: '/admin/presents',
+        component: PresentsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Подарки"
+        },
+        children: [
+            {
+                name: "PresentsCreate",
+                path: 'create',
+            },
+            {
+                name: "PresentsUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "PresentsDelete",
+                path: 'delete/:id',
+            },
         ]
 
     },
@@ -1008,7 +1035,7 @@ const routes = [
             isAuth: true,
             isOperator: true,
             layout: 'Sidebar',
-            title: "Зарлаты"
+            title: "Зарплаты"
         },
         children: [
             {
@@ -1135,7 +1162,7 @@ const routes = [
             isAuth: true,
             isAssembler: true,
             layout: 'Sidebar',
-            title: "Зарлаты"
+            title: "Зарплаты"
         },
         children: [
             {

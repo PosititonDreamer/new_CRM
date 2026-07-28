@@ -25,8 +25,10 @@ export const Salaries = defineStore('Salaries', () => {
                 salaries.value = {
                     salaries: res.data.salaries,
                     penalties: res.data.penalties,
+                    salaries_supply: res.data.salaries_supply,
                     salaries_length: res.data.salaries_length,
                     penalties_length: res.data.penalties_length,
+                    salaries_supply_length: res.data.salaries_supply_length,
                     rule: res.data.rule,
                     date_end: res.data.date_end,
                     date_start: res.data.date_start,
@@ -46,10 +48,16 @@ export const Salaries = defineStore('Salaries', () => {
         formData.append('worker', data.worker);
         formData.append('penalties', JSON.stringify(data.penalties));
         formData.append('salaries', JSON.stringify(data.salaries));
+        formData.append('supplies', JSON.stringify(data.supplies));
         await axios.post('/admin/salaries/accept.php', formData)
             .then((res) => {
                 salaries.value.salaries.forEach(salary => {
                     if(data.salaries.find(item => +item === +salary.id)) {
+                        salary.ready = true
+                    }
+                })
+                salaries.value.salaries_supply.forEach(salary => {
+                    if(data.supplies.find(item => +item === +salary.id)) {
                         salary.ready = true
                     }
                 })

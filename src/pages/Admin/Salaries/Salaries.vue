@@ -54,9 +54,11 @@ export default {
     const computedPaySalaryWorker = computed(() => {
       const penalties = getSalaries.value.penalties.filter(item => item.ready)
       const salaries = getSalaries.value.salaries.filter(item => item.ready)
+      const salariesSupply = getSalaries.value.salaries_supply.filter(item => item.ready)
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
         salary: salaries.length ? (salaries.length * computedSalaryWorker.value) : 0,
+        salarySupply: salariesSupply.length ? salariesSupply.reduce((sum, item) => sum + +item.price, 0) : 0,
         penalty: penalties?.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0,
         price
       }
@@ -65,9 +67,11 @@ export default {
     const computedNotPaySalaryWorker = computed(() => {
       const penalties = getSalaries.value.penalties.filter(item => !item.ready)
       const salaries = getSalaries.value.salaries.filter(item => !item.ready && item.send)
+      const salariesSupply = getSalaries.value.salaries_supply.filter(item => !item.ready)
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
       return {
         salary: salaries.length ? (salaries.length * computedSalaryWorker.value) : 0,
+        salarySupply: salariesSupply.length ? salariesSupply.reduce((sum, item) => sum + +item.price, 0) : 0,
         penalty: penalties.length ? penalties.reduce((sum, item) => sum + +item.sum, 0) : 0,
         price
       }
@@ -82,6 +86,7 @@ export default {
 
     const computedCurrentSalaries = computed(() => {
       const salaries = getSalaries.value.salaries.filter(item => salaryAssembler.salariesList.value.find(salary => +salary === +item.id))
+      const salariesSupply = getSalaries.value.salaries_supply.filter(item => salaryAssembler.salariesSupplyList.value.find(salary => +salary === +item.id))
       const penalties = getSalaries.value.penalties.filter(item => salaryAssembler.penaltiesList.value.find(penalty => +penalty === +item.id))
       const price = salaries.reduce((sum, item) => sum + +item.price, 0);
 
@@ -89,6 +94,7 @@ export default {
         price,
         salaries: (computedSalaryWorker.value * salaries.length),
         penalties: penalties.reduce((sum, item) => sum + +item.sum, 0),
+        salariesSupply: salariesSupply.reduce((sum, item) => sum + +item.price, 0)
       }
     })
 
@@ -201,6 +207,23 @@ export default {
           <b>Всего не исполненных штрафов: </b> {{ getSalaries.penalties_length }}
         </p>
       </template>
+
+      <p class="sub-title salaries__sub-title">
+        Работа на складе:
+      </p>
+      <p class="text">
+        <b>Всего работ за выбранный период: </b> {{ getSalaries.salaries_supply.length }}
+      </p>
+      <p class="text">
+        <b>Оплаченных работ за выбранный период: </b> {{ getSalaries.salaries_supply.filter(item => item.ready).length }}
+      </p>
+      <p class="text">
+        <b>Неоплаченных работ за выбранный период: </b>
+        {{ getSalaries.salaries_supply.filter(item => !item.ready).length }}
+      </p>
+      <p class="text">
+        <b>Всего неоплаченных работ: </b> {{ getSalaries.salaries_supply_length }}
+      </p>
       <p class="sub-title salaries__sub-title">
         Расчеты:
       </p>
@@ -209,40 +232,44 @@ export default {
       </p>
 
       <p class="text">
-        <b>Формула расчета: </b> Сумма отправленных заказов * стоимость одного заказа + сумма доплат за упаковку - сумма штрафов
+        <b>Формула расчета: </b> Сумма отправленных заказов * стоимость одного заказа + сумма доплат за упаковку - сумма штрафов + сумма стоимости работ на складе
       </p>
       <p class="text">
-        <b>Оплачено: </b> {{ computedPaySalaryWorker.salary + computedPaySalaryWorker.price - computedPaySalaryWorker.penalty }} ₽
-        <template v-if="computedPaySalaryWorker.penalty || computedPaySalaryWorker.price">
+        <b>Оплачено: </b> {{ computedPaySalaryWorker.salary + computedPaySalaryWorker.price - computedPaySalaryWorker.penalty + computedPaySalaryWorker.salarySupply}} ₽
+        <template v-if="computedPaySalaryWorker.penalty || computedPaySalaryWorker.price || computedPaySalaryWorker.salarySupply">
           ({{ computedPaySalaryWorker.salary }}
           <template v-if="computedPaySalaryWorker.price">+ {{computedPaySalaryWorker.price}}</template>
-          <template v-if="computedPaySalaryWorker.penalty">- {{ computedPaySalaryWorker.penalty }}</template>)
+          <template v-if="computedPaySalaryWorker.penalty">- {{ computedPaySalaryWorker.penalty }}</template>
+          <template v-if="computedPaySalaryWorker.salarySupply">+ {{ computedPaySalaryWorker.salarySupply }}₽</template>)
         </template>
+
       </p>
 
       <p class="text">
-        <b>Не оплачено: </b> {{ computedNotPaySalaryWorker.salary + computedNotPaySalaryWorker.price - computedNotPaySalaryWorker.penalty }} ₽
-        <template v-if="computedNotPaySalaryWorker.penalty || computedNotPaySalaryWorker.price">
+        <b>Не оплачено: </b> {{ computedNotPaySalaryWorker.salary + computedNotPaySalaryWorker.price - computedNotPaySalaryWorker.penalty}} ₽
+        <template v-if="computedNotPaySalaryWorker.penalty || computedNotPaySalaryWorker.price || computedNotPaySalaryWorker.salarySupply">
           ({{ computedNotPaySalaryWorker.salary }}
           <template v-if="computedNotPaySalaryWorker.price">+ {{computedNotPaySalaryWorker.price}}</template>
-          <template v-if="computedNotPaySalaryWorker.penalty">- {{ computedNotPaySalaryWorker.penalty }}</template>)
+          <template v-if="computedNotPaySalaryWorker.penalty">- {{ computedNotPaySalaryWorker.penalty }}</template>
+          <template v-if="computedNotPaySalaryWorker.salarySupply">+ {{ computedNotPaySalaryWorker.salarySupply }} ₽</template>)
         </template>
       </p>
 
       <p class="text">
         <b>Общая сумма: </b>
         {{
-          (computedPaySalaryWorker.salary + computedPaySalaryWorker.price + computedNotPaySalaryWorker.salary + computedNotPaySalaryWorker.price) - (computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty)
+          (computedPaySalaryWorker.salary + computedPaySalaryWorker.price + computedNotPaySalaryWorker.salary + computedNotPaySalaryWorker.price + computedNotPaySalaryWorker.salarySupply + computedPaySalaryWorker.salarySupply) - (computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty)
         }}
         ₽
-        <template v-if="computedNotPaySalaryWorker.penalty || computedPaySalaryWorker.penalty || computedPaySalaryWorker.price || computedNotPaySalaryWorker.price">
+        <template v-if="computedNotPaySalaryWorker.penalty || computedPaySalaryWorker.penalty || computedPaySalaryWorker.price || computedNotPaySalaryWorker.price || computedNotPaySalaryWorker.salarySupply || computedPaySalaryWorker.salarySupply">
           ({{ computedPaySalaryWorker.salary + computedNotPaySalaryWorker.salary }}
           <template v-if="computedPaySalaryWorker.price + computedNotPaySalaryWorker.price">
             + {{computedPaySalaryWorker.price + computedNotPaySalaryWorker.price}}
           </template>
           <template v-if="computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty">
             - {{ computedPaySalaryWorker.penalty + computedNotPaySalaryWorker.penalty }}
-          </template>)
+          </template>
+          <template v-if="computedNotPaySalaryWorker.salarySupply || computedPaySalaryWorker.salarySupply">+ {{ computedNotPaySalaryWorker.salarySupply + computedPaySalaryWorker.salarySupply }} ₽</template>)
         </template>
       </p>
 
@@ -301,6 +328,30 @@ export default {
           </u-accordion>
         </u-card>
         <u-card
+            v-if="getSalaries.salaries_supply.filter(item => !item.ready).length"
+        >
+          <u-accordion
+              title="Не оплаченные работы на складе"
+          >
+            <div class="list">
+              <u-card v-for="salary in getSalaries.salaries_supply.filter(item => !item.ready)">
+                <p class="text">
+                  <b>Дата работы: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
+                </p>
+                <p class="text">
+                  <b>Стоимость работ: </b> {{ salary.price }} ₽
+                </p>
+                <p class="text" >
+                  <b>Список работ: </b>
+                  <span v-for="item in salary.list">
+                    <br>{{item.title}} = {{item.price}} ₽
+                  </span>
+                </p>
+              </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+        <u-card
             v-if="getSalaries.penalties.filter(item => item.ready).length"
         >
           <u-accordion
@@ -341,6 +392,30 @@ export default {
 
                 <p class="text" v-if="+salary.price > 0">
                   <b>Доплата: </b> {{salary.price}} ₽
+                </p>
+              </u-card>
+            </div>
+          </u-accordion>
+        </u-card>
+        <u-card
+            v-if="getSalaries.salaries_supply.filter(item => item.ready).length"
+        >
+          <u-accordion
+              title="Оплаченные работы на складе"
+          >
+            <div class="list">
+              <u-card v-for="salary in getSalaries.salaries_supply.filter(item => item.ready)">
+                <p class="text">
+                  <b>Дата работы: </b> {{ new Date(salary.date).toLocaleDateString('ru-RU') }}
+                </p>
+                <p class="text">
+                  <b>Стоимость работ: </b> {{ salary.price }} ₽
+                </p>
+                <p class="text" >
+                  <b>Список работ: </b>
+                  <span v-for="item in salary.list">
+                    <br>{{item.title}} = {{item.price}} ₽
+                  </span>
                 </p>
               </u-card>
             </div>
@@ -502,7 +577,7 @@ export default {
         <div class="list">
           <u-card class="salaries__card">
             <p class="sub-title">
-              К оплате: {{ computedCurrentSalaries.salaries + computedCurrentSalaries.price - computedCurrentSalaries.penalties }} ₽
+              К оплате: {{ computedCurrentSalaries.salaries + computedCurrentSalaries.price - computedCurrentSalaries.penalties + computedCurrentSalaries.salariesSupply}} ₽
             </p>
             <p class="text">
               <b>Заказов: </b> {{ salaryAssembler.salariesList.value.length }}
@@ -518,6 +593,12 @@ export default {
             </p>
             <p class="text">
               <b>Итоговая сумма за заказы: </b> {{ computedCurrentSalaries.salaries + computedCurrentSalaries.price }} ₽
+            </p>
+            <p class="text">
+              <b>Работ на складе: </b> {{ salaryAssembler.salariesSupplyList.value.length }}
+            </p>
+            <p class="text">
+              <b>Сумма оплаты за работы на складе: </b> {{ computedCurrentSalaries.salariesSupply }} ₽
             </p>
             <p class="text">
               <b>Штрафов: </b> {{ salaryAssembler.penaltiesList.value.length }}
@@ -573,6 +654,31 @@ export default {
                     :value="salary.id"
                     :checked="!!salaryAssembler.salariesList.value.find(item => +item === +salary.id)"
                     @checked="salaryAssembler.salariesList.value.find(item => +item === +salary.id) ? salaryAssembler.salariesList.value = salaryAssembler.salariesList.value.filter(item => +item !== +salary.id) : salaryAssembler.salariesList.value.push(salary.id)"
+                />
+              </u-card>
+            </div>
+          </u-card>
+          <u-card>
+            <p class="sub-title">
+              Работы на складе:
+            </p>
+            <u-checkbox
+                class="salaries__checkbox"
+                title="Выбрать все работы"
+                name="salarySupply"
+                value="all"
+                :checked="salaryAssembler.salariesSupplyList.value.length === getSalaries.salaries_supply.filter(item => !item.ready).length"
+                @checked="e => salaryAssembler.salariesSupplyList.value = e.checked ? getSalaries.salaries_supply.filter(item => !item.ready).map(item => item.id) : []"
+            />
+            <div class="list">
+              <u-card
+                  v-for="salary in getSalaries.salaries_supply.filter(item => !item.ready)">
+                <u-checkbox
+                    :title="`${new Date(salary.date).toLocaleDateString('ru-RU')}, ${salary.price} ₽`"
+                    name="salarySupply"
+                    :value="salary.id"
+                    :checked="!!salaryAssembler.salariesSupplyList.value.find(item => +item === +salary.id)"
+                    @checked="salaryAssembler.salariesSupplyList.value.find(item => +item === +salary.id) ? salaryAssembler.salariesSupplyList.value = salaryAssembler.salariesSupplyList.value.filter(item => +item !== +salary.id) : salaryAssembler.salariesSupplyList.value.push(salary.id)"
                 />
               </u-card>
             </div>

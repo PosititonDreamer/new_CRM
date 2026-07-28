@@ -217,6 +217,11 @@ export default {
         <p class="text">
           <b>Количество товаров: </b> {{ item.length }}
         </p>
+        <p class="text">
+          <b>Товары: </b>
+          <br>
+          <span v-html="item.products_list.join('<br>')"></span>
+        </p>
       </u-card>
       <u-card>
         <u-accordion title="Принятые поставки">

@@ -3,6 +3,7 @@ import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
+import {Orders} from "@/store/Orders/Orders.js";
 
 export default {
   name: "OrdersSend",
@@ -16,6 +17,11 @@ export default {
       type: Array,
       required: true,
     }
+  },
+  beforeUnmount() {
+    const {clearOrderDetail} = Orders()
+
+    clearOrderDetail()
   }
 }
 </script>

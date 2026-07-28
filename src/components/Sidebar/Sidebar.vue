@@ -275,6 +275,10 @@ export default {
           </router-link>
         </div>
         <div class="list">
+          <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Presents'}">Подарки
+          </router-link>
+        </div>
+        <div class="list">
           <router-link class="sidebar__link" active-class="sidebar__link--active" :to="{name: 'Mailings'}">Рассылки</router-link>
         </div>
         <div class="list">
