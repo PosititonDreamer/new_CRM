@@ -150,6 +150,7 @@ export default {
             :start-value="product.value"
             v-model="product.value"
             @change="product.tacked = true"
+            class="presents__select"
         />
         <u-select
             v-if="computedPackings.length"
@@ -181,6 +182,7 @@ export default {
             :start-value="product.value"
             v-model="product.value"
             @change="product.tacked = true"
+            class="presents__select"
         />
         <u-select
             v-if="computedPackings.length"

@@ -7,9 +7,11 @@ import USelect from "@/components/_UIComponents/USelect/USelect.vue";
 import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import {Messages} from "@/store/Messages.js";
 import {Orders} from "@/store/Orders/Orders.js";
+import {explodeSpace} from "../../helpers/explodeSpace.js";
 
 export default {
   name: "OrdersCollect",
+  methods: {explodeSpace},
   components: {UButton, USelect, UCheckbox, UCard, UPopup, UForm},
   props: {
     order: {
@@ -67,7 +69,7 @@ export default {
         text="Собрать заказ"
         @submit.prevent="$emit('submit')"
     >
-      <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track }}</p>
+      <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ explodeSpace(order.track) }}</p>
       <p class="text text--big text--few-back" v-if="order.comment.length">
         <b>Комментарий: </b> {{ order.comment }}
       </p>

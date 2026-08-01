@@ -4,9 +4,11 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import UCheckbox from "@/components/_UIComponents/UCheckbox/UCheckbox.vue";
 import {Orders} from "@/store/Orders/Orders.js";
+import {explodeSpace} from "../../helpers/explodeSpace.js";
 
 export default {
   name: "OrdersSend",
+  methods: {explodeSpace},
   components: {UCheckbox, UCard, UPopup, UForm},
   props: {
     orders: {
@@ -59,7 +61,7 @@ export default {
                 :key="`order-check-item-${order.id}`"
             />
             <p class="text orders-send__name">
-              {{ order.delivery }} {{ order.track }} {{ order.client }}
+              {{ order.delivery }} {{ explodeSpace(order.track) }} {{ order.client }}
             </p>
           </div>
         </u-card>

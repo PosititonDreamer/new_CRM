@@ -2,9 +2,11 @@
 import UActions from "@/components/_UIComponents/UActions/UActions.vue";
 import UCard from "@/components/_UIComponents/UCard/UCard.vue";
 import {computed} from "vue";
+import {explodeSpace} from "../../helpers/explodeSpace.js";
 
 export default {
   name: 'OrdersList',
+  methods: {explodeSpace},
   components: {UCard, UActions},
   props: {
     actions: {
@@ -81,7 +83,7 @@ export default {
             @click="clickOrder(order, checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : actions)"
     >
       <p class="text orders-list__track">
-        {{ order.track ? order.track : 'Не присвоен' }}
+        {{ order.track ? explodeSpace(order.track) : 'Не присвоен' }}
         <span v-if="order.comment.trim().length" class="orders-list__there-comment"></span>
         <span v-if="order.sale" class="orders-list__there-sale"></span>
       </p>
@@ -174,7 +176,7 @@ export default {
             @click="clickOrder(order, checkStatus ? actions.filter(action => !!action.status.find(status => +status === +order.status)) : actions)"
     >
       <p class="text orders-list__track">
-        {{ order.track ? order.track : 'Не присвоен' }}
+        {{ order.track ? explodeSpace(order.track) : 'Не присвоен' }}
         <span v-if="order.comment.trim().length" class="orders-list__there-comment"></span>
         <span v-if="order.sale" class="orders-list__there-sale"></span>
       </p>

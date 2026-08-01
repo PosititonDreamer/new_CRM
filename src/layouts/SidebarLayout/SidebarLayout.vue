@@ -29,7 +29,7 @@ export default {
     <sidebar/>
     <div class="sidebar-layout__content">
       <h2 class="title">{{ route.meta.title }}
-        <template v-if="getMaxOrders && route.name.indexOf('Orders') > -1">{{getMaxOrders}}</template>
+        <template v-if="getMaxOrders && route.name.indexOf('Orders') > -1 && route.name.indexOf('OrdersFind') === -1">{{getMaxOrders}}</template>
       </h2>
       <slot></slot>
     </div>

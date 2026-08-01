@@ -13,6 +13,7 @@ import {watch} from "vue";
 import {HookOrders} from "@/hooks/pages/Orders/index.js";
 import {Orders} from "@/store/Orders/Orders.js";
 import UAlert from "@/components/_UIComponents/UAlert/UAlert.vue";
+import {Loader} from "@/store/Loader.js";
 
 export default {
   name: 'OrdersFind',
@@ -61,6 +62,9 @@ export default {
     })
     changeRoute(route)
 
+    const {getLoader} = Loader()
+
+
     return {
       route,
       router,
@@ -81,6 +85,7 @@ export default {
       computedDetailOrdersGoods,
       computedDetailOrdersComposition,
       computedStatus,
+      getLoader,
     }
   }
 }
@@ -123,6 +128,7 @@ export default {
         </div>
       </u-form>
     </u-popup>
+    <p class="title" v-if="!getLoader.find(load => !load.status) && !getOrders.length">Нет результата</p>
     <orders-list
         v-if="getOrders.length > 0"
         :orders="getOrders"

@@ -5,8 +5,10 @@ import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import {ref} from "vue";
 import {Messages} from "@/store/Messages.js";
 import {Orders} from "@/store/Orders/Orders.js";
+import {explodeSpace} from "../../helpers/explodeSpace.js";
 
 export default {
+  methods: {explodeSpace},
   components: {UButton, UCard, UPopup},
   name: "OrdersPreview",
   props: {
@@ -77,7 +79,7 @@ export default {
       >
         Собрать заказ
       </u-button>
-      <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track ? order.track : 'Не присвоен' }}</p>
+      <p class="title" @click="copyTrack(order.track, order.address.delivery)">{{ order.track ? explodeSpace(order.track) : 'Не присвоен' }}</p>
       <p class="text text--big text--bold">
         {{order.payed === 1 ? "Оплачен" : "Не оплачен"}}
       </p>

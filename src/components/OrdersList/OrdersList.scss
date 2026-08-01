@@ -13,6 +13,8 @@
   &__track {
     display: inline-flex;
     align-items: center;
+    overflow: hidden;
+    margin-right: 5px;
   }
 
   &__there-comment, &__there-sale {

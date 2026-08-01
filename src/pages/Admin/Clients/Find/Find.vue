@@ -14,6 +14,7 @@ import UButton from "@/components/_UIComponents/UButton/UButton.vue";
 import {Orders} from "@/store/Orders/Orders.js";
 import {HookOrders} from "@/hooks/pages/Orders/index.js";
 import OrdersPreview from "@/components/OrdersPreview/OrdersPreview.vue";
+import {Loader} from "@/store/Loader.js";
 
 export default {
   name: 'Clients',
@@ -103,6 +104,8 @@ export default {
 
     changeRoute(route)
 
+    const {getLoader} = Loader()
+
     return {
       getClients,
       getClientsFullNameList,
@@ -136,7 +139,8 @@ export default {
       computedDetailOrdersGoods,
       computedDetailOrdersComposition,
       computedStatus,
-      computedAddress
+      computedAddress,
+      getLoader,
     }
   }
 }
@@ -150,6 +154,7 @@ export default {
     >
       Настройка поиска
     </u-button>
+    <p class="title" v-if="!getLoader.find(load => !load.status) && !getClients.length">Нет результата</p>
     <div class="clients-find__list" v-if="getClients.length">
       <u-card class="clients-find__item" v-for="clientItem in getClients" :key="`client-item-${clientItem.id}`">
         <p class="sub-title">{{ clientItem.full_name }}</p>
