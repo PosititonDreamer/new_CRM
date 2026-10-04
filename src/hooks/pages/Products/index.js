@@ -11,6 +11,7 @@ export const HookProducts = () => {
     const {data: sort} = validateInput("Number", 0, 0)
     const {data: measureUnit} = validateInput("String", "", 0)
     const {data: clientTitle} = validateInput("String", "", 0)
+    const {data: instruction} = validateInput("String", "")
     const {data: weight} = validateInput("Number", "", 0)
     const router = useRouter()
     const route = useRoute()
@@ -21,7 +22,8 @@ export const HookProducts = () => {
         sort,
         measureUnit,
         clientTitle,
-        weight
+        weight,
+        instruction
     }
 
     const submitCreateProduct = async () => {
@@ -36,6 +38,7 @@ export const HookProducts = () => {
                 measure_unit: measureUnit.value.value,
                 client_title: clientTitle.value.value,
                 weight: weight.value.value,
+                instruction: instruction.value.value
             })
         }
     }
@@ -55,6 +58,7 @@ export const HookProducts = () => {
                 client_title: clientTitle.value.value,
                 id: route.params.id,
                 weight: weight.value.value,
+                instruction: instruction.value.value
             })
         }
     }

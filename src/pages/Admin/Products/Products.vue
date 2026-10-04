@@ -11,10 +11,11 @@ import UPopup from "@/components/_UIComponents/UPopup/UPopup.vue";
 import UForm from "@/components/_UIComponents/UForm/UForm.vue";
 import UInput from "@/components/_UIComponents/UInput/UInput.vue";
 import USelect from "@/components/_UIComponents/USelect/USelect.vue";
+import UAccordion from "@/components/_UIComponents/UAccordion/UAccordion.vue";
 
 export default {
   name: "Products",
-  components: {USelect, UInput, UForm, UPopup, UAlert, UCard, UActions, UButton},
+  components: {UAccordion, USelect, UInput, UForm, UPopup, UAlert, UCard, UActions, UButton},
   props: {},
   async beforeCreate() {
     const {findProducts} = Products()
@@ -65,6 +66,7 @@ export default {
         product.sort.value.value = 0
         product.title.value.value = ""
         product.showTitle.value.value = ""
+        product.instruction.value.value = ""
 
         product.measureUnit.value.tacked = false
         product.sort.value.tacked = false
@@ -88,6 +90,7 @@ export default {
         product.showTitle.value.value = findProduct.show_title
         product.clientTitle.value.value = findProduct.client_title
         product.weight.value.value = findProduct.weight
+        product.instruction.value.value = findProduct.instruction
 
         product.measureUnit.value.tacked = true
         product.sort.value.tacked = true
@@ -159,6 +162,12 @@ export default {
           <p class="text">
             <b>Актуальный вес: </b>{{ product.weight }}
           </p>
+          <u-accordion
+              v-if="product.instruction.length"
+              title="Инструкция"
+          >
+            <p class="text" v-html="product.instruction.replace(/\n/g, '<br>')"></p>
+          </u-accordion>
         </div>
         <u-actions
             class="products__actions"
@@ -231,6 +240,13 @@ export default {
               @change="product.weight.value.tacked = true"
               :step="0.01"
           />
+          <u-input
+              :rows="16"
+              type="textarea"
+              title="Инструкция"
+              v-model="product.instruction.value.value"
+              :start-value="product.instruction.value.value"
+          />
         </div>
       </u-form>
     </u-popup>
@@ -295,6 +311,13 @@ export default {
               :start-value="product.sort.value.value"
               @blur="product.sort.value.tacked = true"
               @change="product.sort.value.tacked = true"
+          />
+          <u-input
+              :rows="16"
+              type="textarea"
+              title="Инструкция"
+              v-model="product.instruction.value.value"
+              :start-value="product.instruction.value.value"
           />
         </div>
       </u-form>
