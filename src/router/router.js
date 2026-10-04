@@ -35,6 +35,7 @@ import ConnectionPage from "@/pages/Admin/Products/Connection/Connection.vue";
 import PurchasingPage from "@/pages/Admin/Purchasing/Purchasing.vue";
 import PlanPackingPage from "@/pages/Admin/PlanPacking/PlanPacking.vue";
 import PresentsPage from "@/pages/Admin/Presents/Presents.vue";
+import MailsPage from "@/pages/Admin/Mails/Mails.vue"
 
 // operator
 import OperatorClientsPage from "@/pages/Operator/Clients/Clients.vue"
@@ -124,6 +125,31 @@ const routes = [
             },
             {
                 name: "ProductsDelete",
+                path: 'delete/:id',
+            }
+        ]
+    },
+    {
+        name: "Mails",
+        path: '/admin/mails',
+        component: MailsPage,
+        meta: {
+            isAuth: true,
+            isAdmin: true,
+            layout: 'Sidebar',
+            title: "Письма"
+        },
+        children: [
+            {
+                name: "MailsCreate",
+                path: 'create',
+            },
+            {
+                name: "MailsUpdate",
+                path: 'update/:id',
+            },
+            {
+                name: "MailsDelete",
                 path: 'delete/:id',
             }
         ]
