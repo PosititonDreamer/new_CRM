@@ -118,7 +118,7 @@ export default {
               empty
           />
           <u-input
-              :title="`${type.value === 'track' ? 'Трек-номер' : 'ФИО'}`"
+              :title="`${type.value === 'track' ? 'Трек-номер' : 'Текст'}`"
               v-model="text.value"
               :start-value="text.value"
               :error="text.error"

@@ -88,7 +88,7 @@ export default {
         <span v-if="order.sale" class="orders-list__there-sale"></span>
       </p>
       <p class="text">
-        {{ order.client }}
+        {{ order.client === order.full_name ? order.client : `${order.full_name}(${order.client})` }}
       </p>
       <p class="text">
         {{ order.show_delivery }}
@@ -180,8 +180,8 @@ export default {
         <span v-if="order.comment.trim().length" class="orders-list__there-comment"></span>
         <span v-if="order.sale" class="orders-list__there-sale"></span>
       </p>
-      <p class="text orders-list__name">
-        {{ order.client }}
+      <p class="text orders-list__name" :title="order.client === order.full_name ? order.client : `${order.full_name}(${order.client})`">
+        {{ order.client === order.full_name ? order.client : `${order.full_name}(${order.client})` }}
       </p>
       <p class="text">
         {{ order.show_delivery }}

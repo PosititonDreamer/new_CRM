@@ -143,7 +143,7 @@ export default {
         </div>
       </div>
       <p class="text">
-        <b>ФИО: </b> {{ order.client.full_name }}
+        <b>ФИО: </b> {{ order.full_name === order.client.full_name ? order.client.full_name : `${order.full_name}(${order.client.full_name})` }}
       </p>
       <p class="text">
         <b>Служба доставки: </b> {{ order.address.delivery }}

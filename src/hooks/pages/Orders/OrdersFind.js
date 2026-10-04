@@ -46,7 +46,7 @@ export const HookOrdersFind = () => {
         },
         {
             value: "text",
-            name: "ФИО"
+            name: "Тексту"
         }
     ]
 

@@ -214,7 +214,7 @@ export default {
           @submit.prevent="submitFindClientsList('ClientsFind')"
       >
         <u-input
-            title="ФИО"
+            title="Текст"
             v-model="client.value"
             :start-value="client.value"
             :error="client.error"
