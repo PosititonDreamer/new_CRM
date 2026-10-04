@@ -17,7 +17,7 @@
     margin-right: 5px;
   }
 
-  &__there-comment, &__there-sale {
+  &__there-comment, &__there-sale, &__first {
     display: block;
     width: 10px;
     height: 10px;
@@ -32,6 +32,11 @@
 
   &__there-sale {
     background: var(--primary);
+  }
+
+  &__first {
+    background: var(--white);
+    border: 1px solid var(--primary);
   }
 
   &__item {
