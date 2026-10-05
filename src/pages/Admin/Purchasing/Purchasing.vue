@@ -230,6 +230,9 @@ export default {
               Название
             </div>
             <div class="purchasing__item">
+              На складе
+            </div>
+            <div class="purchasing__item">
               Продукт
             </div>
             <div class="purchasing__item">
@@ -242,6 +245,9 @@ export default {
           <div class="purchasing__row purchasing__row--composite" v-for="item in computedPurchasing.connection">
             <div class="purchasing__item " >
               {{ item.title }}
+            </div>
+            <div class="purchasing__item " >
+              {{item.sum_actual}} грамм
             </div>
             <div class="purchasing__child-row">
               <template v-for="product in item.list">
@@ -277,6 +283,9 @@ export default {
               Название
             </div>
             <div class="purchasing__item">
+              На складе
+            </div>
+            <div class="purchasing__item">
               Расход
             </div>
             <div class="purchasing__item purchasing__item--period" @click="copyPurchasingPeriod(day, 'products')" v-for="day in columnsDays">
@@ -286,6 +295,9 @@ export default {
           <div class="purchasing__row" v-for="item in computedPurchasing.products">
             <div class="purchasing__item " >
               {{ item.title }}
+            </div>
+            <div class="purchasing__item " >
+              {{ item.actual }} {{item.measure === 'капсул' ? 'грамм' : item.measure }}
             </div>
             <div class="purchasing__item purchasing__item--label" >
               {{ item.sum_day }}
@@ -302,6 +314,9 @@ export default {
               Название
             </div>
             <div class="purchasing__item">
+              На складе
+            </div>
+            <div class="purchasing__item">
               Расход
             </div>
             <div class="purchasing__item purchasing__item--period" @click="copyPurchasingPeriod(day, 'consumable')" v-for="day in columnsDays">
@@ -311,6 +326,9 @@ export default {
           <div class="purchasing__row" v-for="item in computedPurchasing.consumable">
             <div class="purchasing__item " >
               {{ item.title }}
+            </div>
+            <div class="purchasing__item " >
+              {{ item.actual }}  шт.
             </div>
             <div class="purchasing__item purchasing__item--label" >
               {{ item.sum_day }}
@@ -327,6 +345,9 @@ export default {
               Название
             </div>
             <div class="purchasing__item">
+              На складе
+            </div>
+            <div class="purchasing__item">
               Расход
             </div>
             <div class="purchasing__item purchasing__item--period" @click="copyPurchasingPeriod(day, 'other')" v-for="day in columnsDays">
@@ -336,6 +357,9 @@ export default {
           <div class="purchasing__row" v-for="item in computedPurchasing.other">
             <div class="purchasing__item " >
               {{ item.title }}
+            </div>
+            <div class="purchasing__item " >
+              {{ item.actual }} шт.
             </div>
             <div class="purchasing__item purchasing__item--label" >
               {{ item.sum_day }}
