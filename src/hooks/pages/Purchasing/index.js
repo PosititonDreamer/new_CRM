@@ -49,6 +49,7 @@ export const HookPurchasing = () => {
             getProductsConnections.value.forEach((connection) => {
                 const connectionItem = {
                     title: connection.title,
+                    measure: '',
                     sum_actual: computed(() => {
                         let sum = 0
                         connectionItem.list.forEach((item) => {
@@ -81,12 +82,13 @@ export const HookPurchasing = () => {
                 connection.list.forEach((item) => {
                     const findProduct = Object.values(getPurchasing.value.products).find(product => +product.id === +item.product)
                     if (findProduct) {
+                        connectionItem.measure = findProduct.measure
                         if(findProduct.expense_composite) {
                             connectionItem.list.push({
                                 id: findProduct.id,
                                 expense: findProduct.expense,
                                 actual: findProduct.actual,
-                                title: `${findProduct.title}(О)` ,
+                                title: `${findProduct.title}(О)`,
                                 active: true,
                                 percent: computed(() => {
                                     return (100 / connectionItem.sum_all_expense.value * +findProduct.expense).toFixed()

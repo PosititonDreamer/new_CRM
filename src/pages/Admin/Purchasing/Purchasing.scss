@@ -20,7 +20,7 @@
 
   &__row {
     display: grid;
-    grid-template-columns: 400px 100px repeat(var(--columns), 100px);
+    grid-template-columns: 400px 150px 100px repeat(var(--columns), 100px);
 
     &--title {
       .purchasing {
@@ -31,7 +31,7 @@
     }
 
     &--composite {
-      grid-template-columns: 200px 300px 150px repeat(var(--columns), 100px);
+      grid-template-columns: 200px 150px 300px 150px repeat(var(--columns), 100px);
     }
   }
 
@@ -57,7 +57,7 @@
   }
 
   &__child-row {
-    grid-column: 2 / 4;
+    grid-column: 3 / 5;
     display: grid;
     grid-template-columns: 250px 50px 150px;
   }
