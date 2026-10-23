@@ -18,7 +18,7 @@ export const PlanPacking = defineStore('PlanPacking', () => {
 
     const findPacking = async ({date_start, date_end, period}) => {
         updateLoader({method: 'findPacking', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('date_start', date_start);
         formData.append('date_end', date_end);
         formData.append('period', period);

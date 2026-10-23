@@ -16,7 +16,7 @@ export const Salaries = defineStore('Salaries', () => {
 
     const findSalaries = async ({worker, date_start, date_end}, afterPage = 'Salaries') => {
         updateLoader({method: 'findSalaries', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('worker', worker);
         formData.append('date_start', date_start);
         formData.append('date_end', date_end);
@@ -44,7 +44,7 @@ export const Salaries = defineStore('Salaries', () => {
 
     const acceptSalariesAssembler = async (data, afterPage = 'Salaries') => {
         updateLoader({method: 'acceptSalariesAssembler', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('worker', data.worker);
         formData.append('penalties', JSON.stringify(data.penalties));
         formData.append('salaries', JSON.stringify(data.salaries));
@@ -77,7 +77,7 @@ export const Salaries = defineStore('Salaries', () => {
 
     const acceptSalariesOperator = async (data, afterPage = 'Salaries') => {
         updateLoader({method: 'acceptSalariesOperator', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('worker', data.worker);
         formData.append('date_start', data.date_start);
         formData.append('date_end', data.date_end);

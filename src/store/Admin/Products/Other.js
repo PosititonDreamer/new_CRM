@@ -27,7 +27,7 @@ export const Other = defineStore('Other', () => {
 
     const updateOthers = async ({id, packing}) => {
         updateLoader({method: 'updateOther', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('packing', packing)
         formData.append('id', id)
         axios.post('/admin/products/other/update.php', formData)
@@ -49,7 +49,7 @@ export const Other = defineStore('Other', () => {
 
     const deleteOthers = async ({id}) => {
         updateLoader({method: 'deleteOthers', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         axios.post('/admin/products/other/delete.php', formData)
             .then(res => {

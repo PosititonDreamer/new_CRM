@@ -17,7 +17,7 @@ export const Auth = defineStore('Auth', () => {
 
     const auth = async (token) => {
         updateLoader({method: 'auth', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('token', token);
         await axios.post('/workers/authorization.php', formData)
             .then(res => {
@@ -46,7 +46,7 @@ export const Auth = defineStore('Auth', () => {
 
     const checkAuth = async (token) => {
         updateLoader({method: 'checkAuth', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('token', token);
         await axios.post('/workers/authorization.php', formData)
             .then(res => {

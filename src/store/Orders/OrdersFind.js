@@ -17,7 +17,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
     const findOrders = async ({type, text}, afterPage) => {
         clearOrders()
         updateLoader({method: 'findOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('type', type);
         formData.append('text', text);
         await axios.post('/orders/find_list.php', formData)
@@ -33,7 +33,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
 
     const deleteOrders = async (id, afterPage) => {
         updateLoader({method: 'deleteOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         await axios.post('/orders/delete.php', formData)
             .then((res) => {
@@ -49,7 +49,7 @@ export const OrdersFind = defineStore('OrdersFind', () => {
 
     const returnOrders = async (id, afterPage) => {
         updateLoader({method: 'returnOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         await axios.post('/orders/return.php', formData)
             .then((res) => {

@@ -28,7 +28,7 @@ export const Mails = defineStore('Mails', () => {
 
     const createMail = async ({text, order_type, mail_type, min_orders, max_orders}) => {
         updateLoader({method: 'createMail', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('text', text)
         formData.append('order_type', order_type)
         formData.append('mail_type', mail_type)
@@ -48,7 +48,7 @@ export const Mails = defineStore('Mails', () => {
 
     const updateMail = async ({id, text, order_type, mail_type, min_orders, max_orders}) => {
         updateLoader({method: 'updateMail', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('text', text)
         formData.append('order_type', order_type)
@@ -74,7 +74,7 @@ export const Mails = defineStore('Mails', () => {
 
     const deleteMail = async (id) => {
         updateLoader({method: 'deleteMail', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/mails/delete.php', formData)
             .then(res => {
@@ -90,7 +90,7 @@ export const Mails = defineStore('Mails', () => {
 
     const sendTestMail = async (id) => {
         updateLoader({method: 'sendTestMail', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/mails/send.php', formData)
             .then(res => {

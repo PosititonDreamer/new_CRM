@@ -54,7 +54,7 @@ export const Magazines = defineStore('Magazines', () => {
             date_end: '',
             warehouse: ''
         }
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('warehouse', warehouse);
         formData.append('date_start', date_start);
         formData.append('date_end', date_end);

@@ -34,7 +34,7 @@ export const Workers = defineStore('Workers', () => {
 
     const createWorkers = async ({rule, name, description, salary, warehouses}) => {
         updateLoader({method: 'createWorkers', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('name', name)
         formData.append('rule', rule)
         formData.append('description', description)
@@ -56,7 +56,7 @@ export const Workers = defineStore('Workers', () => {
 
     const updateWorkers = async ({id, rule, name, description, salary, warehouses}) => {
         updateLoader({method: 'updateWorkers', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('name', name)
         formData.append('rule', rule)
         formData.append('description', description)
@@ -83,7 +83,7 @@ export const Workers = defineStore('Workers', () => {
 
     const updateWorkersToken = async (id) => {
         updateLoader({method: 'updateWorkers', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/workers/update_token.php',formData)
             .then(res => {
@@ -104,7 +104,7 @@ export const Workers = defineStore('Workers', () => {
 
     const deleteWorkers = async (id) => {
         updateLoader({method: 'deleteWorkers', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/workers/delete.php',formData)
             .then(res => {
@@ -121,7 +121,7 @@ export const Workers = defineStore('Workers', () => {
 
     const createPenaltyWorkers = async ({description, sum, worker, date}) => {
         updateLoader({method: 'createPenalty', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('description', description)
         formData.append('worker', worker)
         formData.append('sum', sum)

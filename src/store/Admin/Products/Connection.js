@@ -28,7 +28,7 @@ export const ProductsConnection = defineStore('ProductsConnection', () => {
 
     const createProductsConnections = async ({title, list}) => {
         updateLoader({method: 'createProductsConnections', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         formData.append('list', JSON.stringify(list))
         await axios.post('/admin/products/connection/create.php', formData)
@@ -45,7 +45,7 @@ export const ProductsConnection = defineStore('ProductsConnection', () => {
 
     const updateProductsConnections = async ({id, title, list}) => {
         updateLoader({method: 'updateProductsConnections', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('title', title)
         formData.append('list', JSON.stringify(list))
@@ -69,7 +69,7 @@ export const ProductsConnection = defineStore('ProductsConnection', () => {
 
     const deleteProductsConnections = async (id) => {
         updateLoader({method: 'deleteProductsConnections', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/products/connection/delete.php', formData)
             .then(res => {

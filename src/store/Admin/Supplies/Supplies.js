@@ -42,7 +42,7 @@ export const Supplies = defineStore('Supplies', () => {
 
     const createSupplies = async ({warehouse_receive, warehouse_give, list}) => {
         updateLoader({method: 'createSupplies', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('warehouse_receive', warehouse_receive)
         formData.append('warehouse_give', warehouse_give)
         formData.append('list', JSON.stringify(list))
@@ -60,7 +60,7 @@ export const Supplies = defineStore('Supplies', () => {
 
     const updateSupplies = async ({id, list}) => {
         updateLoader({method: 'updateSupplies', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('list', JSON.stringify(list))
         await axios.post('/admin/supplies/update.php', formData)
@@ -87,7 +87,7 @@ export const Supplies = defineStore('Supplies', () => {
 
     const deleteSupplies = async (id) => {
         updateLoader({method: 'deleteSupplies', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/supplies/delete.php', formData)
             .then(res => {

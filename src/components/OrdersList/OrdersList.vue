@@ -86,6 +86,7 @@ export default {
         {{ order.track ? explodeSpace(order.track) : 'Не присвоен' }}
         <span v-if="order.comment.trim().length" class="orders-list__there-comment"></span>
         <span v-if="order.sale" class="orders-list__there-sale"></span>
+        <span v-if="+order.orders === 1" class="orders-list__first"></span>
       </p>
       <p class="text">
         {{ order.client === order.full_name ? order.client : `${order.full_name}(${order.client})` }}

@@ -18,7 +18,7 @@ export const Purchasing = defineStore('Purchasing', () => {
 
     const findPurchasing = async ({date_start, date_end, period}) => {
         updateLoader({method: 'findPurchasing', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('date_start', date_start);
         formData.append('date_end', date_end);
         formData.append('period', period);

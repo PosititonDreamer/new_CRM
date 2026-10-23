@@ -47,7 +47,7 @@ export const Clients = defineStore('Clients', () => {
     const findClientsList = async (text, afterPage) => {
         clients.value = []
         updateLoader({method: 'findClientsList', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('text', text)
         await axios.post('/clients/find_list.php', formData)
             .then((res) => {
@@ -63,7 +63,7 @@ export const Clients = defineStore('Clients', () => {
 
     const joinClients = async ({client, clients_join}, afterPage) => {
         updateLoader({method: 'joinClients', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('client', client)
         formData.append('clients_join', JSON.stringify(clients_join))
         await axios.post('clients/join.php', formData)
@@ -83,7 +83,7 @@ export const Clients = defineStore('Clients', () => {
 
     const joinAddress = async ({address, address_join}, afterPage) => {
         updateLoader({method: 'joinAddress', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('address', address)
         formData.append('address_join', JSON.stringify(address_join))
         await axios.post('clients/join_address.php', formData)
@@ -102,7 +102,7 @@ export const Clients = defineStore('Clients', () => {
     const findClientsFullNameList = async (text) => {
         clientsFullNameList.value = []
         updateLoader({method: 'findClientsFullNameList', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('text', text)
         axios.post('/clients/find_full_name.php', formData)
             .then((res) => {
@@ -117,7 +117,7 @@ export const Clients = defineStore('Clients', () => {
 
     const updateClients = async ({id, full_name, phone, email}, afterPage) => {
         updateLoader({method: 'updateClients', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('full_name', full_name)
         formData.append('phone', phone)
@@ -148,7 +148,7 @@ export const Clients = defineStore('Clients', () => {
     }
 
     const findClientId = async (id) => {
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('clients/item.php', formData)
             .then((res) => {

@@ -55,7 +55,7 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
 
     const createSuppliesWarehouse = async ({supply, list, worker}, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'createSuppliesWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('supply', supply)
         formData.append('worker', worker)
         formData.append('list', JSON.stringify(list))
@@ -73,7 +73,7 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
 
     const updateSuppliesWarehouse = async ({id, list}, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'updateSuppliesWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('list', JSON.stringify(list))
         await axios.post(`/supplies/update.php`, formData)
@@ -95,7 +95,7 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
 
     const deleteSuppliesWarehouse = async (id, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'deleteSuppliesWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post(`/supplies/delete.php`, formData)
             .then(res => {
@@ -111,7 +111,7 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
 
     const sendSuppliesWarehouse = async (id, worker, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'sendSuppliesWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('worker', worker)
         await axios.post(`/supplies/send.php`, formData)
@@ -133,7 +133,7 @@ export const SuppliesWarehouse = defineStore('SuppliesWarehouse', () => {
 
     const acceptSuppliesWarehouse = async (id, worker, afterPage = 'SuppliesWarehouse') => {
         updateLoader({method: 'acceptSuppliesWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('worker', worker)
         await axios.post(`/supplies/accept.php`, formData)

@@ -29,7 +29,7 @@ export const Promos = defineStore('Promos', () => {
 
     const createPromos = async ({date_start, date_end, title}) => {
         updateLoader({method: 'createPromos', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('date_start', date_start)
         formData.append('date_end', date_end)
         formData.append('title', title)
@@ -47,7 +47,7 @@ export const Promos = defineStore('Promos', () => {
 
     const updatePromos = async ({id, date_start, date_end, title}) => {
         updateLoader({method: 'createPromos', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('date_start', date_start)
         formData.append('date_end', date_end)
         formData.append('title', title)
@@ -71,7 +71,7 @@ export const Promos = defineStore('Promos', () => {
 
     const deletePromos = async (id) => {
         updateLoader({method: 'createPromos', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/promos/delete.php', formData)
             .then((res) => {

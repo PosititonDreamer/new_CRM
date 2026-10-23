@@ -27,7 +27,7 @@ export const Products = defineStore('Products', () => {
 
     const createProduct = async ({title, show_title, measure_unit, client_title, weight, instruction}) => {
         updateLoader({method: 'createProduct', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         formData.append('show_title', show_title)
         formData.append('measure_unit', measure_unit)
@@ -48,7 +48,7 @@ export const Products = defineStore('Products', () => {
 
     const updateProduct = async ({title, show_title, measure_unit, sort, id, client_title, weight, instruction}) => {
         updateLoader({method: 'updateProduct', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         formData.append('show_title', show_title)
         formData.append('measure_unit', measure_unit)
@@ -77,7 +77,7 @@ export const Products = defineStore('Products', () => {
 
     const removeProduct = async (id) => {
         updateLoader({method: 'removeProduct', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/products/delete.php', formData)
             .then(res => {

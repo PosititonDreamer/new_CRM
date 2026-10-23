@@ -28,7 +28,7 @@ export const Sales = defineStore('Sales', () => {
 
     const createSales = async ({title, keywords, sum, date, date_start, sum_max, list}) => {
         updateLoader({method: 'createSales', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append("title", title)
         formData.append("keywords", keywords)
         formData.append("sum", sum)
@@ -50,7 +50,7 @@ export const Sales = defineStore('Sales', () => {
 
     const updateSales = async ({id, title, keywords, sum, date, date_start, sum_max, list}) => {
         updateLoader({method: 'updateSales', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append("id", id)
         formData.append("title", title)
         formData.append("keywords", keywords)
@@ -78,7 +78,7 @@ export const Sales = defineStore('Sales', () => {
 
     const deleteSales = async ({id}) => {
         updateLoader({method: 'deleteSales', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append("id", id)
         await axios.post('/admin/sales/delete.php', formData)
             .then(res => {

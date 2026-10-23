@@ -131,7 +131,7 @@ export const Orders = defineStore('Orders', () => {
                                     worker
                                 }, afterPage, warehouse = 1) => {
         updateLoader({method: 'createOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('client', client)
         formData.append('address', address)
         formData.append('track', track)
@@ -177,7 +177,7 @@ export const Orders = defineStore('Orders', () => {
                                     payed
                                 }, afterPage, warehouse = 1) => {
         updateLoader({method: 'updateOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         formData.append('client', client)
         formData.append('address', address)
@@ -220,7 +220,7 @@ export const Orders = defineStore('Orders', () => {
 
     const deleteOrders = async (id, afterPage) => {
         updateLoader({method: 'deleteOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         await axios.post('/orders/delete.php', formData)
             .then((res) => {
@@ -237,7 +237,7 @@ export const Orders = defineStore('Orders', () => {
 
     const deliveredOrders = async (id, afterPage) => {
         updateLoader({method: 'deliveredOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         await axios.post('/orders/delivered_message.php', formData)
             .then((res) => {
@@ -259,7 +259,7 @@ export const Orders = defineStore('Orders', () => {
 
     const keepedOrders = async (id, afterPage) => {
         updateLoader({method: 'keepedOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         await axios.post('/orders/keeped_message.php', formData)
             .then((res) => {
@@ -276,7 +276,7 @@ export const Orders = defineStore('Orders', () => {
 
     const finishOrders = async (id, afterPage) => {
         updateLoader({method: 'finishOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         await axios.post('/orders/finish.php', formData)
             .then((res) => {
@@ -293,7 +293,7 @@ export const Orders = defineStore('Orders', () => {
 
     const returnOrders = async (id, afterPage) => {
         updateLoader({method: 'returnOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         await axios.post('/orders/return.php', formData)
             .then((res) => {
@@ -310,7 +310,7 @@ export const Orders = defineStore('Orders', () => {
 
     const collectOrders = async ({id, worker, boxes}, afterPage) => {
         updateLoader({method: 'collectOrders', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id)
         formData.append('worker', worker)
         formData.append('boxes', JSON.stringify(boxes))
@@ -332,7 +332,7 @@ export const Orders = defineStore('Orders', () => {
         updateLoader({method: 'sendOrders', status: false})
         let send = 0
         for (let id of id_list) {
-            const formData = new FormData();
+            const formData = new URLSearchParams();
             formData.append('orders', JSON.stringify([id]))
             await axios.post('/orders/send.php', formData)
                 .then(() => {
@@ -351,7 +351,7 @@ export const Orders = defineStore('Orders', () => {
 
     const addTrack = async ({id, track, blank}, afterPage) => {
         updateLoader({method: 'addTrack', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id);
         formData.append('track', track)
         await axios.post('/orders/add_track.php', formData)
@@ -405,7 +405,7 @@ export const Orders = defineStore('Orders', () => {
 
     const sendTelegramMessage = async (id) => {
         updateLoader({method: 'sendTelegramMessage', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('id', id);
         await axios.post('/orders/telegram_message.php', formData)
             .then((res) => {
@@ -432,7 +432,7 @@ export const Orders = defineStore('Orders', () => {
 
     const findClientsList = async (text) => {
         updateLoader({method: 'findClientsList', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('text', text)
         axios.post('/clients/find_full_name.php', formData)
             .then((res) => {

@@ -37,7 +37,7 @@ export const Warehouses = defineStore('Warehouses', () => {
 
     const createWarehouse = async ({title, description, type, few, few_very, few_other, few_very_other}) => {
         updateLoader({method: 'createWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         formData.append('description', description)
         formData.append('type', type)
@@ -59,7 +59,7 @@ export const Warehouses = defineStore('Warehouses', () => {
 
     const updateWarehouse = async ({title, description, type, id, few, few_very, few_other, few_very_other}) => {
         updateLoader({method: 'updateWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         formData.append('description', description)
         formData.append('type', type)
@@ -87,7 +87,7 @@ export const Warehouses = defineStore('Warehouses', () => {
 
     const removeWarehouse = async (id) => {
         updateLoader({method: 'removeWarehouse', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post(`/admin/warehouses/delete.php`, formData)
             .then(res => {

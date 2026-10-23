@@ -32,7 +32,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
 
     const createGoodsOther = async ({warehouse, type, title, balance, few, few_very}) => {
         updateLoader({method: 'createGoodsOther', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('warehouse', warehouse)
         formData.append('type', type)
         formData.append('title', title)
@@ -53,7 +53,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
 
     const updateGoodsOther = async ({warehouse, type, title, balance, few, few_very, id, sort}) => {
         updateLoader({method: 'updateGoodsOther', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('warehouse', warehouse)
         formData.append('type', type)
         formData.append('title', title)
@@ -83,7 +83,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
 
     const updateBalanceGoodsOther = async ({id, balance, warehouse}) => {
         updateLoader({method: 'updateBalanceGoodsOther', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('balance', balance)
         formData.append('id', id)
         await axios.post('/admin/goods/other/update_balance.php', formData)
@@ -101,7 +101,7 @@ export const GoodsOther = defineStore('GoodsOther', () => {
 
     const deleteGoodsOther = async ({id, warehouse}) => {
         updateLoader({method: 'deleteGoodsOther', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/goods/other/delete.php', formData)
             .then(res => {

@@ -28,7 +28,7 @@ export const Presents = defineStore('Presents', () => {
 
     const createPresents = async ({packing}) => {
         updateLoader({method: 'createPresents', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append("packing", packing)
         axios.post('/admin/presents/create.php', formData)
             .then(res => {
@@ -44,7 +44,7 @@ export const Presents = defineStore('Presents', () => {
 
     const updatePresents =  async ({id, packing}) => {
         updateLoader({method: 'updatePresents', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append("packing", packing)
         formData.append("id", id)
         axios.post('/admin/presents/update.php', formData)
@@ -66,7 +66,7 @@ export const Presents = defineStore('Presents', () => {
 
     const deletePresents = async (id) => {
         updateLoader({method: 'deletePresents', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append("id", id)
         axios.post('/admin/presents/delete.php', formData)
             .then(res => {

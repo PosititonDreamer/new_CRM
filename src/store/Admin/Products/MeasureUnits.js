@@ -28,7 +28,7 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
 
     const createMeasureUnits = async ({title}) => {
         updateLoader({method: 'createMeasureUnits', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         await axios.post('/admin/products/measure_units/create.php', formData)
             .then(res => {
@@ -44,7 +44,7 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
 
     const updateMeasureUnits = async ({title, id}) => {
         updateLoader({method: 'updateMeasureUnits', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         formData.append('id', id)
         await axios.post('/admin/products/measure_units/update.php', formData)
@@ -66,7 +66,7 @@ export const MeasureUnits = defineStore('MeasureUnits', () => {
 
     const removeMeasureUnits = async (id) => {
         updateLoader({method: 'removeMeasureUnits', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/products/measure_units/delete.php', formData)
             .then(res => {

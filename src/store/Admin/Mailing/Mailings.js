@@ -29,7 +29,7 @@ export const Mailings = defineStore('Mailings', () => {
 
     const createMailings = async ({title, text}) => {
         updateLoader({method: 'createMailings', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('title', title)
         formData.append('text', text)
         await axios.post('/admin/mailings/create.php', formData)
@@ -46,7 +46,7 @@ export const Mailings = defineStore('Mailings', () => {
 
     const updateMailings = async ({id, title, text}) => {
         updateLoader({method: 'updateMailings', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('title', title)
         formData.append('text', text)
@@ -69,7 +69,7 @@ export const Mailings = defineStore('Mailings', () => {
 
     const deleteMailings = async (id) => {
         updateLoader({method: 'deleteMailings', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/mailings/delete.php', formData)
             .then(res => {
@@ -85,7 +85,7 @@ export const Mailings = defineStore('Mailings', () => {
 
     const sendMailings = async ({id, type, test}) => {
         updateLoader({method: 'sendMailings', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         formData.append('type', type)
         formData.append('test', test)

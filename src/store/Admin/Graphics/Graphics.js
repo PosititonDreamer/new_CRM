@@ -18,7 +18,7 @@ export const Graphics = defineStore('Graphics', () => {
 
     const findGraphics = async ({date_start, date_end}) => {
         updateLoader({method: 'findGraphics', status: false})
-        const formData = new FormData();
+        const formData = new URLSearchParams();
         formData.append('date_start', date_start);
         formData.append('date_end', date_end);
         await axios.post('/admin/graphics/list.php', formData)

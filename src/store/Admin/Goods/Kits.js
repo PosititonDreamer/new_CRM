@@ -29,7 +29,7 @@ export const GoodsKit = defineStore('GoodsKit', () => {
 
     const createGoodsKit = async ({title, number, list, comment, view_comment, warehouse}) => {
         updateLoader({method: 'createGoodsKit', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('warehouse', warehouse)
         formData.append('title', title)
         formData.append('number', number)
@@ -50,7 +50,7 @@ export const GoodsKit = defineStore('GoodsKit', () => {
 
     const updateGoodsKit = async ({id, title, number, list, comment, view_comment, warehouse}) => {
         updateLoader({method: 'updateGoodsKit', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('warehouse', warehouse)
         formData.append('title', title)
         formData.append('number', number)
@@ -77,7 +77,7 @@ export const GoodsKit = defineStore('GoodsKit', () => {
 
     const deleteGoodsKit = async ({id, warehouse}) => {
         updateLoader({method: 'deleteGoodsKit', status: false})
-        const formData = new FormData()
+        const formData = new URLSearchParams()
         formData.append('id', id)
         await axios.post('/admin/goods/kit/delete.php', formData)
             .then(res => {
