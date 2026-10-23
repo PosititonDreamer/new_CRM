@@ -55,6 +55,14 @@ body {
     }
   }
 
+  &--black {
+    color: var(--black);
+
+    * {
+      color: var(--black);
+    }
+  }
+
   &--bold {
     font-weight: 700;
 

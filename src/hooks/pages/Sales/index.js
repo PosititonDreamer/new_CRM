@@ -6,8 +6,10 @@ import {ref} from "vue";
 export const SalesHook = () => {
     const {
         getSales,
+        getMultySales,
         createSales,
         updateSales,
+        updateMultySales,
         deleteSales,
     } = Sales()
 
@@ -22,6 +24,9 @@ export const SalesHook = () => {
     const {data: date_start} = validateInput("Date", new Date().toISOString().split('T')[0])
     const list = ref([])
 
+    // todo: Универсальные акции
+    const {data: days} = validateInput("Number", 0)
+
     const sale = {
         title,
         keywords,
@@ -30,6 +35,13 @@ export const SalesHook = () => {
         sum_max,
         date_start,
         list,
+    }
+
+    const multySale = {
+        title,
+        days,
+        sum,
+        list
     }
 
     const addItem = (item = {quantity: 0, product: "", good: ""}, id = Date.now()) => {
@@ -106,6 +118,32 @@ export const SalesHook = () => {
         }
     }
 
+    const submitUpdateMultySales = async () => {
+        title.value.tacked = true
+        days.value.tacked = true
+
+        list.value.forEach(item => {
+            item.quantity.tacked = true
+            item.product.tacked = true
+            item.good.tacked = true
+        })
+
+        if(title.value.valid && days.value.valid && !list.value.find(item => !item.product.valid || !item.quantity.valid || !item.good.valid)) {
+            await updateMultySales({
+                id: route.params.id,
+                title: title.value.value,
+                sum: sum.value.value,
+                days: days.value.value,
+                goods: list.value.map(item => {
+                    return {
+                        quantity: item.quantity.value,
+                        good: item.good.value,
+                    }
+                })
+            })
+        }
+    }
+
     const submitDeleteSales = async () => {
         await deleteSales({
             id: route.params.id,
@@ -119,25 +157,30 @@ export const SalesHook = () => {
         date.value.tacked = false
         date_start.value.tacked = false
         sum_max.value.tacked = false
+        days.value.tacked = false
 
         title.value.value = ""
         keywords.value.value = ""
         sum.value.value = 0
         date.value.value = ""
         sum_max.value.value = 0
+        days.value.value = 0
         date_start.value.value = new Date().toISOString().split('T')[0]
         list.value = []
     }
 
     return {
         getSales,
+        getMultySales,
         route,
         router,
         sale,
+        multySale,
         addItem,
         removeItem,
         submitCreateSales,
         submitUpdateSales,
+        submitUpdateMultySales,
         submitDeleteSales,
         clearData,
     }

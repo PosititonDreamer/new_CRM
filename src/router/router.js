@@ -353,6 +353,10 @@ const routes = [
                 path: 'update/:id',
             },
             {
+                name: "SalesMultyUpdate",
+                path: 'update-multy/:id',
+            },
+            {
                 name: "SalesDelete",
                 path: 'delete/:id',
             }

@@ -32,6 +32,7 @@ export const HookOrders = () => {
         getPresentsList,
         getBoxesList,
         getSalesList,
+        getSalesMultyList,
         createOrders,
         updateOrders,
         deleteOrders,
@@ -53,6 +54,7 @@ export const HookOrders = () => {
     const {data: comment} = validateInput("String", "", 0)
     const {data: phone} = validateInput("String", "", 0)
     const {data: email} = validateInput("String", "", 0)
+    const {data: multySale} = validateInput("String", "", 0)
     const {data: delivery} = validateInput("String", "", 1)
     const composition = ref([])
     const boxes = ref([])
@@ -103,7 +105,8 @@ export const HookOrders = () => {
         composition,
         file,
         boxes,
-        payed
+        payed,
+        multySale
     }
 
     const submitCreateOrders = async (afterPage = 'Orders') => {
@@ -122,6 +125,17 @@ export const HookOrders = () => {
         const checkComposition = !composition.value.find(item => !item.good.valid || !item.type.valid || !item.quantity.valid)
 
         if (check && checkComposition) {
+            const addCompositionItem = []
+            if(computedMultySales.value.status) {
+                const findSale = getSalesMultyList.value.find(item => item.code === order.multySale.value.value.toUpperCase())
+                addCompositionItem.push({
+                    good: findSale.id,
+                    type: 'sale_multy',
+                    quantity: 1,
+                    present: 0,
+                })
+            }
+
             await createOrders({
                 client: client.value.value,
                 phone: phone.value.value,
@@ -133,7 +147,7 @@ export const HookOrders = () => {
                 payed: payed.value,
                 blank: file.value.value,
                 worker: getWorker.value.id,
-                composition: composition.value.map(item => {
+                composition: [...composition.value.map(item => {
                     if (item.type.value === 'present') {
                         const findPresent = getPresentsList.value.find(present => present.id.toString() === item.good.value)
                         return {
@@ -150,7 +164,7 @@ export const HookOrders = () => {
                         present: 0,
                         type: item.type.value,
                     }
-                })
+                }), ...addCompositionItem]
             }, afterPage)
         }
     }
@@ -171,6 +185,16 @@ export const HookOrders = () => {
         const checkComposition = !composition.value.find(item => !item.good.valid || !item.type.valid || !item.quantity.valid)
 
         if (check && checkComposition) {
+            const addCompositionItem = []
+            if(computedMultySales.value.status) {
+                const findSale = getSalesMultyList.value.find(item => item.code === order.multySale.value.value.toUpperCase())
+                addCompositionItem.push({
+                    good: findSale.id,
+                    type: 'sale_multy',
+                    quantity: 1,
+                    present: 0,
+                })
+            }
             await updateOrders({
                 id: route.params.id,
                 client: client.value.value,
@@ -182,7 +206,7 @@ export const HookOrders = () => {
                 email: email.value.value,
                 payed: payed.value,
                 blank: file.value.value,
-                composition: composition.value.map(item => {
+                composition: [...composition.value.map(item => {
                     if (item.type.value === 'present') {
                         const findPresent = getPresentsList.value.find(present => present.id.toString() === item.good.value)
                         return {
@@ -199,7 +223,7 @@ export const HookOrders = () => {
                         present: 0,
                         type: item.type.value,
                     }
-                })
+                }), ...addCompositionItem]
             }, afterPage)
         }
     }
@@ -946,6 +970,13 @@ export const HookOrders = () => {
                 return `Акция: ${findSale.title}`
             }
 
+            if(item.type === 'sale_multy') {
+                const findSale = getSalesMultyList.value.find(sale => +sale.id === +item.good)
+                const goodItem = getOrderDetail.value.goods_list.find(item => +item.id === +findSale.good)
+                const product = getProductsList.value.find(item => +item.id === +goodItem.product)
+                return `Индвидуальная акция: ${findSale.code}(${product.show_title ? product.show_title : product.title} ${goodItem.packing} ${product.measure}${+findSale.quantity > 1 ? ' - ' + findSale.quantity + ' шт.' : ''})`
+            }
+
             return item
         })
     })
@@ -1047,6 +1078,44 @@ export const HookOrders = () => {
         addMessages(['Номер заказа скопирован'], 'success')
     }
 
+    const computedMultySales = computed(() => {
+        const findSale = getSalesMultyList.value.find(item => item.code === order.multySale.value.value.toUpperCase())
+
+        if(findSale) {
+            if(getOrderDetail.value) {
+                const checkSale = getOrderDetail.value.composition_list.find(item => item.type === 'sale_multy')
+                if(+checkSale?.good === +findSale.id ) {
+                    return {
+                        text: 'Индвидуальная акция добавлена',
+                        status: true,
+                    }
+                }
+            }
+            if(findSale.used) {
+                return {
+                    text: 'Индвидуальная акция уже использована',
+                    status: false,
+                }
+            }
+
+            if(findSale.denied) {
+                return {
+                    text: 'Индвидуальная акция истекла',
+                    status: false,
+                }
+            }
+
+            return {
+                text: 'Индвидуальная акция добавлена',
+                status: true,
+            }
+        }
+        return {
+            text: 'Индвидуальная акция не найдена',
+            status: false,
+        }
+    })
+
 
     return {
         router,
@@ -1060,6 +1129,7 @@ export const HookOrders = () => {
         getPresentsList,
         getBoxesList,
         getSalesList,
+        getSalesMultyList,
         computedBoxesList,
         sendTelegramMessage,
         filter,
@@ -1102,5 +1172,6 @@ export const HookOrders = () => {
         submitKeepedOrders,
         submitDeliveredOrders,
         submitFinishOrders,
+        computedMultySales,
     }
 }

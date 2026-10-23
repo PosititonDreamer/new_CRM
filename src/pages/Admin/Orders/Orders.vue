@@ -40,6 +40,7 @@ export default {
       getProductsList,
       getKitsList,
       getPresentsList,
+      getSalesMultyList,
       sendTelegramMessage,
       filter,
       addComposition,
@@ -82,6 +83,7 @@ export default {
       submitKeepedOrders,
       submitDeliveredOrders,
       submitFinishOrders,
+      computedMultySales,
     } = HookOrders()
 
     const {
@@ -123,21 +125,26 @@ export default {
           order.delivery.value.value = getOrderDetail.value.address.delivery
           order.payed.value = !!getOrderDetail.value.number
           getOrderDetail.value.composition_list.forEach(composition => {
-            const item = {
-              good: composition.good,
-              quantity: composition.quantity,
-              type: composition.type
-            }
+            if(composition.type === 'sale_multy') {
+              const findMulty = getSalesMultyList.value.find(item => +item.id === +composition.good)
+              order.multySale.value.value = findMulty.code
+            } else {
+              const item = {
+                good: composition.good,
+                quantity: composition.quantity,
+                type: composition.type
+              }
 
-            if (composition.type === 'good') {
-              const good = getGoodsList.value.find(good => +good.id === +composition.good)
-              item.product = good.product
-            }
+              if (composition.type === 'good') {
+                const good = getGoodsList.value.find(good => +good.id === +composition.good)
+                item.product = good.product
+              }
 
-            if (!!+composition.present) {
-              item.type = 'present'
+              if (!!+composition.present) {
+                item.type = 'present'
+              }
+              addComposition(item, composition.id)
             }
-            addComposition(item, composition.id)
           })
           setTimeout(() => {
             loading.value = true
@@ -241,6 +248,7 @@ export default {
       compositionTypes,
       computedKits,
       getKitsList,
+      getSalesMultyList,
       computedPresents,
       computedSales,
       submitCreateOrders,
@@ -270,6 +278,7 @@ export default {
       submitKeepedOrders,
       submitDeliveredOrders,
       submitFinishOrders,
+      computedMultySales
     }
   }
 }
@@ -633,6 +642,16 @@ export default {
               :checked="order.payed.value"
               @checked="order.payed.value = !order.payed.value"
           />
+          <u-input
+              title="Индвидуальная акция"
+              v-model="order.multySale.value.value"
+              :start-value="order.multySale.value.value"
+          />
+          <template v-if="order.multySale.value.value.length">
+            <p :class="['text', {'text--few-very': !computedMultySales.status}]">
+              {{ computedMultySales.text }}
+            </p>
+          </template>
         </div>
       </u-form>
     </u-popup>
@@ -866,6 +885,16 @@ export default {
               :checked="order.payed.value"
               @checked="order.payed.value = !order.payed.value"
           />
+          <u-input
+              title="Индвидуальная акция"
+              v-model="order.multySale.value.value"
+              :start-value="order.multySale.value.value"
+          />
+          <template v-if="order.multySale.value.value.length">
+            <p :class="['text', {'text--few-very': !computedMultySales.status}]">
+              {{ computedMultySales.text }}
+            </p>
+          </template>
         </div>
       </u-form>
     </u-popup>

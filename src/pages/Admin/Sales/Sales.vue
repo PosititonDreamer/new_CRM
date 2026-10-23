@@ -34,13 +34,16 @@ export default {
   setup() {
     const {
       getSales,
+      getMultySales,
       route,
       router,
       sale,
+      multySale,
       addItem,
       removeItem,
       submitCreateSales,
       submitUpdateSales,
+      submitUpdateMultySales,
       submitDeleteSales,
       clearData,
     } = SalesHook()
@@ -52,6 +55,17 @@ export default {
     const {getMeasureUnits} = MeasureUnits()
 
     const actions = ref([
+      {
+        name: "update",
+        text: "Изменить"
+      },
+      {
+        name: "delete",
+        text: "Удалить"
+      },
+    ])
+
+    const multyActions = ref([
       {
         name: "update",
         text: "Изменить"
@@ -104,6 +118,36 @@ export default {
         setTimeout(() => {
           loading.value = true
         })
+
+      }if (to.name === 'SalesMultyUpdate' && to.params.id) {
+        loading.value = false
+        if (!getMultySales.value.length || !getGoods.value.length) {
+          setTimeout(() => {
+            changeRoute(to)
+          })
+          return
+        }
+        const findSale = getMultySales.value.find(item => +item.id === +to.params.id)
+        multySale.title.value.value = findSale.title
+        multySale.sum.value.value = findSale.sum
+        multySale.days.value.value = findSale.days
+
+
+        findSale.goods.forEach(item => {
+          const good = getGoods.value.find(good => good.id === item.good)
+          addItem({
+            quantity: +item.quantity,
+            good: item.good,
+            product: good.product
+          }, item.id)
+        })
+
+        multySale.title.value.tacked = true
+        multySale.days.value.tacked = true
+
+        setTimeout(() => {
+          loading.value = true
+        })
       }
     }
 
@@ -153,6 +197,31 @@ export default {
       })
     })
 
+    const computedMultySales = computed(() => {
+      if (!getMultySales.value.length || !getGoods.value.length || !getProducts.value.length || !getMeasureUnits.value.length) {
+        return []
+      }
+      return getMultySales.value.map(sale => {
+        sale.goods = sale.goods.map(item => {
+          const findGood = getGoods.value.find(good => good.id === item.good)
+          const findProduct = getProducts.value.find(product => product.id === findGood.product)
+          const MeasureUnits = getMeasureUnits.value.find(unit => unit.id === findProduct.measure_unit)
+          item.title = `${findProduct?.show_title ? findProduct.show_title : findProduct.title}, ${findGood.quantity} ${MeasureUnits?.title ? MeasureUnits?.title : ''}`
+          return item
+        })
+
+        sale.list = sale.list.map(item => {
+          const findGood = getGoods.value.find(good => good.id === item.good)
+          const findProduct = getProducts.value.find(product => product.id === findGood.product)
+          const MeasureUnits = getMeasureUnits.value.find(unit => unit.id === findProduct.measure_unit)
+          item.title = `${findProduct?.show_title ? findProduct.show_title : findProduct.title}, ${findGood.quantity} ${MeasureUnits?.title ? MeasureUnits?.title : ''}`
+          return item
+        }).sort((a, b) => Number(a.used) - Number(b.used))
+
+        return sale
+      })
+    })
+
     watch(route, (to) => {
       changeRoute(to)
     })
@@ -163,15 +232,19 @@ export default {
       route,
       router,
       sale,
+      multySale,
       addItem,
       removeItem,
       submitCreateSales,
       submitUpdateSales,
+      submitUpdateMultySales,
       submitDeleteSales,
       actions,
+      multyActions,
       computedGoods,
       computedProducts,
       computedSales,
+      computedMultySales,
       loading
     }
   }
@@ -280,6 +353,71 @@ export default {
                   </p>
                 </div>
               </u-accordion>
+            </u-card>
+          </div>
+        </u-accordion>
+      </u-card>
+      <u-card>
+        <u-accordion title="Универсальные акции">
+          <div class="list sales__list">
+            <u-card
+                v-for="(sale, id) in computedMultySales"
+                class="sales__item"
+                :key="`sale-${sale.id}`"
+                :style="[{'--z-index': computedMultySales.length - id}]"
+            >
+              <p class="sub-title">{{ sale.title }}</p>
+              <p class="text">
+                <b>Сумма: </b> От {{sale.sum}} ₽
+              </p>
+              <p class="text">
+                <b>Активна дней: </b> {{sale.days}}
+              </p>
+              <u-actions
+                  class="sales__actions"
+                  :actions="multyActions"
+                  @update="router.push({name: 'SalesMultyUpdate', params: {id: sale.id}})"
+              />
+              <div class="list">
+                <u-card>
+                  <u-accordion
+                      class="sales__accordion"
+                      title="Входящие фасованные товары"
+                      small
+                  >
+                    <div class="sales__content">
+                      <p
+                          v-for="item in sale.goods"
+                          class="text"
+                          :key="`sale-text-item-${item.id}`"
+                      >
+                        {{ item.title }}, {{ item.quantity }} шт.
+                      </p>
+                    </div>
+                  </u-accordion>
+                </u-card>
+                <u-card v-if="sale.list.length ">
+                  <u-accordion
+                      class="sales__accordion"
+                      title="Список индвидуальных акций"
+                      small
+                  >
+                    <div class="list">
+                      <u-card class="sales__content"
+                              v-for="item in sale.list"
+                              :key="`sale-multy-text-item-${item.id}`"
+                      >
+                        <p
+                            :class="['text', {'text--null': item.used }, {'text--black': item.denied && !item.used }]"
+                        >
+                          <b>{{item.code}}</b> - {{item.title}} <br>
+                          <b>Активна</b>: {{new Date(item.date_start).toLocaleDateString('ru-RU')}} - {{new Date(item.date_end).toLocaleDateString('ru-RU')}}
+                        </p>
+                      </u-card>
+                    </div>
+                  </u-accordion>
+                </u-card>
+              </div>
             </u-card>
           </div>
         </u-accordion>
@@ -468,6 +606,97 @@ export default {
                   :key="`sale-item${item.id}`"
                   :class="['list sales__form-item', {'sales__form-item--division': sale.list.value.length > 1}]"
                   :style="[{'--z-index': sale.list.value.length - id}]"
+              >
+                <u-select
+                    title="Продукт"
+                    :values="computedProducts"
+                    :start-value="item.product.value"
+                    :error="item.product.error"
+                    v-model="item.product.value"
+                    @change="() => {
+                  item.product.tacked = true
+                  item.good.value = ''
+                }"
+                    class="sales__select sales__select--product"
+                />
+                <u-select
+                    v-if="item.product.value"
+                    title="Товар"
+                    :values="computedGoods.filter(good =>  good.product === item.product.value)"
+                    :start-value="item.good.value"
+                    :error="item.good.error"
+                    v-model="item.good.value"
+                    @change="item.good.tacked = true"
+                />
+                <u-input
+                    title="Количество"
+                    type="number"
+                    :start-value="item.quantity.value"
+                    :error="item.quantity.error"
+                    v-model="item.quantity.value"
+                    @change="item.quantity.tacked = true"
+                    @blur="item.quantity.tacked = true"
+                />
+                <u-button
+                    v-if="sale.list.value.length > 1"
+                    type="button"
+                    modifier="red"
+                    class="sales__delete-kit"
+                    @click="removeItem(item.id)"
+                />
+              </u-card>
+              <u-button
+                  type="button"
+                  @click="addItem()"
+                  class="sales__add-kit"
+              >
+                Добавить товар
+              </u-button>
+            </div>
+          </u-card>
+        </div>
+      </u-form>
+    </u-popup>
+    <u-popup
+        v-if="route.name === 'SalesMultyUpdate' && loading"
+        title="Изменение универсальной акции"
+        @close="router.push({name: 'Sales'})"
+    >
+      <u-form
+          text="Изменить универсальную акцию"
+          @submit.prevent="submitUpdateMultySales"
+      >
+        <div class="list">
+          <u-input
+              title="Название"
+              :start-value="multySale.title.value.value"
+              :error="multySale.title.value.error"
+              v-model="multySale.title.value.value"
+              @change="multySale.title.value.tacked = true"
+              @blur="multySale.title.value.tacked = true"
+          />
+          <u-input
+              title="Сумма"
+              type="number"
+              :start-value="multySale.sum.value.value"
+              v-model="multySale.sum.value.value"
+          />
+          <u-input
+              title="Активна дней"
+              :start-value="multySale.days.value.value"
+              :error="multySale.days.value.error"
+              v-model="multySale.days.value.value"
+              @change="multySale.days.value.tacked = true"
+              @blur="multySale.days.value.tacked = true"
+          />
+          <u-card>
+            <p class="sub-title">Фасованные товары</p>
+            <div class="list">
+              <u-card
+                  v-for="(item, id) in multySale.list.value"
+                  :key="`sale-item${item.id}`"
+                  :class="['list sales__form-item', {'sales__form-item--division': multySale.list.value.length > 1}]"
+                  :style="[{'--z-index': multySale.list.value.length - id}]"
               >
                 <u-select
                     title="Продукт"

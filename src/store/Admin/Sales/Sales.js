@@ -7,8 +7,10 @@ import axios from "axios";
 
 export const Sales = defineStore('Sales', () => {
     const sales = ref([])
+    const multySales = ref([])
 
     const getSales = computed(() => sales)
+    const getMultySales = computed(() => multySales)
 
     const {updateLoader} = Loader()
     const {addMessages} = Messages();
@@ -19,6 +21,7 @@ export const Sales = defineStore('Sales', () => {
         await axios.get('/admin/sales/list.php')
             .then((res) => {
                 sales.value = res.data.sales_list
+                multySales.value = res.data.sales_multy
             })
             .catch(err => {
                 addMessages(err.response.data.messages, 'error')
@@ -92,11 +95,38 @@ export const Sales = defineStore('Sales', () => {
         updateLoader({method: 'deleteSales', status: true})
     }
 
+    const updateMultySales = async ({id, title, sum, days, goods}) => {
+        updateLoader({method: 'updateMultySales', status: false})
+        const formData = new URLSearchParams()
+        formData.append("id", id)
+        formData.append("title", title)
+        formData.append("sum", sum)
+        formData.append("days", days)
+        formData.append('goods', JSON.stringify(goods))
+        await axios.post('/admin/sales/update_multy.php', formData)
+            .then(res => {
+                multySales.value = multySales.value.map(sale => {
+                    if(+sale.id === +id) {
+                        return res.data.sale
+                    }
+                    return sale
+                })
+                addMessages(res.data.messages, 'success')
+                router.push({name: 'Sales'})
+            })
+            .catch(err => {
+                addMessages(err.response.data.messages, 'error')
+            })
+        updateLoader({method: 'updateMultySales', status: true})
+    }
+
     return {
         getSales,
+        getMultySales,
         findSales,
         createSales,
         updateSales,
         deleteSales,
+        updateMultySales,
     }
 });
