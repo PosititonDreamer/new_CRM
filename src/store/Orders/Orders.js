@@ -131,6 +131,7 @@ export const Orders = defineStore('Orders', () => {
                                     composition,
                                     payed,
                                     blank,
+                                    price,
                                     worker
                                 }, afterPage, warehouse = 1) => {
         updateLoader({method: 'createOrders', status: false})
@@ -145,6 +146,7 @@ export const Orders = defineStore('Orders', () => {
         formData.append('warehouse', warehouse)
         formData.append('worker', worker)
         formData.append('payed', payed)
+        formData.append('price', price)
         formData.append('composition', JSON.stringify(composition))
         await axios.post('/orders/create.php', formData)
             .then((res) => {
@@ -176,6 +178,7 @@ export const Orders = defineStore('Orders', () => {
                                     delivery,
                                     email,
                                     composition,
+                                    price,
                                     blank,
                                     payed
                                 }, afterPage, warehouse = 1) => {
@@ -191,6 +194,7 @@ export const Orders = defineStore('Orders', () => {
         formData.append('email', email)
         formData.append('warehouse', warehouse)
         formData.append('payed', payed)
+        formData.append('price', price)
         formData.append('composition', JSON.stringify(composition))
         await axios.post('/orders/update.php', formData)
             .then((res) => {

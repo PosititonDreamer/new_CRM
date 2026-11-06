@@ -62,6 +62,7 @@ export const HookOrders = () => {
     const {data: file} = validateInput("File", null)
     const payed = ref(false)
     const collectGoods = ref([])
+    const {data: price} = validateInput("Number", "", 0)
 
     const addComposition = (item = {good: '0', quantity: 0, type: '', product: ''}, id = Date.now()) => {
         const {data: product} = validateInput("String", item.product, 1)
@@ -106,7 +107,8 @@ export const HookOrders = () => {
         file,
         boxes,
         payed,
-        multySale
+        multySale,
+        price
     }
 
     const submitCreateOrders = async (afterPage = 'Orders') => {
@@ -115,27 +117,17 @@ export const HookOrders = () => {
         address.value.tacked = true
         delivery.value.tacked = true
         track.value.tacked = true
+        price.value.tacked = true
         composition.value.forEach(item => {
             item.good.tacked = true
             item.quantity.tacked = true
             item.type.tacked = true
             item.product.tacked = true
         })
-        const check = client.value.valid && phone.value.valid && address.value.valid && delivery.value.valid && track.value.valid
+        const check = client.value.valid && phone.value.valid && address.value.valid && delivery.value.valid && track.value.valid && price.value.valid
         const checkComposition = !composition.value.find(item => !item.good.valid || !item.type.valid || !item.quantity.valid)
 
         if (check && checkComposition) {
-            const addCompositionItem = []
-            if(computedMultySales.value.status) {
-                const findSale = getSalesMultyList.value.find(item => item.code === order.multySale.value.value.toUpperCase())
-                addCompositionItem.push({
-                    good: findSale.id,
-                    type: 'sale_multy',
-                    quantity: 1,
-                    present: 0,
-                })
-            }
-
             await createOrders({
                 client: client.value.value,
                 phone: phone.value.value,
@@ -147,7 +139,9 @@ export const HookOrders = () => {
                 payed: payed.value,
                 blank: file.value.value,
                 worker: getWorker.value.id,
-                composition: [...composition.value.map(item => {
+                price: price.value.value,
+                code: multySale.value.value.toString().trim().length ? multySale.value.value.toString().trim() : null,
+                composition: composition.value.map(item => {
                     if (item.type.value === 'present') {
                         const findPresent = getPresentsList.value.find(present => present.id.toString() === item.good.value)
                         return {
@@ -164,7 +158,7 @@ export const HookOrders = () => {
                         present: 0,
                         type: item.type.value,
                     }
-                }), ...addCompositionItem]
+                })
             }, afterPage)
         }
     }
@@ -175,26 +169,17 @@ export const HookOrders = () => {
         address.value.tacked = true
         delivery.value.tacked = true
         track.value.tacked = true
+        price.value.tacked = true
         composition.value.forEach(item => {
             item.good.tacked = true
             item.quantity.tacked = true
             item.type.tacked = true
             item.product.tacked = true
         })
-        const check = client.value.valid && phone.value.valid && address.value.valid && delivery.value.valid && track.value.valid
+        const check = client.value.valid && phone.value.valid && address.value.valid && delivery.value.valid && track.value.valid && price.value.valid
         const checkComposition = !composition.value.find(item => !item.good.valid || !item.type.valid || !item.quantity.valid)
 
         if (check && checkComposition) {
-            const addCompositionItem = []
-            if(computedMultySales.value.status) {
-                const findSale = getSalesMultyList.value.find(item => item.code === order.multySale.value.value.toUpperCase())
-                addCompositionItem.push({
-                    good: findSale.id,
-                    type: 'sale_multy',
-                    quantity: 1,
-                    present: 0,
-                })
-            }
             await updateOrders({
                 id: route.params.id,
                 client: client.value.value,
@@ -206,7 +191,9 @@ export const HookOrders = () => {
                 email: email.value.value,
                 payed: payed.value,
                 blank: file.value.value,
-                composition: [...composition.value.map(item => {
+                price: price.value.value,
+                code: multySale.value.value.toString().trim().length ? multySale.value.value.toString().trim() : null,
+                composition: composition.value.map(item => {
                     if (item.type.value === 'present') {
                         const findPresent = getPresentsList.value.find(present => present.id.toString() === item.good.value)
                         return {
@@ -223,7 +210,7 @@ export const HookOrders = () => {
                         present: 0,
                         type: item.type.value,
                     }
-                }), ...addCompositionItem]
+                })
             }, afterPage)
         }
     }
@@ -1079,7 +1066,7 @@ export const HookOrders = () => {
     }
 
     const computedMultySales = computed(() => {
-        const findSale = getSalesMultyList.value.find(item => item.code === order.multySale.value.value.toUpperCase())
+        const findSale = getSalesMultyList.value.find(item => item.final_code === order.multySale.value.value.toUpperCase())
 
         if(findSale) {
             if(getOrderDetail.value) {
@@ -1110,6 +1097,8 @@ export const HookOrders = () => {
                 status: true,
             }
         }
+
+
         return {
             text: 'Индвидуальная акция не найдена',
             status: false,

@@ -130,31 +130,6 @@ const routes = [
         ]
     },
     {
-        name: "Mails",
-        path: '/admin/mails',
-        component: MailsPage,
-        meta: {
-            isAuth: true,
-            isAdmin: true,
-            layout: 'Sidebar',
-            title: "Письма"
-        },
-        children: [
-            {
-                name: "MailsCreate",
-                path: 'create',
-            },
-            {
-                name: "MailsUpdate",
-                path: 'update/:id',
-            },
-            {
-                name: "MailsDelete",
-                path: 'delete/:id',
-            }
-        ]
-    },
-    {
         name: "ProductsConnections",
         path: '/admin/products/connections',
         component: ConnectionPage,

@@ -70,10 +70,6 @@ export default {
         name: "update",
         text: "Изменить"
       },
-      {
-        name: "delete",
-        text: "Удалить"
-      },
     ])
 
     const changeRoute = (to) => {
@@ -366,7 +362,7 @@ export default {
                 :key="`sale-${sale.id}`"
                 :style="[{'--z-index': computedMultySales.length - id}]"
             >
-              <p class="sub-title">{{ sale.title }}</p>
+              <p class="sales__name sub-title">{{ sale.title }}</p>
               <p class="text">
                 <b>Сумма: </b> От {{sale.sum}} ₽
               </p>
@@ -410,7 +406,7 @@ export default {
                         <p
                             :class="['text', {'text--null': item.used }, {'text--black': item.denied && !item.used }]"
                         >
-                          <b>{{item.code}}</b> - {{item.title}} <br>
+                          <b>{{item.code}}</b> - {{item.title}} {{item.quantity}} шт.<br>
                           <b>Активна</b>: {{new Date(item.date_start).toLocaleDateString('ru-RU')}} - {{new Date(item.date_end).toLocaleDateString('ru-RU')}}
                         </p>
                       </u-card>

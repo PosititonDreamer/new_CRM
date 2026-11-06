@@ -123,6 +123,7 @@ export default {
           order.email.value.value = getOrderDetail.value.client.email
           order.address.value.value = getOrderDetail.value.address.address
           order.delivery.value.value = getOrderDetail.value.address.delivery
+          order.price.value.value = getOrderDetail.value.price
           order.payed.value = !!getOrderDetail.value.number
           getOrderDetail.value.composition_list.forEach(composition => {
             if(composition.type === 'sale_multy') {
@@ -643,6 +644,16 @@ export default {
               @checked="order.payed.value = !order.payed.value"
           />
           <u-input
+              title="Стоимость заказа"
+              type="number"
+              :start-value="order.price.value.value"
+              :error="order.price.value.error"
+              v-model="order.price.value.value"
+              @change="order.price.value.tacked = true"
+              @blur="order.price.value.tacked = true"
+              :step="0.01"
+          />
+          <u-input
               title="Индвидуальная акция"
               v-model="order.multySale.value.value"
               :start-value="order.multySale.value.value"
@@ -884,6 +895,16 @@ export default {
               value="1"
               :checked="order.payed.value"
               @checked="order.payed.value = !order.payed.value"
+          />
+          <u-input
+              title="Стоимость заказа"
+              type="number"
+              :start-value="order.price.value.value"
+              :error="order.price.value.error"
+              v-model="order.price.value.value"
+              @change="order.price.value.tacked = true"
+              @blur="order.price.value.tacked = true"
+              :step="0.01"
           />
           <u-input
               title="Индвидуальная акция"

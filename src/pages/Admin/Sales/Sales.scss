@@ -82,6 +82,10 @@
   &__content {
     padding-left: 10px;
   }
+
+  &__name {
+    max-width: 95%;
+  }
 }
 
 @media screen and (max-width: 1000px) {
